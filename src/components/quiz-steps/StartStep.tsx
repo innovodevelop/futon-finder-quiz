@@ -7,54 +7,54 @@ interface StartStepProps {
 
 export const StartStep = ({ onNext }: StartStepProps) => {
   return (
-    <div className="text-center max-w-2xl mx-auto">
-      <div className="mb-8">
-        <img
-          src={heroImage}
-          alt="Comfortable bedroom with beautiful futon"
-          className="w-full h-64 object-cover rounded-xl shadow-soft"
+    <div className="text-center max-w-2xl mx-auto space-y-6">
+      <div className="space-y-4">
+        <img 
+          src={heroImage} 
+          alt="Comfortable futon setup" 
+          className="w-full h-48 object-cover rounded-2xl"
         />
-      </div>
-      
-      <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-        Find Your Perfect Futon
-      </h1>
-      
-      <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-        Take our personalized quiz to discover the ideal futon that matches your sleep style, preferences, and needs. 
-        In just a few simple steps, we'll recommend the perfect futon for your best night's sleep.
-      </p>
-
-      <div className="bg-muted/50 rounded-lg p-6 mb-8">
-        <h3 className="font-semibold text-foreground mb-3">What to Expect:</h3>
-        <ul className="text-sm text-muted-foreground space-y-2 text-left max-w-md mx-auto">
-          <li className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-primary rounded-full"></span>
-            Questions about your sleeping preferences
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-primary rounded-full"></span>
-            Weight and sleep position considerations
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-primary rounded-full"></span>
-            Personalized futon recommendations
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-primary rounded-full"></span>
-            Takes less than 3 minutes to complete
-          </li>
-        </ul>
+        <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+          Find Your Perfect Futon
+        </h1>
+        <p className="text-muted-foreground text-base leading-relaxed">
+          Take our personalized quiz to discover the ideal futon for your comfort needs. 
+          Based on your sleep preferences, we'll recommend the perfect match from our collection.
+        </p>
       </div>
 
-      <Button
-        variant="quiz"
-        size="xl"
-        onClick={onNext}
-        className="min-w-48"
-      >
-        Start Quiz
-      </Button>
+      <div className="bg-muted/30 rounded-2xl p-5">
+        <h3 className="font-semibold text-foreground mb-3">What you'll get:</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+          <div className="flex items-center gap-2 justify-center md:justify-start">
+            <div className="w-2 h-2 bg-success rounded-full"></div>
+            <span>Personalized recommendations</span>
+          </div>
+          <div className="flex items-center gap-2 justify-center md:justify-start">
+            <div className="w-2 h-2 bg-success rounded-full"></div>
+            <span>Expert guidance</span>
+          </div>
+          <div className="flex items-center gap-2 justify-center md:justify-start">
+            <div className="w-2 h-2 bg-success rounded-full"></div>
+            <span>Perfect comfort match</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <Button 
+          variant="quiz" 
+          size="lg" 
+          onClick={onNext}
+          className="text-base px-12 py-3"
+        >
+          Start Quiz
+        </Button>
+        
+        <p className="text-xs text-muted-foreground">
+          Takes only 2-3 minutes to complete
+        </p>
+      </div>
     </div>
   );
 };
