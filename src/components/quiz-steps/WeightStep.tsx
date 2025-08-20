@@ -27,22 +27,22 @@ export const WeightStep = ({ peopleCount, weights, onChange, onNext, onPrev }: W
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold text-foreground mb-4">
-          What's {peopleCount === 1 ? "your weight" : "your weights"}?
+          Hvad er {peopleCount === 1 ? "din vægt" : "jeres vægt"}?
         </h2>
         <p className="text-muted-foreground">
-          Weight helps us determine the right firmness and support level for optimal comfort.
+          Vægt hjælper os med at bestemme det rigtige fasthedsniveau og støtte for optimal komfort.
         </p>
       </div>
 
-      <div className="space-y-4 mb-6">
+      <div className={`mb-6 ${peopleCount === 2 ? "grid grid-cols-1 md:grid-cols-2 gap-6" : "space-y-4"}`}>
         <div className="space-y-2">
           <Label htmlFor="weight1" className="text-base font-medium">
-            {peopleCount === 1 ? "Your Weight" : "Person 1 Weight"} (kg)
+            {peopleCount === 1 ? "Din vægt" : "Person 1 vægt"} (kg)
           </Label>
           <Input
             id="weight1"
             type="number"
-            placeholder="Enter weight in kg"
+            placeholder="Indtast vægt i kg"
             value={weights.person1 || ""}
             onChange={(e) => updateWeight("person1", parseInt(e.target.value) || 0)}
             min="35"
@@ -54,12 +54,12 @@ export const WeightStep = ({ peopleCount, weights, onChange, onNext, onPrev }: W
         {peopleCount === 2 && (
           <div className="space-y-2">
             <Label htmlFor="weight2" className="text-base font-medium">
-              Person 2 Weight (kg)
+              Person 2 vægt (kg)
             </Label>
             <Input
               id="weight2"
               type="number"
-              placeholder="Enter weight in kg"
+              placeholder="Indtast vægt i kg"
               value={weights.person2 || ""}
               onChange={(e) => updateWeight("person2", parseInt(e.target.value) || 0)}
               min="35"
@@ -72,20 +72,20 @@ export const WeightStep = ({ peopleCount, weights, onChange, onNext, onPrev }: W
 
       <div className="bg-muted/30 rounded-2xl p-4 mb-6">
         <p className="text-sm text-muted-foreground text-center">
-          💡 Your weight information helps us recommend the right firmness level for proper spinal alignment and comfort.
+          💡 Din vægtinformation hjælper os med at anbefale det rigtige fasthedsniveau for korrekt rygradsjustering og komfort.
         </p>
       </div>
 
       <div className="flex justify-between">
         <Button variant="secondary" onClick={onPrev}>
-          Back
+          Tilbage
         </Button>
         <Button 
           variant="quiz" 
           onClick={onNext}
           disabled={!isValid}
         >
-          Continue
+          Fortsæt
         </Button>
       </div>
     </div>
