@@ -15,28 +15,28 @@ export const StartStep = ({ onNext }: StartStepProps) => {
           className="w-full h-48 object-cover rounded-2xl"
         />
         <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-          Find Your Perfect Futon
+          Find Din Perfekte Futon
         </h1>
         <p className="text-muted-foreground text-base leading-relaxed">
-          Take our personalized quiz to discover the ideal futon for your comfort needs. 
-          Based on your sleep preferences, we'll recommend the perfect match from our collection.
+          Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov. 
+          Baseret på dine søvnpræferencer anbefaler vi det perfekte match fra vores kollektion.
         </p>
       </div>
 
       <div className="bg-muted/30 rounded-2xl p-5">
-        <h3 className="font-semibold text-foreground mb-3">What you'll get:</h3>
+        <h3 className="font-semibold text-foreground mb-3">Hvad du får:</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
           <div className="flex items-center gap-2 justify-center md:justify-start">
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span>Personalized recommendations</span>
+            <span>Personlige anbefalinger</span>
           </div>
           <div className="flex items-center gap-2 justify-center md:justify-start">
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span>Expert guidance</span>
+            <span>Ekspert vejledning</span>
           </div>
           <div className="flex items-center gap-2 justify-center md:justify-start">
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span>Perfect comfort match</span>
+            <span>Perfekt komfort match</span>
           </div>
         </div>
       </div>
@@ -48,11 +48,11 @@ export const StartStep = ({ onNext }: StartStepProps) => {
           onClick={onNext}
           className="text-base px-12 py-3"
         >
-          Start Quiz
+          Start Test
         </Button>
         
         <p className="text-xs text-muted-foreground">
-          Takes only 2-3 minutes to complete
+          Tager kun 2-3 minutter at gennemføre
         </p>
       </div>
     </div>

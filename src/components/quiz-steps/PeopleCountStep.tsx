@@ -12,10 +12,10 @@ export const PeopleCountStep = ({ value, onChange, onNext, onPrev }: PeopleCount
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-4">
-          How many people will use this futon?
+          Hvor mange personer skal bruge denne futon?
         </h2>
         <p className="text-muted-foreground">
-          This helps us recommend the right size and firmness for your needs.
+          Dette hjælper os med at anbefale den rigtige størrelse og fasthed til dine behov.
         </p>
       </div>
 
@@ -28,8 +28,8 @@ export const PeopleCountStep = ({ value, onChange, onNext, onPrev }: PeopleCount
         >
           <div className="text-4xl">👤</div>
           <div>
-            <div className="font-semibold">Just Me</div>
-            <div className="text-sm text-muted-foreground">Single person use</div>
+            <div className="font-semibold">Kun Mig</div>
+            <div className="text-sm text-muted-foreground">Enkeltperson brug</div>
           </div>
         </Button>
 
@@ -41,18 +41,18 @@ export const PeopleCountStep = ({ value, onChange, onNext, onPrev }: PeopleCount
         >
           <div className="text-4xl">👥</div>
           <div>
-            <div className="font-semibold">Two People</div>
-            <div className="text-sm text-muted-foreground">Couples or shared use</div>
+            <div className="font-semibold">To Personer</div>
+            <div className="text-sm text-muted-foreground">Par eller delt brug</div>
           </div>
         </Button>
       </div>
 
       <div className="flex justify-between">
         <Button variant="secondary" onClick={onPrev}>
-          Back
+          Tilbage
         </Button>
         <Button variant="quiz" onClick={onNext}>
-          Continue
+          Fortsæt
         </Button>
       </div>
     </div>

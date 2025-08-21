@@ -37,22 +37,22 @@ export const ContactInfoStep = ({ contactInfo, onChange, onNext, onPrev }: Conta
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-4">
-          Almost Done! 📝
+          Næsten færdig! 📝
         </h2>
         <p className="text-muted-foreground">
-          We'll use this information to send you personalized futon recommendations.
+          Vi bruger disse oplysninger til at sende dig personlige futon-anbefalinger.
         </p>
       </div>
 
       <div className="space-y-6 mb-8">
         <div className="space-y-2">
           <Label htmlFor="name" className="text-base font-medium">
-            Full Name *
+            Fulde Navn *
           </Label>
           <Input
             id="name"
             type="text"
-            placeholder="Enter your full name"
+            placeholder="Indtast dit fulde navn"
             value={contactInfo.name}
             onChange={(e) => updateField("name", e.target.value)}
             className="h-12"
@@ -62,12 +62,12 @@ export const ContactInfoStep = ({ contactInfo, onChange, onNext, onPrev }: Conta
 
         <div className="space-y-2">
           <Label htmlFor="email" className="text-base font-medium">
-            Email Address *
+            Email Adresse *
           </Label>
           <Input
             id="email"
             type="email"
-            placeholder="Enter your email address"
+            placeholder="Indtast din email adresse"
             value={contactInfo.email}
             onChange={(e) => updateField("email", e.target.value)}
             className="h-12"
@@ -77,12 +77,12 @@ export const ContactInfoStep = ({ contactInfo, onChange, onNext, onPrev }: Conta
 
         <div className="space-y-2">
           <Label htmlFor="phone" className="text-base font-medium">
-            Phone Number *
+            Telefonnummer *
           </Label>
           <Input
             id="phone"
             type="tel"
-            placeholder="Enter your phone number"
+            placeholder="Indtast dit telefonnummer"
             value={contactInfo.phone}
             onChange={(e) => updateField("phone", e.target.value)}
             className="h-12"
@@ -92,11 +92,11 @@ export const ContactInfoStep = ({ contactInfo, onChange, onNext, onPrev }: Conta
 
         <div className="space-y-2">
           <Label htmlFor="comments" className="text-base font-medium">
-            Additional Comments (Optional)
+            Yderligere Kommentarer (Valgfrit)
           </Label>
           <Textarea
             id="comments"
-            placeholder="Any specific needs, preferences, or questions about futons?"
+            placeholder="Eventuelle specifikke behov, præferencer eller spørgsmål om futoner?"
             value={contactInfo.comments || ""}
             onChange={(e) => updateField("comments", e.target.value)}
             className="min-h-20"
@@ -112,28 +112,28 @@ export const ContactInfoStep = ({ contactInfo, onChange, onNext, onPrev }: Conta
             className="mt-1"
           />
           <Label htmlFor="marketing" className="text-sm text-muted-foreground leading-relaxed">
-            I agree to receive personalized futon recommendations and marketing communications via email and phone. 
-            You can unsubscribe at any time. *
+            Jeg accepterer at modtage personlige futon-anbefalinger og markedsføringsmateriale via email og telefon. 
+            Du kan afmelde dig når som helst. *
           </Label>
         </div>
       </div>
 
       <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-8">
         <p className="text-sm text-primary/80">
-          🔒 Your information is secure and will only be used to provide you with personalized recommendations and occasional updates about our products.
+          🔒 Dine oplysninger er sikre og vil kun blive brugt til at give dig personlige anbefalinger og lejlighedsvise opdateringer om vores produkter.
         </p>
       </div>
 
       <div className="flex justify-between">
         <Button variant="secondary" onClick={onPrev}>
-          Back
+          Tilbage
         </Button>
         <Button 
           variant="quiz" 
           onClick={onNext}
           disabled={!isValid}
         >
-          Get Recommendations
+          Få Anbefalinger
         </Button>
       </div>
     </div>

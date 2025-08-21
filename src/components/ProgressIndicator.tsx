@@ -10,7 +10,7 @@ export const ProgressIndicator = ({ currentStep, totalSteps }: ProgressIndicator
     <div className="w-full max-w-2xl mx-auto mb-8">
       <div className="flex items-center justify-between mb-2">
         <span className="text-sm font-medium text-muted-foreground">
-          Step {currentStep} of {totalSteps}
+          Trin {currentStep} af {totalSteps}
         </span>
         <span className="text-sm font-medium text-muted-foreground">
           {Math.round((currentStep / totalSteps) * 100)}%

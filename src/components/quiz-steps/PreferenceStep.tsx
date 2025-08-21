@@ -22,21 +22,21 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
   const firmnesOptions = [
     {
       value: "soft" as const,
-      label: "Soft",
+      label: "Blød",
       emoji: "☁️",
-      description: "I like to sink into my mattress"
+      description: "Jeg kan lide at synke ned i madras"
     },
     {
       value: "medium" as const,
       label: "Medium",
       emoji: "🎯",
-      description: "I prefer balanced support and comfort"
+      description: "Jeg foretrækker afbalanceret støtte og komfort"
     },
     {
       value: "hard" as const,
-      label: "Firm",
+      label: "Fast",
       emoji: "🧱",
-      description: "I like a firm, supportive surface"
+      description: "Jeg kan lide en fast, støttende overflade"
     }
   ];
 
@@ -44,10 +44,10 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
     <div className="max-w-3xl mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-4">
-          How do you prefer to lay?
+          Hvordan foretrækker du at ligge?
         </h2>
         <p className="text-muted-foreground">
-          Your firmness preference is crucial for finding the perfect futon for your comfort.
+          Din fasthedspræference er afgørende for at finde den perfekte futon til din komfort.
         </p>
       </div>
 
@@ -55,7 +55,7 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
         {/* Person 1 */}
         <div>
           <h3 className="text-xl font-semibold mb-4">
-            {peopleCount === 1 ? "Your Firmness Preference" : "Person 1 Firmness Preference"}
+            {peopleCount === 1 ? "Din Fasthedspræference" : "Person 1 Fasthedspræference"}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {firmnesOptions.map((option) => (
@@ -79,7 +79,7 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
         {/* Person 2 */}
         {peopleCount === 2 && (
           <div>
-            <h3 className="text-xl font-semibold mb-4">Person 2 Firmness Preference</h3>
+            <h3 className="text-xl font-semibold mb-4">Person 2 Fasthedspræference</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {firmnesOptions.map((option) => (
                 <Button
@@ -103,21 +103,21 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
 
       <div className="bg-muted/50 rounded-lg p-4 mb-8 mt-8">
         <div className="text-sm text-muted-foreground">
-          <p className="font-medium mb-2">💡 Firmness Guide:</p>
+          <p className="font-medium mb-2">💡 Fasthedsguide:</p>
           <ul className="space-y-1 ml-4">
-            <li><strong>Soft:</strong> Great for side sleepers and those who like a plush feel</li>
-            <li><strong>Medium:</strong> Perfect balance for most sleeping positions</li>
-            <li><strong>Firm:</strong> Ideal for back/stomach sleepers and heavier individuals</li>
+            <li><strong>Blød:</strong> Perfekt til sidesovere og dem der kan lide en blød følelse</li>
+            <li><strong>Medium:</strong> Perfekt balance til de fleste søvestillinger</li>
+            <li><strong>Fast:</strong> Ideel til ryg/mave-sovere og tungere personer</li>
           </ul>
         </div>
       </div>
 
       <div className="flex justify-between">
         <Button variant="secondary" onClick={onPrev}>
-          Back
+          Tilbage
         </Button>
         <Button variant="quiz" onClick={onNext}>
-          Continue
+          Fortsæt
         </Button>
       </div>
     </div>

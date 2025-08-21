@@ -22,21 +22,21 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
   const sleepOptions = [
     {
       value: "side" as const,
-      label: "On the Side",
+      label: "På Siden",
       emoji: "🛌",
-      description: "I primarily sleep on my side"
+      description: "Jeg sover primært på siden"
     },
     {
       value: "belly-back" as const,
-      label: "Belly or Back",
+      label: "Maven eller Ryggen",
       emoji: "😴",
-      description: "I sleep on my belly or back"
+      description: "Jeg sover på maven eller ryggen"
     },
     {
       value: "both" as const,
-      label: "Both Positions",
+      label: "Begge Stillinger",
       emoji: "🔄",
-      description: "I switch between different positions"
+      description: "Jeg skifter mellem forskellige stillinger"
     }
   ];
 
@@ -44,10 +44,10 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
     <div className="max-w-3xl mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-4">
-          How do you sleep?
+          Hvordan sover du?
         </h2>
         <p className="text-muted-foreground">
-          Your sleeping position affects the type of support and firmness you need.
+          Din søvestilling påvirker den type støtte og fasthed, du har brug for.
         </p>
       </div>
 
@@ -55,7 +55,7 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
         {/* Person 1 */}
         <div>
           <h3 className="text-xl font-semibold mb-4">
-            {peopleCount === 1 ? "Your Sleep Position" : "Person 1 Sleep Position"}
+            {peopleCount === 1 ? "Din Søvestilling" : "Person 1 Søvestilling"}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {sleepOptions.map((option) => (
@@ -79,7 +79,7 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
         {/* Person 2 */}
         {peopleCount === 2 && (
           <div>
-            <h3 className="text-xl font-semibold mb-4">Person 2 Sleep Position</h3>
+            <h3 className="text-xl font-semibold mb-4">Person 2 Søvestilling</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {sleepOptions.map((option) => (
                 <Button
@@ -103,10 +103,10 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
 
       <div className="flex justify-between mt-8">
         <Button variant="secondary" onClick={onPrev}>
-          Back
+          Tilbage
         </Button>
         <Button variant="quiz" onClick={onNext}>
-          Continue
+          Fortsæt
         </Button>
       </div>
     </div>

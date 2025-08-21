@@ -131,22 +131,22 @@ export const RecommendationStep = ({ quizData, onRestart }: RecommendationStepPr
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-4">
-          🎉 Your Perfect Futon Matches!
+          🎉 Dine Perfekte Futon Matches!
         </h2>
         <p className="text-muted-foreground">
-          Based on your preferences, here are our top recommendations for {quizData.contactInfo.name}:
+          Baseret på dine præferencer, her er vores top anbefalinger til {quizData.contactInfo.name}:
         </p>
       </div>
 
       {recommendations.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">😅</div>
-          <h3 className="text-xl font-semibold mb-2">No Perfect Matches Found</h3>
+          <h3 className="text-xl font-semibold mb-2">Ingen Perfekte Matches Fundet</h3>
           <p className="text-muted-foreground mb-6">
-            Your specific requirements are quite unique! Our sleep experts will review your preferences and contact you with custom recommendations.
+            Dine specifikke krav er ret unikke! Vores søvneksperter vil gennemgå dine præferencer og kontakte dig med tilpassede anbefalinger.
           </p>
           <Button variant="quiz" onClick={onRestart}>
-            Retake Quiz
+            Tag Test Igen
           </Button>
         </div>
       ) : (
@@ -156,7 +156,7 @@ export const RecommendationStep = ({ quizData, onRestart }: RecommendationStepPr
               <Card key={futon.id} className={`relative ${index === 0 ? 'ring-2 ring-primary' : ''}`}>
                 {index === 0 && (
                   <Badge className="absolute -top-2 -right-2 bg-primary">
-                    Best Match
+                    Bedste Match
                   </Badge>
                 )}
                 <CardHeader>
@@ -178,7 +178,7 @@ export const RecommendationStep = ({ quizData, onRestart }: RecommendationStepPr
                       </Badge>
                     </div>
                     <div className="text-sm">
-                      <p className="font-medium mb-1">Key Features:</p>
+                      <p className="font-medium mb-1">Nøglefunktioner:</p>
                       <ul className="list-disc list-inside text-muted-foreground space-y-0.5">
                         {futon.features.map((feature, idx) => (
                           <li key={idx}>{feature}</li>
@@ -193,23 +193,23 @@ export const RecommendationStep = ({ quizData, onRestart }: RecommendationStepPr
 
           <div className="bg-success/10 border border-success/20 rounded-lg p-6 mb-8">
             <h3 className="font-semibold text-success-foreground mb-2">
-              ✨ What happens next?
+              ✨ Hvad sker der nu?
             </h3>
             <ul className="text-sm text-success-foreground/80 space-y-1">
-              <li>• Our sleep experts will contact you within 24 hours</li>
-              <li>• You'll receive detailed product information and pricing</li>
-              <li>• We'll schedule a consultation to answer any questions</li>
-              <li>• Free home trial available on all recommended futons</li>
+              <li>• Vores søvneksperter kontakter dig inden for 24 timer</li>
+              <li>• Du modtager detaljerede produktoplysninger og priser</li>
+              <li>• Vi planlægger en konsultation for at besvare eventuelle spørgsmål</li>
+              <li>• Gratis hjemmeprøvning tilgængelig på alle anbefalede futoner</li>
             </ul>
           </div>
 
           <div className="text-center space-y-4">
             <Button variant="quiz" size="lg">
-              Contact Our Experts
+              Kontakt Vores Eksperter
             </Button>
             <div>
               <Button variant="link" onClick={onRestart}>
-                Retake Quiz
+                Tag Test Igen
               </Button>
             </div>
           </div>
