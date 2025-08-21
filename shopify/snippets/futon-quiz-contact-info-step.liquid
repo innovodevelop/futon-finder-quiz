@@ -1,0 +1,106 @@
+<div id="contact-info-step" class="quiz-step" style="display: none;">
+  <div class="max-w-2xl mx-auto">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-foreground mb-4">
+        Næsten færdig! 🎉
+      </h2>
+      <p class="text-muted-foreground">
+        Indtast dine kontaktoplysninger, så vi kan sende dig dine personlige anbefalinger og følge op med ekspertrådgivning.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="space-y-2">
+        <label for="contact-name" class="text-base font-medium block">
+          Navn *
+        </label>
+        <input
+          id="contact-name"
+          type="text"
+          placeholder="Dit fulde navn"
+          class="quiz-input"
+          oninput="futonQuiz.updateContactInfo('name', this.value)"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <label for="contact-email" class="text-base font-medium block">
+          Email *
+        </label>
+        <input
+          id="contact-email"
+          type="email"
+          placeholder="din@email.dk"
+          class="quiz-input"
+          oninput="futonQuiz.updateContactInfo('email', this.value)"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <label for="contact-phone" class="text-base font-medium block">
+          Telefon *
+        </label>
+        <input
+          id="contact-phone"
+          type="tel"
+          placeholder="+45 12 34 56 78"
+          class="quiz-input"
+          oninput="futonQuiz.updateContactInfo('phone', this.value)"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <label for="contact-comments" class="text-base font-medium block">
+          Kommentarer (valgfrit)
+        </label>
+        <textarea
+          id="contact-comments"
+          placeholder="Eventuelle specielle ønsker eller spørgsmål..."
+          rows="3"
+          class="quiz-input min-h-[80px] resize-y"
+          oninput="futonQuiz.updateContactInfo('comments', this.value)"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="bg-muted/30 rounded-2xl p-4 mb-6">
+      <div class="flex items-start gap-3">
+        <input
+          id="marketing-consent"
+          type="checkbox"
+          class="mt-1"
+          onchange="futonQuiz.updateContactInfo('marketingConsent', this.checked)"
+        />
+        <label for="marketing-consent" class="text-sm text-muted-foreground">
+          Jeg accepterer at modtage anbefalinger og tilbud om søvnprodukter via email og telefon. Du kan altid framelde dig igen. *
+        </label>
+      </div>
+    </div>
+
+    <div class="bg-success/10 border border-success/20 rounded-lg p-4 mb-6">
+      <h3 class="font-semibold text-success-foreground mb-2">
+        ✨ Hvad sker der nu?
+      </h3>
+      <ul class="text-sm text-success-foreground/80 space-y-1">
+        <li>• Du modtager dine personlige anbefalinger med det samme</li>
+        <li>• Vores søvneksperter kontakter dig inden for 24 timer</li>
+        <li>• Vi planlægger en konsultation for at besvare eventuelle spørgsmål</li>
+        <li>• Gratis hjemmeprøvning tilgængelig på alle anbefalede produkter</li>
+      </ul>
+    </div>
+
+    <div class="flex justify-between">
+      <button class="quiz-btn quiz-btn-secondary h-10 px-4" onclick="futonQuiz.prevStep()">
+        Tilbage
+      </button>
+      <button 
+        id="contact-next-btn"
+        class="quiz-btn quiz-btn-primary h-10 px-6" 
+        onclick="futonQuiz.nextStep()"
+        disabled
+      >
+        Få Anbefalinger
+      </button>
+    </div>
+  </div>
+</div>

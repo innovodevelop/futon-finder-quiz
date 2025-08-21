@@ -1,0 +1,47 @@
+<div id="people-count-step" class="quiz-step" style="display: none;">
+  <div class="max-w-2xl mx-auto">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-foreground mb-4">
+        Hvor mange personer skal bruge denne futon?
+      </h2>
+      <p class="text-muted-foreground">
+        Dette hjælper os med at anbefale den rigtige størrelse og fasthed til dine behov.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <button
+        class="quiz-btn quiz-btn-option flex-col gap-3"
+        data-value="1"
+        onclick="futonQuiz.setPeopleCount(1)"
+      >
+        <div class="text-4xl">👤</div>
+        <div>
+          <div class="font-semibold">Kun Mig</div>
+          <div class="text-sm text-muted-foreground">Enkeltperson brug</div>
+        </div>
+      </button>
+
+      <button
+        class="quiz-btn quiz-btn-option flex-col gap-3"
+        data-value="2"
+        onclick="futonQuiz.setPeopleCount(2)"
+      >
+        <div class="text-4xl">👥</div>
+        <div>
+          <div class="font-semibold">To Personer</div>
+          <div class="text-sm text-muted-foreground">Par eller delt brug</div>
+        </div>
+      </button>
+    </div>
+
+    <div class="flex justify-between">
+      <button class="quiz-btn quiz-btn-secondary h-10 px-4" onclick="futonQuiz.prevStep()">
+        Tilbage
+      </button>
+      <button class="quiz-btn quiz-btn-primary h-10 px-4" onclick="futonQuiz.nextStep()">
+        Fortsæt
+      </button>
+    </div>
+  </div>
+</div>

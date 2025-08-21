@@ -1,0 +1,67 @@
+<div id="recommendation-step" class="quiz-step" style="display: none;">
+  <div class="max-w-4xl mx-auto">
+    <!-- Loading State -->
+    <div id="recommendations-loading" class="text-center py-12">
+      <div class="text-6xl mb-4">⏳</div>
+      <h3 class="text-xl font-semibold mb-2">Finder Dine Perfekte Matches...</h3>
+      <p class="text-muted-foreground">
+        Vi analyserer dine præferencer og finder de bedste produkter til dig.
+      </p>
+    </div>
+
+    <!-- Results -->
+    <div id="recommendations-results" style="display: none;">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-foreground mb-4">
+          🎉 Dine Perfekte Futon Matches!
+        </h2>
+        <p class="text-muted-foreground" id="recommendations-greeting">
+          Baseret på dine præferencer, her er vores top anbefalinger:
+        </p>
+      </div>
+
+      <!-- Products Grid -->
+      <div id="recommendations-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <!-- Products will be inserted here by JavaScript -->
+      </div>
+
+      <!-- Next Steps -->
+      <div class="bg-success/10 border border-success/20 rounded-lg p-6 mb-8">
+        <h3 class="font-semibold text-success-foreground mb-2">
+          ✨ Hvad sker der nu?
+        </h3>
+        <ul class="text-sm text-success-foreground/80 space-y-1">
+          <li>• Vores søvneksperter kontakter dig inden for 24 timer</li>
+          <li>• Du modtager detaljerede produktoplysninger og priser</li>
+          <li>• Vi planlægger en konsultation for at besvare eventuelle spørgsmål</li>
+          <li>• Gratis hjemmeprøvning tilgængelig på alle anbefalede futoner</li>
+        </ul>
+      </div>
+
+      <div class="text-center space-y-4">
+        <button class="quiz-btn quiz-btn-primary h-12 px-8 text-base">
+          Kontakt Vores Eksperter
+        </button>
+        <div>
+          <button class="text-primary hover:underline" onclick="futonQuiz.restart()">
+            Tag Test Igen
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Results -->
+    <div id="recommendations-empty" style="display: none;">
+      <div class="text-center py-12">
+        <div class="text-6xl mb-4">😅</div>
+        <h3 class="text-xl font-semibold mb-2">Ingen Perfekte Matches Fundet</h3>
+        <p class="text-muted-foreground mb-6">
+          Dine specifikke krav er ret unikke! Vores søvneksperter vil gennemgå dine præferencer og kontakte dig med tilpassede anbefalinger.
+        </p>
+        <button class="quiz-btn quiz-btn-primary h-10 px-6" onclick="futonQuiz.restart()">
+          Tag Test Igen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

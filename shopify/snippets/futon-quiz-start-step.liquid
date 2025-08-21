@@ -1,0 +1,50 @@
+<div id="start-step" class="quiz-step">
+  <div class="text-center max-w-2xl mx-auto space-y-6">
+    <div class="space-y-4">
+      <img 
+        src="{{ 'futon-hero.jpg' | asset_url }}" 
+        alt="Comfortable futon setup" 
+        class="w-full h-48 object-cover rounded-2xl"
+        loading="eager"
+      />
+      <h1 class="text-3xl md:text-4xl font-bold text-foreground">
+        Find Din Perfekte Futon
+      </h1>
+      <p class="text-muted-foreground text-base leading-relaxed">
+        Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov. 
+        Baseret på dine søvnpræferencer anbefaler vi det perfekte match fra vores kollektion.
+      </p>
+    </div>
+
+    <div class="bg-muted/30 rounded-2xl p-5">
+      <h3 class="font-semibold text-foreground mb-3">Hvad du får:</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+        <div class="flex items-center gap-2 justify-center md:justify-start">
+          <div class="w-2 h-2 bg-success rounded-full"></div>
+          <span>Personlige anbefalinger</span>
+        </div>
+        <div class="flex items-center gap-2 justify-center md:justify-start">
+          <div class="w-2 h-2 bg-success rounded-full"></div>
+          <span>Ekspert vejledning</span>
+        </div>
+        <div class="flex items-center gap-2 justify-center md:justify-start">
+          <div class="w-2 h-2 bg-success rounded-full"></div>
+          <span>Perfekt komfort match</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <button 
+        class="quiz-btn quiz-btn-primary h-12 px-12 py-3 text-base rounded-lg"
+        onclick="futonQuiz.nextStep()"
+      >
+        Start Test
+      </button>
+      
+      <p class="text-xs text-muted-foreground">
+        Tager kun 2-3 minutter at gennemføre
+      </p>
+    </div>
+  </div>
+</div>

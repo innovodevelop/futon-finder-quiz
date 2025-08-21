@@ -1,0 +1,64 @@
+<div id="weight-step" class="quiz-step" style="display: none;">
+  <div class="max-w-2xl mx-auto">
+    <div class="text-center mb-6">
+      <h2 class="text-3xl font-bold text-foreground mb-4" id="weight-title">
+        Hvad er din vægt?
+      </h2>
+      <p class="text-muted-foreground">
+        Vægt hjælper os med at bestemme det rigtige fasthedsniveau og støtte for optimal komfort.
+      </p>
+    </div>
+
+    <div id="weight-inputs" class="mb-6 space-y-4">
+      <div class="space-y-2">
+        <label for="weight1" class="text-base font-medium block" id="weight1-label">
+          Din vægt (kg)
+        </label>
+        <input
+          id="weight1"
+          type="number"
+          placeholder="Indtast vægt i kg"
+          min="35"
+          max="180"
+          class="quiz-input h-12 text-center text-lg"
+          oninput="futonQuiz.updateWeight('person1', this.value)"
+        />
+      </div>
+
+      <div id="weight2-container" class="space-y-2" style="display: none;">
+        <label for="weight2" class="text-base font-medium block">
+          Person 2 vægt (kg)
+        </label>
+        <input
+          id="weight2"
+          type="number"
+          placeholder="Indtast vægt i kg"
+          min="35"
+          max="180"
+          class="quiz-input h-12 text-center text-lg"
+          oninput="futonQuiz.updateWeight('person2', this.value)"
+        />
+      </div>
+    </div>
+
+    <div class="bg-muted/30 rounded-2xl p-4 mb-6">
+      <p class="text-sm text-muted-foreground text-center">
+        💡 Din vægtinformation hjælper os med at anbefale det rigtige fasthedsniveau for korrekt rygradsjustering og komfort.
+      </p>
+    </div>
+
+    <div class="flex justify-between">
+      <button class="quiz-btn quiz-btn-secondary h-10 px-4" onclick="futonQuiz.prevStep()">
+        Tilbage
+      </button>
+      <button 
+        id="weight-next-btn"
+        class="quiz-btn quiz-btn-primary h-10 px-4" 
+        onclick="futonQuiz.nextStep()"
+        disabled
+      >
+        Fortsæt
+      </button>
+    </div>
+  </div>
+</div>
