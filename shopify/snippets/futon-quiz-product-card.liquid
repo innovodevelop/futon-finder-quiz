@@ -1,0 +1,135 @@
+{%- comment -%}
+Product card snippet for futon quiz recommendations
+Usage: {% render 'futon-quiz-product-card', product: product, is_recommended: true %}
+{%- endcomment -%}
+
+{%- liquid
+  assign product_price = product.price | money_without_currency | remove: ',' 
+  assign compare_price = product.compare_at_price | money_without_currency | remove: ','
+  assign savings = compare_price | minus: product_price
+  assign discount_percent = savings | times: 100 | divided_by: compare_price | round
+-%}
+
+<div class="futon-product-card bg-white rounded-lg shadow-md overflow-hidden {% if is_recommended %}ring-2 ring-blue-500{% endif %}" 
+     data-product-id="{{ product.id }}">
+  
+  {%- if is_recommended -%}
+    <div class="bg-blue-500 text-white text-sm font-medium px-3 py-1 text-center">
+      Anbefalet til dig
+    </div>
+  {%- endif -%}
+
+  {%- if product.featured_image -%}
+    <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+      <img 
+        src="{{ product.featured_image | image_url: width: 400 }}" 
+        alt="{{ product.featured_image.alt | escape }}"
+        loading="lazy"
+        class="w-full h-48 object-cover"
+      >
+    </div>
+  {%- endif -%}
+
+  <div class="p-4">
+    <h3 class="font-semibold text-lg text-gray-900 mb-2">
+      {{ product.title }}
+    </h3>
+    
+    {%- if product.vendor != blank -%}
+      <p class="text-sm text-gray-500 mb-2">{{ product.vendor }}</p>
+    {%- endif -%}
+
+    {%- if product.description != blank -%}
+      <p class="text-sm text-gray-600 mb-3">
+        {{ product.description | strip_html | truncate: 100 }}
+      </p>
+    {%- endif -%}
+
+    <div class="flex items-center justify-between mb-4">
+      <div class="price-wrapper">
+        {%- if product.compare_at_price > product.price -%}
+          <span class="text-lg font-bold text-red-600">
+            {{ product.price | money }}
+          </span>
+          <span class="text-sm text-gray-500 line-through ml-2">
+            {{ product.compare_at_price | money }}
+          </span>
+          {%- if discount_percent > 0 -%}
+            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded ml-2">
+              -{{ discount_percent }}%
+            </span>
+          {%- endif -%}
+        {%- else -%}
+          <span class="text-lg font-bold text-gray-900">
+            {{ product.price | money }}
+          </span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} Product tags as features {%- endcomment -%}
+    {%- if product.tags.size > 0 -%}
+      <div class="mb-4">
+        <p class="text-xs font-medium text-gray-700 mb-1">Funktioner:</p>
+        <div class="flex flex-wrap gap-1">
+          {%- for tag in product.tags limit: 3 -%}
+            <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+              {{ tag }}
+            </span>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Add to cart form {%- endcomment -%}
+    <form action="/cart/add" method="post" enctype="multipart/form-data" class="quiz-product-form">
+      {%- unless product.has_only_default_variant -%}
+        <div class="mb-3">
+          <label for="variant-{{ product.id }}" class="block text-sm font-medium text-gray-700 mb-1">
+            Variant:
+          </label>
+          <select 
+            name="id" 
+            id="variant-{{ product.id }}"
+            class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+            required
+          >
+            {%- for variant in product.variants -%}
+              {%- if variant.available -%}
+                <option value="{{ variant.id }}">
+                  {{ variant.title }}
+                  {%- unless variant.price == product.price -%}
+                    - {{ variant.price | money }}
+                  {%- endunless -%}
+                </option>
+              {%- endif -%}
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- else -%}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      {%- endunless -%}
+
+      <div class="space-y-2">
+        <button 
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors"
+          {% unless product.available %}disabled{% endunless %}
+        >
+          {%- if product.available -%}
+            Tilføj til kurv
+          {%- else -%}
+            Udsolgt
+          {%- endif -%}
+        </button>
+        
+        <a 
+          href="{{ product.url }}" 
+          class="block w-full text-center border border-gray-300 hover:border-gray-400 text-gray-700 font-medium py-2 px-4 rounded transition-colors"
+        >
+          Se detaljer
+        </a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,221 @@
+{%- comment -%}
+Futon Quiz Section
+Allows customers to take a quiz and get product recommendations from selected collections
+{%- endcomment -%}
+
+<section class="futon-quiz-section" data-section-id="{{ section.id }}">
+  <div id="futon-quiz-root" 
+       data-soft-collection="{{ section.settings.soft_collection.id | default: '' }}"
+       data-medium-collection="{{ section.settings.medium_collection.id | default: '' }}"
+       data-hard-collection="{{ section.settings.hard_collection.id | default: '' }}"
+       data-couples-collection="{{ section.settings.couples_collection.id | default: '' }}"
+       data-shop-url="{{ shop.permanent_domain }}"
+       data-quiz-title="{{ section.settings.quiz_title | escape }}"
+       data-quiz-subtitle="{{ section.settings.quiz_subtitle | escape }}">
+    
+    {%- if section.settings.show_loading_message -%}
+      <div class="quiz-loading text-center py-12">
+        <h2 class="text-2xl font-bold mb-4">{{ section.settings.loading_title | default: 'Indlæser quiz...' }}</h2>
+        <p class="text-gray-600">{{ section.settings.loading_message | default: 'Vent venligst mens vi forbereder din personlige futon test.' }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Hidden product data for JavaScript access {%- endcomment -%}
+  <script type="application/json" id="quiz-products-data">
+    {
+      "soft_products": [
+        {%- for product in collections[section.settings.soft_collection].products limit: 20 -%}
+          {
+            "id": {{ product.id | json }},
+            "handle": {{ product.handle | json }},
+            "title": {{ product.title | json }},
+            "price": {{ product.price | json }},
+            "compare_at_price": {{ product.compare_at_price | json }},
+            "featured_image": {{ product.featured_image | image_url: width: 400 | json }},
+            "url": {{ product.url | json }},
+            "description": {{ product.description | truncate: 200 | json }},
+            "tags": {{ product.tags | json }},
+            "vendor": {{ product.vendor | json }},
+            "type": {{ product.type | json }},
+            "variants": [
+              {%- for variant in product.variants -%}
+                {
+                  "id": {{ variant.id | json }},
+                  "title": {{ variant.title | json }},
+                  "price": {{ variant.price | json }},
+                  "available": {{ variant.available | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "medium_products": [
+        {%- for product in collections[section.settings.medium_collection].products limit: 20 -%}
+          {
+            "id": {{ product.id | json }},
+            "handle": {{ product.handle | json }},
+            "title": {{ product.title | json }},
+            "price": {{ product.price | json }},
+            "compare_at_price": {{ product.compare_at_price | json }},
+            "featured_image": {{ product.featured_image | image_url: width: 400 | json }},
+            "url": {{ product.url | json }},
+            "description": {{ product.description | truncate: 200 | json }},
+            "tags": {{ product.tags | json }},
+            "vendor": {{ product.vendor | json }},
+            "type": {{ product.type | json }},
+            "variants": [
+              {%- for variant in product.variants -%}
+                {
+                  "id": {{ variant.id | json }},
+                  "title": {{ variant.title | json }},
+                  "price": {{ variant.price | json }},
+                  "available": {{ variant.available | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "hard_products": [
+        {%- for product in collections[section.settings.hard_collection].products limit: 20 -%}
+          {
+            "id": {{ product.id | json }},
+            "handle": {{ product.handle | json }},
+            "title": {{ product.title | json }},
+            "price": {{ product.price | json }},
+            "compare_at_price": {{ product.compare_at_price | json }},
+            "featured_image": {{ product.featured_image | image_url: width: 400 | json }},
+            "url": {{ product.url | json }},
+            "description": {{ product.description | truncate: 200 | json }},
+            "tags": {{ product.tags | json }},
+            "vendor": {{ product.vendor | json }},
+            "type": {{ product.type | json }},
+            "variants": [
+              {%- for variant in product.variants -%}
+                {
+                  "id": {{ variant.id | json }},
+                  "title": {{ variant.title | json }},
+                  "price": {{ variant.price | json }},
+                  "available": {{ variant.available | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "couples_products": [
+        {%- for product in collections[section.settings.couples_collection].products limit: 20 -%}
+          {
+            "id": {{ product.id | json }},
+            "handle": {{ product.handle | json }},
+            "title": {{ product.title | json }},
+            "price": {{ product.price | json }},
+            "compare_at_price": {{ product.compare_at_price | json }},
+            "featured_image": {{ product.featured_image | image_url: width: 400 | json }},
+            "url": {{ product.url | json }},
+            "description": {{ product.description | truncate: 200 | json }},
+            "tags": {{ product.tags | json }},
+            "vendor": {{ product.vendor | json }},
+            "type": {{ product.type | json }},
+            "variants": [
+              {%- for variant in product.variants -%}
+                {
+                  "id": {{ variant.id | json }},
+                  "title": {{ variant.title | json }},
+                  "price": {{ variant.price | json }},
+                  "available": {{ variant.available | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+</section>
+
+{%- comment -%} Load the React quiz app {%- endcomment -%}
+{{ 'futon-quiz.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "Futon Quiz",
+  "tag": "section",
+  "class": "futon-quiz-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Quiz Indstillinger"
+    },
+    {
+      "type": "text",
+      "id": "quiz_title",
+      "label": "Quiz Titel",
+      "default": "Find Din Perfekte Futon"
+    },
+    {
+      "type": "text",
+      "id": "quiz_subtitle", 
+      "label": "Quiz Undertitel",
+      "default": "Tag vores personlige test og få anbefalinger tilpasset dine behov"
+    },
+    {
+      "type": "header",
+      "content": "Produkt Kollektioner"
+    },
+    {
+      "type": "collection",
+      "id": "soft_collection",
+      "label": "Blød Futon Kollektion",
+      "info": "Produkter til kunder der foretrækker bløde futoner"
+    },
+    {
+      "type": "collection", 
+      "id": "medium_collection",
+      "label": "Medium Futon Kollektion",
+      "info": "Produkter til kunder der foretrækker medium-faste futoner"
+    },
+    {
+      "type": "collection",
+      "id": "hard_collection", 
+      "label": "Hård Futon Kollektion",
+      "info": "Produkter til kunder der foretrækker hårde futoner"
+    },
+    {
+      "type": "collection",
+      "id": "couples_collection",
+      "label": "Par Futon Kollektion", 
+      "info": "Specielle produkter designet til par"
+    },
+    {
+      "type": "header",
+      "content": "Indlæsnings Indstillinger"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_loading_message",
+      "label": "Vis indlæsningsbesked",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "loading_title",
+      "label": "Indlæsnings Titel",
+      "default": "Indlæser quiz..."
+    },
+    {
+      "type": "textarea",
+      "id": "loading_message",
+      "label": "Indlæsningsbesked", 
+      "default": "Vent venligst mens vi forbereder din personlige futon test."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Futon Quiz"
+    }
+  ]
+}
+{% endschema %}
