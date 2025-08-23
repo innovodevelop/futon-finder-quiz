@@ -3,102 +3,59 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
 {%- endcomment -%}
 
 <style>
-  @import url('https://cdn.tailwindcss.com');
-  
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --primary: 247 49% 47%;
-    --primary-foreground: 210 40% 98%;
-    --primary-hover: 247 49% 37%;
-    --secondary: 247 12% 95%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 247 12% 95%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --success: 142 71% 45%;
-    --success-foreground: 210 40% 98%;
-    --border: 247 12% 88%;
-    --ring: 247 49% 47%;
-    --progress-bg: 247 12% 95%;
-    --step-active: 247 49% 47%;
-    --step-completed: 142 71% 45%;
-    --step-inactive: 247 12% 88%;
-    --radius: 1.5rem;
-  }
-
-  .quiz-btn {
-    @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
-  }
-  
-  .quiz-btn-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary-hover;
-  }
-  
-  .quiz-btn-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
-  }
-  
-  .quiz-btn-option {
-    @apply border border-border bg-background hover:bg-accent hover:text-accent-foreground h-auto min-h-[80px] p-4;
-  }
-  
-  .quiz-btn-option-selected {
-    @apply border-primary bg-primary/10 text-primary;
-  }
-  
-  .quiz-input {
-    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
-  }
+  /* Import the scoped quiz styles */
+  @import url('./futon-quiz-styles.css');
 </style>
 
-<section class="futon-quiz-section bg-background text-foreground min-h-screen py-8" data-section-id="{{ section.id }}">
-  <div class="container mx-auto px-4 max-w-4xl">
+<section class="futon-quiz-section" data-section-id="{{ section.id }}">
+  <div class="fq-container">
     <!-- Progress Indicator -->
-    <div id="progress-indicator" class="hidden w-full max-w-2xl mx-auto mb-8">
-      <div class="flex items-center justify-between mb-2">
-        <span class="text-sm font-medium text-muted-foreground" id="step-text">Trin 1 af {{ section.blocks.size | minus: 2 }}</span>
-        <span class="text-sm font-medium text-muted-foreground" id="progress-percent">14%</span>
+    <div id="progress-indicator" class="fq-progress-container" style="display: none;">
+      <div class="fq-flex fq-justify-between fq-items-center fq-mb-4">
+        <span class="fq-description" id="step-text">Trin 1 af {{ section.blocks.size | minus: 2 }}</span>
+        <span class="fq-description" id="progress-percent">14%</span>
       </div>
-      <div class="w-full bg-progress-bg rounded-full h-2 overflow-hidden">
-        <div id="progress-bar" class="h-full bg-gradient-to-r from-primary to-primary-hover transition-all duration-500 ease-in-out" style="width: 14%;"></div>
+      <div class="fq-progress-bar">
+        <div id="progress-bar" class="fq-progress-fill" style="width: 14%;"></div>
       </div>
-      <div id="step-indicators" class="flex justify-between mt-4"></div>
+      <div id="step-indicators" class="fq-step-indicators"></div>
     </div>
 
     <!-- Quiz Container -->
-    <div id="quiz-container" class="bg-background">
+    <div id="quiz-container">
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'start_step' %}
-            <div id="start-step" class="quiz-step" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
-              <div class="text-center max-w-2xl mx-auto space-y-6">
-                <div class="space-y-4">
+            <div id="start-step" class="quiz-step fq-fade-in" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div class="fq-text-center fq-space-y-6" style="max-width: 32rem; margin: 0 auto;">
+                <div class="fq-space-y-4">
                   {% if block.settings.hero_image %}
                     <img 
                       src="{{ block.settings.hero_image | image_url: width: 800 }}" 
                       alt="{{ block.settings.hero_image.alt | default: 'Quiz hero image' }}" 
-                      class="w-full h-48 object-cover rounded-2xl"
+                      class="fq-hero-image"
+                      style="width: 100%; height: 12rem; object-fit: cover; border-radius: var(--fq-radius);"
                       loading="eager"
                     />
                   {% endif %}
-                  <h1 class="text-3xl md:text-4xl font-bold text-foreground">
+                  <h1 class="fq-title">
                     {{ block.settings.title | default: 'Find Din Perfekte Futon' }}
                   </h1>
-                  <p class="text-muted-foreground text-base leading-relaxed">
+                  <p class="fq-description">
                     {{ block.settings.description | default: 'Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov.' }}
                   </p>
                 </div>
 
                 {% if block.settings.show_benefits %}
-                <div class="bg-muted/30 rounded-2xl p-5">
-                  <h3 class="font-semibold text-foreground mb-3">{{ block.settings.benefits_title | default: 'Hvad du får:' }}</h3>
-                  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                <div class="fq-info-box">
+                  <h3 class="fq-subtitle fq-mb-4">{{ block.settings.benefits_title | default: 'Hvad du får:' }}</h3>
+                  <div class="fq-grid fq-md:grid-cols-3 fq-gap-4">
                     {% for i in (1..3) %}
                       {% assign benefit_key = 'benefit_' | append: i %}
                       {% if block.settings[benefit_key] != blank %}
-                      <div class="flex items-center gap-2 justify-center md:justify-start">
-                        <div class="w-2 h-2 bg-success rounded-full"></div>
-                        <span>{{ block.settings[benefit_key] }}</span>
+                      <div class="fq-flex fq-items-center fq-gap-2">
+                        <div style="width: 0.5rem; height: 0.5rem; background-color: hsl(var(--fq-success)); border-radius: 50%;"></div>
+                        <span class="fq-description">{{ block.settings[benefit_key] }}</span>
                       </div>
                       {% endif %}
                     {% endfor %}
@@ -106,16 +63,17 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
                 </div>
                 {% endif %}
 
-                <div class="space-y-3">
+                <div class="fq-space-y-4">
                   <button 
-                    class="quiz-btn quiz-btn-primary h-12 px-12 py-3 text-base rounded-lg"
+                    class="fq-btn fq-btn-primary"
+                    style="height: 3rem; padding: 0 3rem; font-size: 1rem;"
                     onclick="futonQuiz.nextStep()"
                   >
                     {{ block.settings.start_button_text | default: 'Start Test' }}
                   </button>
                   
                   {% if block.settings.show_duration %}
-                  <p class="text-xs text-muted-foreground">
+                  <p class="fq-description" style="font-size: 0.75rem;">
                     {{ block.settings.duration_text | default: 'Tager kun 2-3 minutter at gennemføre' }}
                   </p>
                   {% endif %}
@@ -124,48 +82,48 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
             </div>
 
           {% when 'people_count_step' %}
-            <div id="people-count-step" class="quiz-step" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
-              <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                  <h2 class="text-3xl font-bold text-foreground mb-4">
+            <div id="people-count-step" class="quiz-step fq-fade-in" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div style="max-width: 32rem; margin: 0 auto;">
+                <div class="fq-text-center fq-mb-8">
+                  <h2 class="fq-title fq-mb-4">
                     {{ block.settings.title | default: 'Hvor mange personer skal bruge denne futon?' }}
                   </h2>
-                  <p class="text-muted-foreground">
+                  <p class="fq-description">
                     {{ block.settings.description | default: 'Dette hjælper os med at anbefale den rigtige størrelse og fasthed til dine behov.' }}
                   </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="fq-grid fq-md:grid-cols-2 fq-gap-4 fq-mb-8">
                   <button
-                    class="quiz-btn quiz-btn-option flex-col gap-3"
+                    class="fq-btn fq-btn-option"
                     data-value="1"
                     onclick="futonQuiz.setPeopleCount(1)"
                   >
-                    <div class="text-4xl">{{ block.settings.single_emoji | default: '👤' }}</div>
+                    <div style="font-size: 2.5rem;">{{ block.settings.single_emoji | default: '👤' }}</div>
                     <div>
-                      <div class="font-semibold">{{ block.settings.single_title | default: 'Kun Mig' }}</div>
-                      <div class="text-sm text-muted-foreground">{{ block.settings.single_description | default: 'Enkeltperson brug' }}</div>
+                      <div class="fq-subtitle">{{ block.settings.single_title | default: 'Kun Mig' }}</div>
+                      <div class="fq-description">{{ block.settings.single_description | default: 'Enkeltperson brug' }}</div>
                     </div>
                   </button>
 
                   <button
-                    class="quiz-btn quiz-btn-option flex-col gap-3"
+                    class="fq-btn fq-btn-option"
                     data-value="2"
                     onclick="futonQuiz.setPeopleCount(2)"
                   >
-                    <div class="text-4xl">{{ block.settings.couple_emoji | default: '👥' }}</div>
+                    <div style="font-size: 2.5rem;">{{ block.settings.couple_emoji | default: '👥' }}</div>
                     <div>
-                      <div class="font-semibold">{{ block.settings.couple_title | default: 'To Personer' }}</div>
-                      <div class="text-sm text-muted-foreground">{{ block.settings.couple_description | default: 'Par eller delt brug' }}</div>
+                      <div class="fq-subtitle">{{ block.settings.couple_title | default: 'To Personer' }}</div>
+                      <div class="fq-description">{{ block.settings.couple_description | default: 'Par eller delt brug' }}</div>
                     </div>
                   </button>
                 </div>
 
-                <div class="flex justify-between">
-                  <button class="quiz-btn quiz-btn-secondary h-10 px-4" onclick="futonQuiz.prevStep()">
+                <div class="fq-flex fq-justify-between">
+                  <button class="fq-btn fq-btn-secondary" onclick="futonQuiz.prevStep()">
                     {{ block.settings.back_button_text | default: 'Tilbage' }}
                   </button>
-                  <button class="quiz-btn quiz-btn-primary h-10 px-4" onclick="futonQuiz.nextStep()">
+                  <button class="fq-btn fq-btn-primary" onclick="futonQuiz.nextStep()">
                     {{ block.settings.continue_button_text | default: 'Fortsæt' }}
                   </button>
                 </div>

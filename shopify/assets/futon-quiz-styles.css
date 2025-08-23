@@ -1,0 +1,439 @@
+/**
+ * Futon Quiz - Scoped Styles
+ * All styles are prefixed with .futon-quiz to prevent conflicts
+ */
+
+/* Quiz Container Scope - All styles are contained within this class */
+.futon-quiz-section {
+  /* CSS Custom Properties - Scoped to quiz only */
+  --fq-background: 0 0% 100%;
+  --fq-foreground: 222.2 84% 4.9%;
+  --fq-primary: 247 49% 47%;
+  --fq-primary-foreground: 210 40% 98%;
+  --fq-primary-hover: 247 49% 37%;
+  --fq-secondary: 247 12% 95%;
+  --fq-secondary-foreground: 222.2 84% 4.9%;
+  --fq-muted: 247 12% 95%;
+  --fq-muted-foreground: 215.4 16.3% 46.9%;
+  --fq-success: 142 71% 45%;
+  --fq-success-foreground: 210 40% 98%;
+  --fq-border: 247 12% 88%;
+  --fq-ring: 247 49% 47%;
+  --fq-progress-bg: 247 12% 95%;
+  --fq-step-active: 247 49% 47%;
+  --fq-step-completed: 142 71% 45%;
+  --fq-step-inactive: 247 12% 88%;
+  --fq-radius: 1.5rem;
+  --fq-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --fq-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --fq-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Dark mode support */
+  &[data-theme="dark"] {
+    --fq-background: 222.2 84% 4.9%;
+    --fq-foreground: 210 40% 98%;
+    --fq-primary: 247 49% 47%;
+    --fq-primary-foreground: 222.2 84% 4.9%;
+    --fq-primary-hover: 247 49% 57%;
+    --fq-secondary: 217.2 32.6% 17.5%;
+    --fq-secondary-foreground: 210 40% 98%;
+    --fq-muted: 217.2 32.6% 17.5%;
+    --fq-muted-foreground: 215 20.2% 65.1%;
+    --fq-border: 217.2 32.6% 17.5%;
+  }
+
+  /* Reset any potential conflicts */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Base container styles */
+  background-color: hsl(var(--fq-background));
+  color: hsl(var(--fq-foreground));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: 2rem 0;
+
+  /* Typography - Scoped to quiz */
+  .fq-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: hsl(var(--fq-foreground));
+  }
+
+  .fq-subtitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    color: hsl(var(--fq-foreground));
+  }
+
+  .fq-description {
+    color: hsl(var(--fq-muted-foreground));
+    line-height: 1.6;
+  }
+
+  /* Button Styles - Scoped */
+  .fq-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    border-radius: calc(var(--fq-radius) * 0.5);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fq-btn:focus-visible {
+    outline: 2px solid hsl(var(--fq-ring));
+    outline-offset: 2px;
+  }
+
+  .fq-btn:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .fq-btn-primary {
+    background: linear-gradient(135deg, hsl(var(--fq-primary)), hsl(var(--fq-primary-hover)));
+    color: hsl(var(--fq-primary-foreground));
+    box-shadow: var(--fq-shadow-sm);
+    padding: 0.75rem 1.5rem;
+    height: 2.75rem;
+  }
+
+  .fq-btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--fq-shadow-md);
+  }
+
+  .fq-btn-secondary {
+    background-color: hsl(var(--fq-secondary));
+    color: hsl(var(--fq-secondary-foreground));
+    border: 1px solid hsl(var(--fq-border));
+    padding: 0.75rem 1.5rem;
+    height: 2.75rem;
+  }
+
+  .fq-btn-secondary:hover:not(:disabled) {
+    background-color: hsl(var(--fq-secondary) / 0.8);
+  }
+
+  .fq-btn-option {
+    background-color: hsl(var(--fq-background));
+    border: 2px solid hsl(var(--fq-border));
+    color: hsl(var(--fq-foreground));
+    border-radius: var(--fq-radius);
+    padding: 1.5rem;
+    min-height: 5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .fq-btn-option:hover:not(:disabled) {
+    border-color: hsl(var(--fq-primary));
+    background-color: hsl(var(--fq-primary) / 0.05);
+    transform: translateY(-2px);
+    box-shadow: var(--fq-shadow-lg);
+  }
+
+  .fq-btn-option-selected {
+    border-color: hsl(var(--fq-primary));
+    background: linear-gradient(135deg, hsl(var(--fq-primary) / 0.1), hsl(var(--fq-primary) / 0.05));
+    color: hsl(var(--fq-primary));
+    box-shadow: 0 0 0 1px hsl(var(--fq-primary) / 0.2);
+  }
+
+  /* Input Styles - Scoped */
+  .fq-input {
+    display: flex;
+    height: 2.75rem;
+    width: 100%;
+    border-radius: calc(var(--fq-radius) * 0.5);
+    border: 2px solid hsl(var(--fq-border));
+    background-color: hsl(var(--fq-background));
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    color: hsl(var(--fq-foreground));
+  }
+
+  .fq-input::placeholder {
+    color: hsl(var(--fq-muted-foreground));
+  }
+
+  .fq-input:focus {
+    outline: none;
+    border-color: hsl(var(--fq-primary));
+    box-shadow: 0 0 0 2px hsl(var(--fq-primary) / 0.2);
+  }
+
+  .fq-textarea {
+    min-height: 5rem;
+    padding: 0.75rem;
+    resize: vertical;
+  }
+
+  /* Progress Indicator - Scoped */
+  .fq-progress-container {
+    width: 100%;
+    max-width: 32rem;
+    margin: 0 auto 2rem;
+  }
+
+  .fq-progress-bar {
+    width: 100%;
+    background-color: hsl(var(--fq-progress-bg));
+    border-radius: 9999px;
+    height: 0.5rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .fq-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, hsl(var(--fq-primary)), hsl(var(--fq-primary-hover)));
+    transition: width 0.5s ease-in-out;
+    border-radius: 9999px;
+  }
+
+  .fq-step-indicators {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+
+  .fq-step-indicator {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .fq-step-indicator.active {
+    background-color: hsl(var(--fq-step-active));
+    color: hsl(var(--fq-primary-foreground));
+  }
+
+  .fq-step-indicator.completed {
+    background-color: hsl(var(--fq-step-completed));
+    color: hsl(var(--fq-success-foreground));
+  }
+
+  .fq-step-indicator.inactive {
+    background-color: hsl(var(--fq-step-inactive));
+    color: hsl(var(--fq-muted-foreground));
+  }
+
+  /* Card Styles - Scoped */
+  .fq-card {
+    background-color: hsl(var(--fq-background));
+    border: 1px solid hsl(var(--fq-border));
+    border-radius: var(--fq-radius);
+    box-shadow: var(--fq-shadow-sm);
+    overflow: hidden;
+  }
+
+  .fq-card-content {
+    padding: 1.5rem;
+  }
+
+  /* Info Box - Scoped */
+  .fq-info-box {
+    background: linear-gradient(135deg, hsl(var(--fq-muted) / 0.3), hsl(var(--fq-muted) / 0.1));
+    border: 1px solid hsl(var(--fq-border));
+    border-radius: var(--fq-radius);
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .fq-success-box {
+    background: linear-gradient(135deg, hsl(var(--fq-success) / 0.1), hsl(var(--fq-success) / 0.05));
+    border: 1px solid hsl(var(--fq-success) / 0.2);
+    color: hsl(var(--fq-success-foreground));
+  }
+
+  /* Grid Layout - Scoped */
+  .fq-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .fq-grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .fq-grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fq-grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .fq-title {
+      font-size: 3rem;
+    }
+    
+    .fq-md\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    
+    .fq-md\:grid-cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* Animation Classes */
+  .fq-fade-in {
+    animation: fqFadeIn 0.3s ease-out;
+  }
+
+  .fq-scale-in {
+    animation: fqScaleIn 0.2s ease-out;
+  }
+
+  /* Keyframes */
+  @keyframes fqFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fqScaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Loading States */
+  .fq-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    text-align: center;
+  }
+
+  .fq-loading-spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid hsl(var(--fq-border));
+    border-top: 3px solid hsl(var(--fq-primary));
+    border-radius: 50%;
+    animation: fqSpin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes fqSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Utility Classes */
+  .fq-container {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .fq-text-center {
+    text-align: center;
+  }
+
+  .fq-mb-4 { margin-bottom: 1rem; }
+  .fq-mb-6 { margin-bottom: 1.5rem; }
+  .fq-mb-8 { margin-bottom: 2rem; }
+  .fq-mt-4 { margin-top: 1rem; }
+  .fq-mt-6 { margin-top: 1.5rem; }
+  .fq-mt-8 { margin-top: 2rem; }
+
+  .fq-space-y-2 > * + * { margin-top: 0.5rem; }
+  .fq-space-y-4 > * + * { margin-top: 1rem; }
+  .fq-space-y-6 > * + * { margin-top: 1.5rem; }
+
+  .fq-flex {
+    display: flex;
+  }
+
+  .fq-justify-between {
+    justify-content: space-between;
+  }
+
+  .fq-items-center {
+    align-items: center;
+  }
+
+  .fq-gap-2 { gap: 0.5rem; }
+  .fq-gap-4 { gap: 1rem; }
+  .fq-gap-6 { gap: 1.5rem; }
+
+  /* Print Styles */
+  @media print {
+    .futon-quiz-section {
+      background: white !important;
+      color: black !important;
+    }
+    
+    .fq-btn {
+      border: 1px solid #ccc !important;
+      background: white !important;
+      color: black !important;
+    }
+  }
+}
+
+/* High specificity reset for common conflicts */
+.futon-quiz-section .fq-btn,
+.futon-quiz-section .fq-input,
+.futon-quiz-section .fq-card {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Ensure quiz doesn't inherit unwanted styles */
+.futon-quiz-section {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: hsl(var(--fq-background));
+  color: hsl(var(--fq-foreground));
+  display: block;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
