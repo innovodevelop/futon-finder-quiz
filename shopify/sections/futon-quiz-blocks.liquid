@@ -175,20 +175,24 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
           {% when 'weight_step' %}
             <div id="weight-step" class="quiz-step" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
               <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                  <h2 id="weight-title" class="text-3xl font-bold text-foreground mb-4">
-                    {{ block.settings.single_title | default: 'Hvad er din vægt?' }}
-                  </h2>
-                  <p class="text-muted-foreground">
-                    {{ block.settings.description | default: 'Vægt hjælper os med at vælge den rigtige fasthed og support til optimal komfort.' }}
-                  </p>
-                </div>
+                 <div class="text-center mb-8">
+                   <h2 id="weight-title" class="text-3xl font-bold text-foreground mb-4" 
+                       data-single-title="{{ block.settings.single_title }}"
+                       data-couple-title="{{ block.settings.couple_title }}">
+                     {{ block.settings.single_title }}
+                   </h2>
+                   <p class="text-muted-foreground">
+                     {{ block.settings.description }}
+                   </p>
+                 </div>
 
                 <div id="weight-inputs" class="mb-6 space-y-4">
                   <div class="space-y-2">
-                    <label id="weight1-label" for="weight1" class="text-base font-medium block">
-                      {{ block.settings.single_label | default: 'Din vægt (kg)' }}
-                    </label>
+                     <label id="weight1-label" for="weight1" class="text-base font-medium block"
+                            data-single-label="{{ block.settings.single_label }}"
+                            data-person1-label="{{ block.settings.person1_label }}">
+                       {{ block.settings.single_label }}
+                     </label>
                     <input
                       id="weight1"
                       type="number"
@@ -243,14 +247,16 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
           {% when 'sleep_position_step' %}
             <div id="sleep-position-step" class="quiz-step" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
               <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                  <h2 id="sleep-position-title" class="text-3xl font-bold text-foreground mb-4">
-                    {{ block.settings.single_title | default: 'Hvilken sovposition foretrækker du?' }}
-                  </h2>
-                  <p class="text-muted-foreground">
-                    {{ block.settings.description | default: 'Din sovposition påvirker, hvilken type støtte og fasthed der er bedst for dig.' }}
-                  </p>
-                </div>
+                 <div class="text-center mb-8">
+                   <h2 id="sleep-position-title" class="text-3xl font-bold text-foreground mb-4"
+                       data-single-title="{{ block.settings.single_title }}"
+                       data-couple-title="{{ block.settings.couple_title }}">
+                     {{ block.settings.single_title }}
+                   </h2>
+                   <p class="text-muted-foreground">
+                     {{ block.settings.description }}
+                   </p>
+                 </div>
 
                 <!-- Single Person Positions -->
                 <div id="single-person-positions" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -395,14 +401,16 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
           {% when 'preference_step' %}
             <div id="preference-step" class="quiz-step" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
               <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                  <h2 id="preference-title" class="text-3xl font-bold text-foreground mb-4">
-                    {{ block.settings.single_title | default: 'Hvilken matras fasthed foretrækker du?' }}
-                  </h2>
-                  <p class="text-muted-foreground">
-                    {{ block.settings.description | default: 'Vælg den fasthed der føles mest komfortabel for dig.' }}
-                  </p>
-                </div>
+                 <div class="text-center mb-8">
+                   <h2 id="preference-title" class="text-3xl font-bold text-foreground mb-4"
+                       data-single-title="{{ block.settings.single_title }}"
+                       data-couple-title="{{ block.settings.couple_title }}">
+                     {{ block.settings.single_title }}
+                   </h2>
+                   <p class="text-muted-foreground">
+                     {{ block.settings.description }}
+                   </p>
+                 </div>
 
                 <!-- Single Person Preferences -->
                 <div id="single-person-preferences" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -674,9 +682,10 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
                     <h2 class="text-3xl font-bold text-foreground mb-4">
                       {{ block.settings.results_title | default: '🎉 Dine Perfekte Futon Matches!' }}
                     </h2>
-                    <p class="text-muted-foreground" id="recommendations-greeting">
-                      {{ block.settings.results_description | default: 'Baseret på dine præferencer, her er vores top anbefalinger:' }}
-                    </p>
+                     <p class="text-muted-foreground" id="recommendations-greeting"
+                        data-personalized-greeting="{{ block.settings.personalized_greeting }}">
+                       {{ block.settings.results_description }}
+                     </p>
                   </div>
 
                   <!-- Products Grid -->

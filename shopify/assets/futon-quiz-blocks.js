@@ -35,8 +35,55 @@ class FutonQuizBlocks {
   init() {
     this.loadProductData();
     this.getStepBlocksOrder();
+    this.loadBlockSettings();
     this.showStep(0);
     this.updateProgress();
+  }
+
+  /**
+   * Load block settings from DOM for text content management
+   */
+  loadBlockSettings() {
+    this.blockSettings = {};
+    
+    this.stepBlocks.forEach(block => {
+      const blockElement = block.element;
+      const settings = {};
+      
+      // Extract all text content from the block
+      this.extractTextContent(blockElement, settings);
+      
+      this.blockSettings[block.blockId] = settings;
+    });
+  }
+
+  /**
+   * Extract text content from block elements
+   */
+  extractTextContent(element, settings) {
+    // Extract from data attributes and text content
+    const textElements = element.querySelectorAll('[data-text-key]');
+    textElements.forEach(el => {
+      const key = el.getAttribute('data-text-key');
+      settings[key] = el.textContent.trim();
+    });
+    
+    // Common fallbacks for dynamic content
+    const title = element.querySelector('h2, h1');
+    if (title) settings.title = title.textContent.trim();
+    
+    const description = element.querySelector('p');
+    if (description) settings.description = description.textContent.trim();
+  }
+
+  /**
+   * Get block settings for dynamic text content
+   */
+  getBlockSettings(blockElement) {
+    if (!blockElement) return {};
+    
+    const blockId = blockElement.getAttribute('data-block-id');
+    return this.blockSettings[blockId] || {};
   }
 
   /**
@@ -125,15 +172,15 @@ class FutonQuizBlocks {
     const weight2Container = document.getElementById('weight2-container');
     const inputsContainer = document.getElementById('weight-inputs');
     
-    // Get block settings dynamically from the current step block
-    const currentBlock = this.stepBlocks[this.currentStep]?.element;
-    const singleTitle = currentBlock?.querySelector('[data-single-title]')?.getAttribute('data-single-title') || 'Hvad er din vægt?';
-    const coupleTitle = currentBlock?.querySelector('[data-couple-title]')?.getAttribute('data-couple-title') || 'Hvad er jeres vægt?';
-    const singleLabel = currentBlock?.querySelector('[data-single-label]')?.getAttribute('data-single-label') || 'Din vægt (kg)';
+    // Get text content from data attributes
+    const singleTitle = title?.getAttribute('data-single-title') || '';
+    const coupleTitle = title?.getAttribute('data-couple-title') || '';
+    const singleLabel = label1?.getAttribute('data-single-label') || '';
+    const person1Label = label1?.getAttribute('data-person1-label') || '';
     
     if (peopleCount === 2) {
       if (title) title.textContent = coupleTitle;
-      if (label1) label1.textContent = 'Person 1 vægt (kg)';
+      if (label1) label1.textContent = person1Label;
       if (weight2Container) weight2Container.style.display = 'block';
       if (inputsContainer) inputsContainer.className = 'mb-6 grid grid-cols-1 md:grid-cols-2 gap-6';
     } else {
@@ -152,10 +199,9 @@ class FutonQuizBlocks {
     const singlePersonPositions = document.getElementById('single-person-positions');
     const twoPersonPositions = document.getElementById('two-person-positions');
     
-    // Get block settings dynamically
-    const currentBlock = this.stepBlocks[this.currentStep]?.element;
-    const singleTitle = currentBlock?.querySelector('[data-single-title]')?.getAttribute('data-single-title') || 'Hvilken sovposition foretrækker du?';
-    const coupleTitle = currentBlock?.querySelector('[data-couple-title]')?.getAttribute('data-couple-title') || 'Hvilke sovpositioner foretrækker I?';
+    // Get text content from data attributes
+    const singleTitle = title?.getAttribute('data-single-title') || '';
+    const coupleTitle = title?.getAttribute('data-couple-title') || '';
     
     if (peopleCount === 2) {
       if (title) title.textContent = coupleTitle;
@@ -176,10 +222,9 @@ class FutonQuizBlocks {
     const singlePersonPreferences = document.getElementById('single-person-preferences');
     const twoPersonPreferences = document.getElementById('two-person-preferences');
     
-    // Get block settings dynamically
-    const currentBlock = this.stepBlocks[this.currentStep]?.element;
-    const singleTitle = currentBlock?.querySelector('[data-single-title]')?.getAttribute('data-single-title') || 'Hvilken matras fasthed foretrækker du?';
-    const coupleTitle = currentBlock?.querySelector('[data-couple-title]')?.getAttribute('data-couple-title') || 'Hvilken matras fasthed foretrækker I?';
+    // Get text content from data attributes
+    const singleTitle = title?.getAttribute('data-single-title') || '';
+    const coupleTitle = title?.getAttribute('data-couple-title') || '';
     
     if (peopleCount === 2) {
       if (title) title.textContent = coupleTitle;
@@ -414,55 +459,173 @@ class FutonQuizBlocks {
   }
 
   /**
-   * Calculate a score for how well a product matches the quiz responses
+   * Calculate a sophisticated score for how well a product matches the quiz responses
    */
   calculateProductScore(product, category) {
-    let score = 50; // Base score
+    let score = 30; // Base score
     
     const { peopleCount, preferences, sleepPositions, weights } = this.quizData;
+    const productTags = product.tags.map(tag => tag.toLowerCase());
     
     // Category match bonus
     if (category === 'couples' && peopleCount === 2) {
-      score += 30;
+      score += 35;
     }
     
-    // Preference matching
-    if (preferences.person1 === category || (peopleCount === 2 && preferences.person2 === category)) {
+    // Primary preference matching
+    if (preferences.person1 === category) {
+      score += 30;
+    }
+    if (peopleCount === 2 && preferences.person2 === category) {
       score += 25;
     }
     
-    // Sleep position matching (check product tags)
-    const productTags = product.tags.map(tag => tag.toLowerCase());
+    // Sleep position specific scoring
+    score += this.calculateSleepPositionScore(sleepPositions, productTags, peopleCount);
     
-    if (sleepPositions.person1 === 'back' && productTags.includes('back-sleeper')) {
-      score += 15;
-    }
-    if (sleepPositions.person1 === 'side' && productTags.includes('side-sleeper')) {
-      score += 15;
-    }
-    if (sleepPositions.person1 === 'stomach' && productTags.includes('stomach-sleeper')) {
-      score += 15;
-    }
+    // Weight-based firmness recommendations
+    score += this.calculateWeightBasedScore(weights, category, productTags, peopleCount);
     
-    if (peopleCount === 2) {
-      if (sleepPositions.person2 === 'back' && productTags.includes('back-sleeper')) {
-        score += 10;
-      }
-      if (sleepPositions.person2 === 'side' && productTags.includes('side-sleeper')) {
-        score += 10;
-      }
-      if (sleepPositions.person2 === 'stomach' && productTags.includes('stomach-sleeper')) {
-        score += 10;
-      }
-    }
+    // Combination bonuses for optimal matches
+    score += this.calculateCombinationBonus(weights, sleepPositions, preferences, category, productTags, peopleCount);
     
-    // Weight considerations
-    const totalWeight = weights.person1 + (peopleCount === 2 ? weights.person2 : 0);
-    if (totalWeight > 140 && productTags.includes('heavy-duty')) {
-      score += 10;
+    // Product quality indicators
+    if (productTags.includes('premium') || productTags.includes('bestseller')) {
+      score += 5;
     }
     
     return Math.min(score, 100); // Cap at 100
+  }
+
+  /**
+   * Calculate sleep position specific scoring
+   */
+  calculateSleepPositionScore(sleepPositions, productTags, peopleCount) {
+    let score = 0;
+    
+    // Person 1 sleep position
+    if (sleepPositions.person1 === 'back' && productTags.includes('back-sleeper')) {
+      score += 20;
+    }
+    if (sleepPositions.person1 === 'side' && productTags.includes('side-sleeper')) {
+      score += 20;
+    }
+    if (sleepPositions.person1 === 'stomach' && productTags.includes('stomach-sleeper')) {
+      score += 20;
+    }
+    
+    // Person 2 sleep position (if applicable)
+    if (peopleCount === 2) {
+      if (sleepPositions.person2 === 'back' && productTags.includes('back-sleeper')) {
+        score += 15;
+      }
+      if (sleepPositions.person2 === 'side' && productTags.includes('side-sleeper')) {
+        score += 15;
+      }
+      if (sleepPositions.person2 === 'stomach' && productTags.includes('stomach-sleeper')) {
+        score += 15;
+      }
+    }
+    
+    return score;
+  }
+
+  /**
+   * Calculate weight-based firmness scoring
+   */
+  calculateWeightBasedScore(weights, category, productTags, peopleCount) {
+    let score = 0;
+    const person1Weight = weights.person1;
+    const person2Weight = peopleCount === 2 ? weights.person2 : 0;
+    const totalWeight = person1Weight + person2Weight;
+    const averageWeight = totalWeight / peopleCount;
+    
+    // Individual weight considerations
+    // Light weights (under 60kg) generally prefer softer
+    if (person1Weight < 60 && category === 'soft') score += 15;
+    if (person2Weight > 0 && person2Weight < 60 && category === 'soft') score += 12;
+    
+    // Medium weights (60-80kg) generally prefer medium
+    if (person1Weight >= 60 && person1Weight <= 80 && category === 'medium') score += 15;
+    if (person2Weight >= 60 && person2Weight <= 80 && category === 'medium') score += 12;
+    
+    // Heavy weights (over 80kg) generally prefer firmer
+    if (person1Weight > 80 && (category === 'medium' || category === 'hard')) score += 15;
+    if (person2Weight > 80 && (category === 'medium' || category === 'hard')) score += 12;
+    
+    // Very heavy weights (over 100kg) strongly prefer hard
+    if (person1Weight > 100 && category === 'hard') score += 20;
+    if (person2Weight > 100 && category === 'hard') score += 15;
+    
+    // Total weight considerations for couples
+    if (peopleCount === 2) {
+      if (totalWeight > 160 && productTags.includes('heavy-duty')) {
+        score += 15;
+      }
+      if (totalWeight > 180 && category === 'hard') {
+        score += 10;
+      }
+    }
+    
+    // Edge support for heavier individuals
+    if (averageWeight > 85 && productTags.includes('edge-support')) {
+      score += 8;
+    }
+    
+    return score;
+  }
+
+  /**
+   * Calculate combination bonuses for optimal sleep matches
+   */
+  calculateCombinationBonus(weights, sleepPositions, preferences, category, productTags, peopleCount) {
+    let score = 0;
+    
+    // Side sleepers + medium/soft preference is ideal
+    if (sleepPositions.person1 === 'side' && (preferences.person1 === 'soft' || preferences.person1 === 'medium')) {
+      if (category === preferences.person1) score += 10;
+    }
+    
+    // Back sleepers + medium preference is ideal
+    if (sleepPositions.person1 === 'back' && preferences.person1 === 'medium') {
+      if (category === 'medium') score += 10;
+    }
+    
+    // Stomach sleepers + firm preference is ideal
+    if (sleepPositions.person1 === 'stomach' && (preferences.person1 === 'medium' || preferences.person1 === 'hard')) {
+      if (category === preferences.person1) score += 10;
+    }
+    
+    // Heavy side sleepers need firmer support
+    if (sleepPositions.person1 === 'side' && weights.person1 > 85 && category === 'medium') {
+      score += 8;
+    }
+    
+    // Light stomach sleepers can handle softer
+    if (sleepPositions.person1 === 'stomach' && weights.person1 < 65 && category === 'medium') {
+      score += 8;
+    }
+    
+    // Couple compatibility scoring
+    if (peopleCount === 2) {
+      // Different sleep positions require motion isolation
+      if (sleepPositions.person1 !== sleepPositions.person2 && productTags.includes('motion-isolation')) {
+        score += 12;
+      }
+      
+      // Different preferences require compromise
+      if (preferences.person1 !== preferences.person2) {
+        if (category === 'medium') score += 8; // Medium is good compromise
+      }
+      
+      // Weight difference considerations
+      const weightDifference = Math.abs(weights.person1 - weights.person2);
+      if (weightDifference > 25 && productTags.includes('zone-support')) {
+        score += 10;
+      }
+    }
+    
+    return score;
   }
 
   showRecommendations() {
@@ -491,7 +654,8 @@ class FutonQuizBlocks {
       } else {
         if (resultsElement) resultsElement.style.display = 'block';
         if (greetingElement) {
-          greetingElement.textContent = `Baseret på dine præferencer, her er vores top anbefalinger til ${this.quizData.contactInfo.name}:`;
+          const personalizedGreeting = greetingElement.getAttribute('data-personalized-greeting') || '';
+          greetingElement.textContent = personalizedGreeting.replace('{name}', this.quizData.contactInfo.name);
         }
         if (gridElement) this.renderRecommendations(recommendations, gridElement);
       }
