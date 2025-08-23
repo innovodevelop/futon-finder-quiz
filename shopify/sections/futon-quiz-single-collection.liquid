@@ -246,12 +246,692 @@
     {
       "type": "start_step", 
       "name": "Start Trin",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Find Din Perfekte Futon"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov."
+        },
+        {
+          "type": "image_picker",
+          "id": "hero_image",
+          "label": "Hovedbillede"
+        },
+        {
+          "type": "text",
+          "id": "start_button_text",
+          "label": "Start Knap Tekst",
+          "default": "Start Test"
+        },
+        {
+          "type": "header",
+          "content": "Varighed Sektion"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_duration",
+          "label": "Vis varighed",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "duration_text",
+          "label": "Varighed tekst",
+          "default": "Tager kun 2-3 minutter at gennemføre"
+        },
+        {
+          "type": "header",
+          "content": "Fordele Sektion"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_benefits",
+          "label": "Vis fordele",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "benefits_title",
+          "label": "Fordele titel",
+          "default": "Hvad du får:"
+        },
+        {
+          "type": "text",
+          "id": "benefit_1",
+          "label": "Fordel 1",
+          "default": "Personlige anbefalinger"
+        },
+        {
+          "type": "text",
+          "id": "benefit_2",
+          "label": "Fordel 2",
+          "default": "Ekspert vejledning"
+        },
+        {
+          "type": "text",
+          "id": "benefit_3",
+          "label": "Fordel 3",
+          "default": "Perfekt komfort match"
+        }
+      ]
     },
     {
       "type": "people_count_step",
       "name": "Antal Personer Trin", 
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Hvor mange personer skal bruge denne futon?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Dette hjælper os med at anbefale den rigtige størrelse og fasthed til dine behov."
+        },
+        {
+          "type": "header",
+          "content": "Enkeltperson Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "single_emoji",
+          "label": "Enkeltperson Emoji",
+          "default": "👤"
+        },
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Enkeltperson Titel",
+          "default": "Kun Mig"
+        },
+        {
+          "type": "text",
+          "id": "single_description",
+          "label": "Enkeltperson Beskrivelse",
+          "default": "Enkeltperson brug"
+        },
+        {
+          "type": "header",
+          "content": "Par Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "couple_emoji",
+          "label": "Par Emoji",
+          "default": "👥"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Par Titel",
+          "default": "To Personer"
+        },
+        {
+          "type": "text",
+          "id": "couple_description",
+          "label": "Par Beskrivelse",
+          "default": "Par eller delt brug"
+        },
+        {
+          "type": "header",
+          "content": "Navigation"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "weight_step",
+      "name": "Vægt Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Titel (enkeltperson)",
+          "default": "Hvad er din vægt?"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Titel (par)",
+          "default": "Hvad er jeres vægt?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Vægt hjælper os med at vælge den rigtige fasthed og support til optimal komfort."
+        },
+        {
+          "type": "text",
+          "id": "single_label",
+          "label": "Enkeltperson Label",
+          "default": "Din vægt (kg)"
+        },
+        {
+          "type": "text",
+          "id": "couple_label",
+          "label": "Person 2 Label",
+          "default": "Person 2 vægt (kg)"
+        },
+        {
+          "type": "text",
+          "id": "weight_placeholder",
+          "label": "Vægt Placeholder",
+          "default": "f.eks. 70"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_info",
+          "label": "Vis info boks",
+          "default": true
+        },
+        {
+          "type": "textarea",
+          "id": "info_text",
+          "label": "Info tekst",
+          "default": "💡 Vægtinformation hjælper os med at anbefale den rigtige fasthed og support til optimal komfort og holdbarhed."
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "sleep_position_step",
+      "name": "Sovposition Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Titel (enkeltperson)",
+          "default": "Hvilken sovposition foretrækker du?"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Titel (par)",
+          "default": "Hvilke sovpositioner foretrækker I?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Din sovposition påvirker, hvilken type støtte og fasthed der er bedst for dig."
+        },
+        {
+          "type": "header",
+          "content": "På Ryggen Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "back_emoji",
+          "label": "På ryggen Emoji",
+          "default": "🛌"
+        },
+        {
+          "type": "text",
+          "id": "back_title",
+          "label": "På ryggen Titel",
+          "default": "På Ryggen"
+        },
+        {
+          "type": "text",
+          "id": "back_description",
+          "label": "På ryggen Beskrivelse",
+          "default": "Klassisk rygsover"
+        },
+        {
+          "type": "header",
+          "content": "På Siden Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "side_emoji",
+          "label": "På siden Emoji",
+          "default": "🤱"
+        },
+        {
+          "type": "text",
+          "id": "side_title",
+          "label": "På siden Titel",
+          "default": "På Siden"
+        },
+        {
+          "type": "text",
+          "id": "side_description",
+          "label": "På siden Beskrivelse",
+          "default": "Sidesover position"
+        },
+        {
+          "type": "header",
+          "content": "På Maven Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "stomach_emoji",
+          "label": "På maven Emoji",
+          "default": "😴"
+        },
+        {
+          "type": "text",
+          "id": "stomach_title",
+          "label": "På maven Titel",
+          "default": "På Maven"
+        },
+        {
+          "type": "text",
+          "id": "stomach_description",
+          "label": "På maven Beskrivelse",
+          "default": "Mavesover position"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "preference_step",
+      "name": "Præference Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Titel (enkeltperson)",
+          "default": "Hvilken matras fasthed foretrækker du?"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Titel (par)",
+          "default": "Hvilken matras fasthed foretrækker I?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Vælg den fasthed der føles mest komfortabel for dig."
+        },
+        {
+          "type": "header",
+          "content": "Blød Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "soft_emoji",
+          "label": "Blød Emoji",
+          "default": "☁️"
+        },
+        {
+          "type": "text",
+          "id": "soft_title",
+          "label": "Blød Titel",
+          "default": "Blød"
+        },
+        {
+          "type": "text",
+          "id": "soft_description",
+          "label": "Blød Beskrivelse",
+          "default": "Blødt og omfavnende"
+        },
+        {
+          "type": "header",
+          "content": "Medium Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "medium_emoji",
+          "label": "Medium Emoji",
+          "default": "👍"
+        },
+        {
+          "type": "text",
+          "id": "medium_title",
+          "label": "Medium Titel",
+          "default": "Medium"
+        },
+        {
+          "type": "text",
+          "id": "medium_description",
+          "label": "Medium Beskrivelse",
+          "default": "Afbalanceret komfort"
+        },
+        {
+          "type": "header",
+          "content": "Hård Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "hard_emoji",
+          "label": "Hård Emoji",
+          "default": "💪"
+        },
+        {
+          "type": "text",
+          "id": "hard_title",
+          "label": "Hård Titel",
+          "default": "Hård"
+        },
+        {
+          "type": "text",
+          "id": "hard_description",
+          "label": "Hård Beskrivelse",
+          "default": "Fast og støttende"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "contact_info_step",
+      "name": "Kontakt Info Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Næsten færdig! 🎉"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Indtast dine kontaktoplysninger, så vi kan sende dig dine personlige anbefalinger og følge op med ekspertrådgivning."
+        },
+        {
+          "type": "header",
+          "content": "Form Labels"
+        },
+        {
+          "type": "text",
+          "id": "name_label",
+          "label": "Navn Label",
+          "default": "Navn"
+        },
+        {
+          "type": "text",
+          "id": "name_placeholder",
+          "label": "Navn Placeholder",
+          "default": "Dit fulde navn"
+        },
+        {
+          "type": "text",
+          "id": "email_label",
+          "label": "Email Label",
+          "default": "Email"
+        },
+        {
+          "type": "text",
+          "id": "email_placeholder",
+          "label": "Email Placeholder",
+          "default": "din@email.dk"
+        },
+        {
+          "type": "text",
+          "id": "phone_label",
+          "label": "Telefon Label",
+          "default": "Telefon"
+        },
+        {
+          "type": "text",
+          "id": "phone_placeholder",
+          "label": "Telefon Placeholder",
+          "default": "+45 12 34 56 78"
+        },
+        {
+          "type": "text",
+          "id": "comments_label",
+          "label": "Kommentarer Label",
+          "default": "Kommentarer (valgfrit)"
+        },
+        {
+          "type": "text",
+          "id": "comments_placeholder",
+          "label": "Kommentarer Placeholder",
+          "default": "Eventuelle specielle ønsker eller spørgsmål..."
+        },
+        {
+          "type": "textarea",
+          "id": "consent_text",
+          "label": "Samtykke Tekst",
+          "default": "Jeg accepterer at modtage anbefalinger og tilbud om søvnprodukter via email og telefon. Du kan altid framelde dig igen."
+        },
+        {
+          "type": "header",
+          "content": "Næste Trin Info"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_next_steps",
+          "label": "Vis næste trin",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "next_steps_title",
+          "label": "Næste trin titel",
+          "default": "✨ Hvad sker der nu?"
+        },
+        {
+          "type": "text",
+          "id": "next_step_1",
+          "label": "Næste trin 1",
+          "default": "Du modtager dine personlige anbefalinger med det samme"
+        },
+        {
+          "type": "text",
+          "id": "next_step_2",
+          "label": "Næste trin 2",
+          "default": "Vores søvneksperter kontakter dig inden for 24 timer"
+        },
+        {
+          "type": "text",
+          "id": "next_step_3",
+          "label": "Næste trin 3",
+          "default": "Vi planlægger en konsultation for at besvare eventuelle spørgsmål"
+        },
+        {
+          "type": "text",
+          "id": "next_step_4",
+          "label": "Næste trin 4",
+          "default": "Gratis hjemmeprøvning tilgængelig på alle anbefalede produkter"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "submit_button_text",
+          "label": "Submit Knap",
+          "default": "Få Anbefalinger"
+        }
+      ]
+    },
+    {
+      "type": "recommendation_step",
+      "name": "Anbefaling Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Loading State"
+        },
+        {
+          "type": "text",
+          "id": "loading_emoji",
+          "label": "Loading Emoji",
+          "default": "⏳"
+        },
+        {
+          "type": "text",
+          "id": "loading_title",
+          "label": "Loading Titel",
+          "default": "Finder Dine Perfekte Matches..."
+        },
+        {
+          "type": "textarea",
+          "id": "loading_description",
+          "label": "Loading Beskrivelse",
+          "default": "Vi analyserer dine præferencer og finder de bedste produkter til dig."
+        },
+        {
+          "type": "header",
+          "content": "Results State"
+        },
+        {
+          "type": "text",
+          "id": "results_title",
+          "label": "Resultater Titel",
+          "default": "🎉 Dine Perfekte Futon Matches!"
+        },
+        {
+          "type": "textarea",
+          "id": "results_description",
+          "label": "Resultater Beskrivelse",
+          "default": "Baseret på dine præferencer, her er vores top anbefalinger:"
+        },
+        {
+          "type": "header",
+          "content": "Next Steps"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_next_steps",
+          "label": "Vis næste trin",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "next_steps_title",
+          "label": "Næste trin titel",
+          "default": "✨ Hvad sker der nu?"
+        },
+        {
+          "type": "text",
+          "id": "next_step_1",
+          "label": "Næste trin 1",
+          "default": "Vores søvneksperter kontakter dig inden for 24 timer"
+        },
+        {
+          "type": "text",
+          "id": "next_step_2",
+          "label": "Næste trin 2",
+          "default": "Du modtager detaljerede produktoplysninger og priser"
+        },
+        {
+          "type": "text",
+          "id": "next_step_3",
+          "label": "Næste trin 3",
+          "default": "Vi planlægger en konsultation for at besvare eventuelle spørgsmål"
+        },
+        {
+          "type": "text",
+          "id": "next_step_4",
+          "label": "Næste trin 4",
+          "default": "Gratis hjemmeprøvning tilgængelig på alle anbefalede futoner"
+        },
+        {
+          "type": "header",
+          "content": "Actions"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_contact_button",
+          "label": "Vis kontakt knap",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "contact_button_text",
+          "label": "Kontakt Knap Tekst",
+          "default": "Kontakt Vores Eksperter"
+        },
+        {
+          "type": "text",
+          "id": "restart_button_text",
+          "label": "Genstart Knap Tekst",
+          "default": "Tag Test Igen"
+        },
+        {
+          "type": "header",
+          "content": "Empty State"
+        },
+        {
+          "type": "text",
+          "id": "empty_emoji",
+          "label": "Tom Emoji",
+          "default": "😅"
+        },
+        {
+          "type": "text",
+          "id": "empty_title",
+          "label": "Tom Titel",
+          "default": "Ingen Perfekte Matches Fundet"
+        },
+        {
+          "type": "textarea",
+          "id": "empty_description",
+          "label": "Tom Beskrivelse",
+          "default": "Dine specifikke krav er ret unikke! Vores søvneksperter vil gennemgå dine præferencer og kontakte dig med tilpassede anbefalinger."
+        }
+      ]
     }
   ],
   "presets": [
@@ -263,6 +943,21 @@
         },
         {
           "type": "people_count_step"
+        },
+        {
+          "type": "weight_step"
+        },
+        {
+          "type": "sleep_position_step"
+        },
+        {
+          "type": "preference_step"
+        },
+        {
+          "type": "contact_info_step"
+        },
+        {
+          "type": "recommendation_step"
         }
       ]
     }
