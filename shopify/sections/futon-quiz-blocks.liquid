@@ -35,6 +35,8 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
                       alt="{{ block.settings.hero_image.alt | default: 'Quiz hero image' }}" 
                       class="fq-hero-image"
                       style="width: 100%; height: 12rem; object-fit: cover; border-radius: var(--fq-radius);"
+                      width="800"
+                      height="192"
                       loading="eager"
                     />
                   {% endif %}
@@ -829,7 +831,7 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
     totalSteps: {{ section.blocks.size }}
   };
 </script>
-{{ 'futon-quiz-blocks.js' | asset_url | script_tag }}
+<script src="{{ 'futon-quiz-blocks.js' | asset_url }}" async></script>
 
 {% schema %}
 {
