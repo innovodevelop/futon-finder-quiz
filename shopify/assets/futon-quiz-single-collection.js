@@ -30,6 +30,53 @@ class FutonQuizSingleCollection {
     if (typeof this.showStep === 'function') this.showStep(0);
   }
 
+  // Step order discovery and display helpers
+  getStepBlocksOrder() {
+    const container = document.getElementById('quiz-container');
+    if (container) {
+      this.steps = Array.from(container.querySelectorAll('.quiz-step'));
+    } else {
+      this.steps = Array.from(document.querySelectorAll('.quiz-step'));
+    }
+  }
+
+  showStep(stepIndex) {
+    if (!this.steps || this.steps.length === 0) {
+      this.getStepBlocksOrder();
+    }
+    const maxIndex = (this.steps?.length || 1) - 1;
+    const index = Math.max(0, Math.min(stepIndex || 0, maxIndex));
+
+    this.steps.forEach((el, i) => {
+      if (!el) return;
+      el.style.display = i === index ? 'block' : 'none';
+    });
+
+    this.currentStep = index;
+
+    // Per-step adjustments
+    const id = this.steps[index]?.id;
+    if (id === 'weight-step') {
+      const two = Number(this.quizData.peopleCount) === 2;
+      const weight2 = document.getElementById('weight2-container');
+      if (weight2) weight2.style.display = two ? 'block' : 'none';
+    }
+    if (id === 'sleep-position-step') {
+      const two = Number(this.quizData.peopleCount) === 2;
+      const single = document.getElementById('single-person-positions');
+      const duo = document.getElementById('two-person-positions');
+      if (single) single.style.display = two ? 'none' : 'block';
+      if (duo) duo.style.display = two ? 'block' : 'none';
+    }
+    if (id === 'preference-step') {
+      const two = Number(this.quizData.peopleCount) === 2;
+      const single = document.getElementById('single-person-preferences');
+      const duo = document.getElementById('two-person-preferences');
+      if (single) single.style.display = two ? 'none' : 'block';
+      if (duo) duo.style.display = two ? 'block' : 'none';
+    }
+  }
+
   // Public wrappers for inline handlers used in Liquid templates
   startQuiz() {
     if (typeof this.nextStep === 'function') {
@@ -45,6 +92,15 @@ class FutonQuizSingleCollection {
     } else {
       this.quizData.peopleCount = Number(count) || 1;
     }
+  }
+
+  // Alias used by some templates
+  setPeopleCount(count) {
+    this.selectPeopleCount(count);
+    try {
+      const btn = document.querySelector('#people-count-step button[onclick*="nextStep"]');
+      if (btn) btn.removeAttribute('disabled');
+    } catch (e) {}
   }
 
   nextStep() {
