@@ -24,9 +24,67 @@ class FutonQuizSingleCollection {
    */
   init() {
     this.loadProductData();
-    this.getStepBlocksOrder();
-    this.loadBlockSettings();
-    this.showStep(0);
+    // Guard optional methods in case they are not present yet
+    if (typeof this.getStepBlocksOrder === 'function') this.getStepBlocksOrder();
+    if (typeof this.loadBlockSettings === 'function') this.loadBlockSettings();
+    if (typeof this.showStep === 'function') this.showStep(0);
+  }
+
+  // Public wrappers for inline handlers used in Liquid templates
+  startQuiz() {
+    if (typeof this.nextStep === 'function') {
+      this.nextStep();
+    } else if (typeof this.showStep === 'function') {
+      this.showStep(1);
+    }
+  }
+
+  selectPeopleCount(count) {
+    if (typeof this.setPeopleCount === 'function') {
+      this.setPeopleCount(count);
+    } else {
+      this.quizData.peopleCount = Number(count) || 1;
+    }
+  }
+
+  nextStep() {
+    this.currentStep = (this.currentStep || 0) + 1;
+    if (typeof this.showStep === 'function') this.showStep(this.currentStep);
+  }
+
+  prevStep() {
+    this.currentStep = Math.max(0, (this.currentStep || 0) - 1);
+    if (typeof this.showStep === 'function') this.showStep(this.currentStep);
+  }
+
+  // Utilities
+  formatPrice(priceInCents) {
+    try {
+      return new Intl.NumberFormat('da-DK', {
+        style: 'currency',
+        currency: 'DKK',
+      }).format((priceInCents || 0) / 100);
+    } catch (e) {
+      return `${(priceInCents || 0) / 100} kr`;
+    }
+  }
+
+  addToCart(variantId) {
+    const id = typeof variantId === 'string' ? variantId : String(variantId || '');
+    if (!id) return;
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: [{ id, quantity: 1 }] })
+    })
+    .then(res => res.json())
+    .then(() => {
+      // Basic feedback; consider replacing with theme toast if available
+      // eslint-disable-next-line no-alert
+      if (typeof window !== 'undefined') alert('Tilføjet til kurv');
+    })
+    .catch(err => console.error('Add to cart failed', err));
   }
 
   /**
@@ -404,6 +462,9 @@ class FutonQuizSingleCollection {
 
 // Initialize the quiz when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  window.futonQuiz = new FutonQuizSingleCollection();
-  window.futonQuiz.init();
+  const instance = new FutonQuizSingleCollection();
+  if (typeof instance.init === 'function') instance.init();
+  // Expose both names for compatibility with Liquid templates and existing assets
+  window.futonQuizSingleCollection = instance;
+  window.futonQuiz = instance;
 });
