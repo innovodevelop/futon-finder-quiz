@@ -41,16 +41,30 @@ class FutonQuizSingleCollection {
   }
 
   showStep(stepIndex) {
-    if (!this.steps || this.steps.length === 0) {
-      this.getStepBlocksOrder();
-    }
-    const maxIndex = (this.steps?.length || 1) - 1;
-    const index = Math.max(0, Math.min(stepIndex || 0, maxIndex));
+    // Always refresh step order in case blocks render/change dynamically
+    this.getStepBlocksOrder();
 
+    const total = this.steps?.length || 0;
+    const maxIndex = Math.max(0, total - 1);
+    const index = Math.max(0, Math.min(Number(stepIndex) || 0, maxIndex));
+
+    // Toggle visibility
     this.steps.forEach((el, i) => {
       if (!el) return;
-      el.style.display = i === index ? 'block' : 'none';
+      if (i === index) {
+        // Prefer clearing inline style so natural display applies
+        el.style.display = '';
+      } else {
+        el.style.display = 'none';
+      }
     });
+
+    // Fallback: if target step is still hidden, force it to block
+    const target = this.steps[index];
+    if (target) {
+      const computed = window.getComputedStyle(target).display;
+      if (computed === 'none') target.style.display = 'block';
+    }
 
     this.currentStep = index;
 
