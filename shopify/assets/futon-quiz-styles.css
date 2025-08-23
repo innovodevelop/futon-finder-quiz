@@ -161,6 +161,21 @@
     box-shadow: 0 0 0 1px hsl(var(--fq-primary) / 0.2);
   }
 
+  /* Media & Helper elements */
+  .quiz-hero-image {
+    width: 100%;
+    height: 12rem; /* 48 */
+    object-fit: cover;
+    border-radius: calc(var(--fq-radius) * 0.8);
+  }
+
+  .quiz-bullet-success {
+    width: 0.5rem; /* 2 */
+    height: 0.5rem;
+    background-color: hsl(var(--fq-success));
+    border-radius: 9999px;
+  }
+
   /* Input Styles - Scoped */
   .quiz-input {
     display: flex;
