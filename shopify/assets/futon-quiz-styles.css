@@ -78,7 +78,7 @@
   }
 
   /* Button Styles - Scoped */
-  .fq-btn {
+  .quiz-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -96,17 +96,17 @@
     overflow: hidden;
   }
 
-  .fq-btn:focus-visible {
+  .quiz-btn:focus-visible {
     outline: 2px solid hsl(var(--fq-ring));
     outline-offset: 2px;
   }
 
-  .fq-btn:disabled {
+  .quiz-btn:disabled {
     pointer-events: none;
     opacity: 0.5;
   }
 
-  .fq-btn-primary {
+  .quiz-btn-primary {
     background: linear-gradient(135deg, hsl(var(--fq-primary)), hsl(var(--fq-primary-hover)));
     color: hsl(var(--fq-primary-foreground));
     box-shadow: var(--fq-shadow-sm);
@@ -114,12 +114,12 @@
     height: 2.75rem;
   }
 
-  .fq-btn-primary:hover:not(:disabled) {
+  .quiz-btn-primary:hover:not(:disabled) {
     transform: translateY(-1px);
     box-shadow: var(--fq-shadow-md);
   }
 
-  .fq-btn-secondary {
+  .quiz-btn-secondary {
     background-color: hsl(var(--fq-secondary));
     color: hsl(var(--fq-secondary-foreground));
     border: 1px solid hsl(var(--fq-border));
@@ -127,11 +127,11 @@
     height: 2.75rem;
   }
 
-  .fq-btn-secondary:hover:not(:disabled) {
+  .quiz-btn-secondary:hover:not(:disabled) {
     background-color: hsl(var(--fq-secondary) / 0.8);
   }
 
-  .fq-btn-option {
+  .quiz-btn-option {
     background-color: hsl(var(--fq-background));
     border: 2px solid hsl(var(--fq-border));
     color: hsl(var(--fq-foreground));
@@ -147,14 +147,14 @@
     gap: 0.75rem;
   }
 
-  .fq-btn-option:hover:not(:disabled) {
+  .quiz-btn-option:hover:not(:disabled) {
     border-color: hsl(var(--fq-primary));
     background-color: hsl(var(--fq-primary) / 0.05);
     transform: translateY(-2px);
     box-shadow: var(--fq-shadow-lg);
   }
 
-  .fq-btn-option-selected {
+  .quiz-btn-option-selected {
     border-color: hsl(var(--fq-primary));
     background: linear-gradient(135deg, hsl(var(--fq-primary) / 0.1), hsl(var(--fq-primary) / 0.05));
     color: hsl(var(--fq-primary));
@@ -410,7 +410,7 @@
       color: black !important;
     }
     
-    .fq-btn {
+    .quiz-btn {
       border: 1px solid #ccc !important;
       background: white !important;
       color: black !important;
@@ -419,7 +419,7 @@
 }
 
 /* High specificity reset for common conflicts */
-.futon-quiz-section .fq-btn,
+.futon-quiz-section .quiz-btn,
 .futon-quiz-section .fq-input,
 .futon-quiz-section .fq-card {
   font-family: inherit;
