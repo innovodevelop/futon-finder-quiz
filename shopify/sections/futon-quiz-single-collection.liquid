@@ -15,10 +15,112 @@
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'start_step' %}
-            <!-- Your existing start step block code -->
+            <div id="start-step" class="quiz-step" {{ block.shopify_attributes }}>
+              <div class="text-center max-w-2xl mx-auto space-y-6">
+                <div class="space-y-4">
+                  {% if block.settings.hero_image %}
+                    <img 
+                      src="{{ block.settings.hero_image | image_url: width: 800 }}" 
+                      alt="{{ block.settings.hero_image.alt | default: 'Quiz hero image' }}" 
+                      class="w-full h-48 object-cover rounded-2xl"
+                      width="800"
+                      height="192"
+                      loading="eager"
+                    />
+                  {% endif %}
+                  <h1 class="text-3xl md:text-4xl font-bold text-foreground">
+                    {{ block.settings.title }}
+                  </h1>
+                  <p class="text-muted-foreground text-base leading-relaxed">
+                    {{ block.settings.description }}
+                  </p>
+                </div>
+
+                {% if block.settings.show_benefits %}
+                  <div class="bg-muted/30 rounded-2xl p-5">
+                    <h3 class="font-semibold text-foreground mb-3">{{ block.settings.benefits_title }}</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                      <div class="flex items-center gap-2 justify-center md:justify-start">
+                        <div class="w-2 h-2 bg-success rounded-full"></div>
+                        <span>{{ block.settings.benefit_1 }}</span>
+                      </div>
+                      <div class="flex items-center gap-2 justify-center md:justify-start">
+                        <div class="w-2 h-2 bg-success rounded-full"></div>
+                        <span>{{ block.settings.benefit_2 }}</span>
+                      </div>
+                      <div class="flex items-center gap-2 justify-center md:justify-start">
+                        <div class="w-2 h-2 bg-success rounded-full"></div>
+                        <span>{{ block.settings.benefit_3 }}</span>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+
+                <div class="space-y-3">
+                  <button 
+                    class="quiz-btn quiz-btn-primary h-12 px-12 py-3 text-base rounded-lg"
+                    onclick="futonQuizSingleCollection.startQuiz()"
+                  >
+                    {{ block.settings.start_button_text }}
+                  </button>
+                  
+                  {% if block.settings.show_duration %}
+                    <p class="text-xs text-muted-foreground">
+                      {{ block.settings.duration_text }}
+                    </p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
             
           {% when 'people_count_step' %}
-            <!-- Your existing people count step block code -->
+            <div id="people-count-step" class="quiz-step hidden" {{ block.shopify_attributes }}>
+              <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                  <h2 class="text-3xl font-bold text-foreground mb-4">
+                    {{ block.settings.title }}
+                  </h2>
+                  <p class="text-muted-foreground">
+                    {{ block.settings.description }}
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                  <button
+                    class="quiz-btn quiz-btn-option flex-col gap-3 h-auto min-h-[80px] p-4"
+                    onclick="futonQuizSingleCollection.selectPeopleCount(1)"
+                    data-value="1"
+                  >
+                    <div class="text-4xl">{{ block.settings.single_emoji }}</div>
+                    <div>
+                      <div class="font-semibold">{{ block.settings.single_title }}</div>
+                      <div class="text-sm text-muted-foreground">{{ block.settings.single_description }}</div>
+                    </div>
+                  </button>
+
+                  <button
+                    class="quiz-btn quiz-btn-option flex-col gap-3 h-auto min-h-[80px] p-4"
+                    onclick="futonQuizSingleCollection.selectPeopleCount(2)"
+                    data-value="2"
+                  >
+                    <div class="text-4xl">{{ block.settings.couple_emoji }}</div>
+                    <div>
+                      <div class="font-semibold">{{ block.settings.couple_title }}</div>
+                      <div class="text-sm text-muted-foreground">{{ block.settings.couple_description }}</div>
+                    </div>
+                  </button>
+                </div>
+
+                <div class="flex justify-between">
+                  <button class="quiz-btn quiz-btn-secondary h-10 px-6" onclick="futonQuizSingleCollection.prevStep()">
+                    {{ block.settings.back_button_text }}
+                  </button>
+                  <button class="quiz-btn quiz-btn-primary h-10 px-6" onclick="futonQuizSingleCollection.nextStep()" disabled>
+                    {{ block.settings.continue_button_text }}
+                  </button>
+                </div>
+              </div>
+            </div>
             
           {% comment %} Add all other existing step blocks here {% endcomment %}
         {% endcase %}
