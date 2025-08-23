@@ -87,26 +87,26 @@
 
                 <div class="quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-2 quiz-gap-4 quiz-mb-8">
                   <button
-                    class="quiz-btn quiz-btn-option flex-col gap-3 h-auto min-h-[80px] p-4"
+                    class="quiz-btn quiz-btn-option"
                     onclick="futonQuizSingleCollection.selectPeopleCount(1)"
                     data-value="1"
                   >
-                    <div class="text-4xl">{{ block.settings.single_emoji }}</div>
+                    <div class="quiz-emoji">{{ block.settings.single_emoji }}</div>
                     <div>
-                      <div class="font-semibold">{{ block.settings.single_title }}</div>
-                      <div class="text-sm text-muted-foreground">{{ block.settings.single_description }}</div>
+                      <div class="quiz-option-title">{{ block.settings.single_title }}</div>
+                      <div class="quiz-option-description">{{ block.settings.single_description }}</div>
                     </div>
                   </button>
 
                   <button
-                    class="quiz-btn quiz-btn-option flex-col gap-3 h-auto min-h-[80px] p-4"
+                    class="quiz-btn quiz-btn-option"
                     onclick="futonQuizSingleCollection.selectPeopleCount(2)"
                     data-value="2"
                   >
-                    <div class="text-4xl">{{ block.settings.couple_emoji }}</div>
+                    <div class="quiz-emoji">{{ block.settings.couple_emoji }}</div>
                     <div>
-                      <div class="font-semibold">{{ block.settings.couple_title }}</div>
-                      <div class="text-sm text-muted-foreground">{{ block.settings.couple_description }}</div>
+                      <div class="quiz-option-title">{{ block.settings.couple_title }}</div>
+                      <div class="quiz-option-description">{{ block.settings.couple_description }}</div>
                     </div>
                   </button>
                 </div>

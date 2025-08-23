@@ -6,40 +6,40 @@
 /* Quiz Container Scope - All styles are contained within this class */
 .futon-quiz-section {
   /* CSS Custom Properties - Scoped to quiz only */
-  --fq-background: 0 0% 100%;
-  --fq-foreground: 222.2 84% 4.9%;
-  --fq-primary: 247 49% 47%;
-  --fq-primary-foreground: 210 40% 98%;
-  --fq-primary-hover: 247 49% 37%;
-  --fq-secondary: 247 12% 95%;
-  --fq-secondary-foreground: 222.2 84% 4.9%;
-  --fq-muted: 247 12% 95%;
-  --fq-muted-foreground: 215.4 16.3% 46.9%;
-  --fq-success: 142 71% 45%;
-  --fq-success-foreground: 210 40% 98%;
-  --fq-border: 247 12% 88%;
-  --fq-ring: 247 49% 47%;
-  --fq-progress-bg: 247 12% 95%;
-  --fq-step-active: 247 49% 47%;
-  --fq-step-completed: 142 71% 45%;
-  --fq-step-inactive: 247 12% 88%;
-  --fq-radius: 1.5rem;
-  --fq-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --fq-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --fq-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --quiz-background: 0 0% 100%;
+  --quiz-foreground: 222.2 84% 4.9%;
+  --quiz-primary: 247 49% 47%;
+  --quiz-primary-foreground: 210 40% 98%;
+  --quiz-primary-hover: 247 49% 37%;
+  --quiz-secondary: 247 12% 95%;
+  --quiz-secondary-foreground: 222.2 84% 4.9%;
+  --quiz-muted: 247 12% 95%;
+  --quiz-muted-foreground: 215.4 16.3% 46.9%;
+  --quiz-success: 142 71% 45%;
+  --quiz-success-foreground: 210 40% 98%;
+  --quiz-border: 247 12% 88%;
+  --quiz-ring: 247 49% 47%;
+  --quiz-progress-bg: 247 12% 95%;
+  --quiz-step-active: 247 49% 47%;
+  --quiz-step-completed: 142 71% 45%;
+  --quiz-step-inactive: 247 12% 88%;
+  --quiz-radius: 1.5rem;
+  --quiz-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --quiz-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --quiz-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
   /* Dark mode support */
   &[data-theme="dark"] {
-    --fq-background: 222.2 84% 4.9%;
-    --fq-foreground: 210 40% 98%;
-    --fq-primary: 247 49% 47%;
-    --fq-primary-foreground: 222.2 84% 4.9%;
-    --fq-primary-hover: 247 49% 57%;
-    --fq-secondary: 217.2 32.6% 17.5%;
-    --fq-secondary-foreground: 210 40% 98%;
-    --fq-muted: 217.2 32.6% 17.5%;
-    --fq-muted-foreground: 215 20.2% 65.1%;
-    --fq-border: 217.2 32.6% 17.5%;
+    --quiz-background: 222.2 84% 4.9%;
+    --quiz-foreground: 210 40% 98%;
+    --quiz-primary: 247 49% 47%;
+    --quiz-primary-foreground: 222.2 84% 4.9%;
+    --quiz-primary-hover: 247 49% 57%;
+    --quiz-secondary: 217.2 32.6% 17.5%;
+    --quiz-secondary-foreground: 210 40% 98%;
+    --quiz-muted: 217.2 32.6% 17.5%;
+    --quiz-muted-foreground: 215 20.2% 65.1%;
+    --quiz-border: 217.2 32.6% 17.5%;
   }
 
   /* Reset any potential conflicts */
@@ -48,8 +48,8 @@
   }
 
   /* Base container styles */
-  background-color: hsl(var(--fq-background));
-  color: hsl(var(--fq-foreground));
+  background-color: hsl(var(--quiz-background));
+  color: hsl(var(--quiz-foreground));
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.5;
   min-height: 100vh;
@@ -61,7 +61,7 @@
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 1rem;
-    color: hsl(var(--fq-foreground));
+    color: hsl(var(--quiz-foreground));
   }
 
   .quiz-subtitle {
@@ -69,12 +69,32 @@
     font-weight: 600;
     line-height: 1.4;
     margin-bottom: 0.75rem;
-    color: hsl(var(--fq-foreground));
+    color: hsl(var(--quiz-foreground));
   }
 
   .quiz-description {
-    color: hsl(var(--fq-muted-foreground));
+    color: hsl(var(--quiz-muted-foreground));
     line-height: 1.6;
+  }
+
+  /* Option styling */
+  .quiz-emoji {
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-option-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: hsl(var(--quiz-foreground));
+    margin-bottom: 0.25rem;
+  }
+
+  .quiz-option-description {
+    font-size: 0.875rem;
+    color: hsl(var(--quiz-muted-foreground));
+    line-height: 1.4;
   }
 
   /* Button Styles - Scoped */
@@ -83,7 +103,7 @@
     align-items: center;
     justify-content: center;
     white-space: nowrap;
-    border-radius: calc(var(--fq-radius) * 0.5);
+    border-radius: calc(var(--quiz-radius) * 0.5);
     font-size: 0.875rem;
     font-weight: 500;
     transition: all 0.2s ease-in-out;
@@ -97,7 +117,7 @@
   }
 
   .quiz-btn:focus-visible {
-    outline: 2px solid hsl(var(--fq-ring));
+    outline: 2px solid hsl(var(--quiz-ring));
     outline-offset: 2px;
   }
 
@@ -107,35 +127,35 @@
   }
 
   .quiz-btn-primary {
-    background: linear-gradient(135deg, hsl(var(--fq-primary)), hsl(var(--fq-primary-hover)));
-    color: hsl(var(--fq-primary-foreground));
-    box-shadow: var(--fq-shadow-sm);
+    background: linear-gradient(135deg, hsl(var(--quiz-primary)), hsl(var(--quiz-primary-hover)));
+    color: hsl(var(--quiz-primary-foreground));
+    box-shadow: var(--quiz-shadow-sm);
     padding: 0.75rem 1.5rem;
     height: 2.75rem;
   }
 
   .quiz-btn-primary:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: var(--fq-shadow-md);
+    box-shadow: var(--quiz-shadow-md);
   }
 
   .quiz-btn-secondary {
-    background-color: hsl(var(--fq-secondary));
-    color: hsl(var(--fq-secondary-foreground));
-    border: 1px solid hsl(var(--fq-border));
+    background-color: hsl(var(--quiz-secondary));
+    color: hsl(var(--quiz-secondary-foreground));
+    border: 1px solid hsl(var(--quiz-border));
     padding: 0.75rem 1.5rem;
     height: 2.75rem;
   }
 
   .quiz-btn-secondary:hover:not(:disabled) {
-    background-color: hsl(var(--fq-secondary) / 0.8);
+    background-color: hsl(var(--quiz-secondary) / 0.8);
   }
 
   .quiz-btn-option {
-    background-color: hsl(var(--fq-background));
-    border: 2px solid hsl(var(--fq-border));
-    color: hsl(var(--fq-foreground));
-    border-radius: var(--fq-radius);
+    background-color: hsl(var(--quiz-background));
+    border: 2px solid hsl(var(--quiz-border));
+    color: hsl(var(--quiz-foreground));
+    border-radius: var(--quiz-radius);
     padding: 1.5rem;
     min-height: 5rem;
     text-align: center;
@@ -148,17 +168,17 @@
   }
 
   .quiz-btn-option:hover:not(:disabled) {
-    border-color: hsl(var(--fq-primary));
-    background-color: hsl(var(--fq-primary) / 0.05);
+    border-color: hsl(var(--quiz-primary));
+    background-color: hsl(var(--quiz-primary) / 0.05);
     transform: translateY(-2px);
-    box-shadow: var(--fq-shadow-lg);
+    box-shadow: var(--quiz-shadow-lg);
   }
 
   .quiz-btn-option-selected {
-    border-color: hsl(var(--fq-primary));
-    background: linear-gradient(135deg, hsl(var(--fq-primary) / 0.1), hsl(var(--fq-primary) / 0.05));
-    color: hsl(var(--fq-primary));
-    box-shadow: 0 0 0 1px hsl(var(--fq-primary) / 0.2);
+    border-color: hsl(var(--quiz-primary));
+    background: linear-gradient(135deg, hsl(var(--quiz-primary) / 0.1), hsl(var(--quiz-primary) / 0.05));
+    color: hsl(var(--quiz-primary));
+    box-shadow: 0 0 0 1px hsl(var(--quiz-primary) / 0.2);
   }
 
   /* Media & Helper elements */
@@ -166,13 +186,13 @@
     width: 100%;
     height: 12rem; /* 48 */
     object-fit: cover;
-    border-radius: calc(var(--fq-radius) * 0.8);
+    border-radius: calc(var(--quiz-radius) * 0.8);
   }
 
   .quiz-bullet-success {
     width: 0.5rem; /* 2 */
     height: 0.5rem;
-    background-color: hsl(var(--fq-success));
+    background-color: hsl(var(--quiz-success));
     border-radius: 9999px;
   }
 
@@ -181,23 +201,23 @@
     display: flex;
     height: 2.75rem;
     width: 100%;
-    border-radius: calc(var(--fq-radius) * 0.5);
-    border: 2px solid hsl(var(--fq-border));
-    background-color: hsl(var(--fq-background));
+    border-radius: calc(var(--quiz-radius) * 0.5);
+    border: 2px solid hsl(var(--quiz-border));
+    background-color: hsl(var(--quiz-background));
     padding: 0 0.75rem;
     font-size: 0.875rem;
     transition: all 0.2s ease;
-    color: hsl(var(--fq-foreground));
+    color: hsl(var(--quiz-foreground));
   }
 
   .quiz-input::placeholder {
-    color: hsl(var(--fq-muted-foreground));
+    color: hsl(var(--quiz-muted-foreground));
   }
 
   .quiz-input:focus {
     outline: none;
-    border-color: hsl(var(--fq-primary));
-    box-shadow: 0 0 0 2px hsl(var(--fq-primary) / 0.2);
+    border-color: hsl(var(--quiz-primary));
+    box-shadow: 0 0 0 2px hsl(var(--quiz-primary) / 0.2);
   }
 
   .quiz-textarea {
@@ -215,7 +235,7 @@
 
   .quiz-progress-bar {
     width: 100%;
-    background-color: hsl(var(--fq-progress-bg));
+    background-color: hsl(var(--quiz-progress-bg));
     border-radius: 9999px;
     height: 0.5rem;
     overflow: hidden;
@@ -224,7 +244,7 @@
 
   .quiz-progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, hsl(var(--fq-primary)), hsl(var(--fq-primary-hover)));
+    background: linear-gradient(90deg, hsl(var(--quiz-primary)), hsl(var(--quiz-primary-hover)));
     transition: width 0.5s ease-in-out;
     border-radius: 9999px;
   }
@@ -248,26 +268,26 @@
   }
 
   .quiz-step-indicator.active {
-    background-color: hsl(var(--fq-step-active));
-    color: hsl(var(--fq-primary-foreground));
+    background-color: hsl(var(--quiz-step-active));
+    color: hsl(var(--quiz-primary-foreground));
   }
 
   .quiz-step-indicator.completed {
-    background-color: hsl(var(--fq-step-completed));
-    color: hsl(var(--fq-success-foreground));
+    background-color: hsl(var(--quiz-step-completed));
+    color: hsl(var(--quiz-success-foreground));
   }
 
   .quiz-step-indicator.inactive {
-    background-color: hsl(var(--fq-step-inactive));
-    color: hsl(var(--fq-muted-foreground));
+    background-color: hsl(var(--quiz-step-inactive));
+    color: hsl(var(--quiz-muted-foreground));
   }
 
   /* Card Styles - Scoped */
   .quiz-card {
-    background-color: hsl(var(--fq-background));
-    border: 1px solid hsl(var(--fq-border));
-    border-radius: var(--fq-radius);
-    box-shadow: var(--fq-shadow-sm);
+    background-color: hsl(var(--quiz-background));
+    border: 1px solid hsl(var(--quiz-border));
+    border-radius: var(--quiz-radius);
+    box-shadow: var(--quiz-shadow-sm);
     overflow: hidden;
   }
 
@@ -277,17 +297,17 @@
 
   /* Info Box - Scoped */
   .quiz-info-box {
-    background: linear-gradient(135deg, hsl(var(--fq-muted) / 0.3), hsl(var(--fq-muted) / 0.1));
-    border: 1px solid hsl(var(--fq-border));
-    border-radius: var(--fq-radius);
+    background: linear-gradient(135deg, hsl(var(--quiz-muted) / 0.3), hsl(var(--quiz-muted) / 0.1));
+    border: 1px solid hsl(var(--quiz-border));
+    border-radius: var(--quiz-radius);
     padding: 1rem;
     margin: 1rem 0;
   }
 
   .quiz-success-box {
-    background: linear-gradient(135deg, hsl(var(--fq-success) / 0.1), hsl(var(--fq-success) / 0.05));
-    border: 1px solid hsl(var(--fq-success) / 0.2);
-    color: hsl(var(--fq-success-foreground));
+    background: linear-gradient(135deg, hsl(var(--quiz-success) / 0.1), hsl(var(--quiz-success) / 0.05));
+    border: 1px solid hsl(var(--quiz-success) / 0.2);
+    color: hsl(var(--quiz-success-foreground));
   }
 
   /* Grid Layout - Scoped */
@@ -325,15 +345,15 @@
 
   /* Animation Classes */
   .quiz-fade-in {
-    animation: fqFadeIn 0.3s ease-out;
+    animation: quizFadeIn 0.3s ease-out;
   }
 
   .quiz-scale-in {
-    animation: fqScaleIn 0.2s ease-out;
+    animation: quizScaleIn 0.2s ease-out;
   }
 
   /* Keyframes */
-  @keyframes fqFadeIn {
+  @keyframes quizFadeIn {
     from {
       opacity: 0;
       transform: translateY(10px);
@@ -344,7 +364,7 @@
     }
   }
 
-  @keyframes fqScaleIn {
+  @keyframes quizScaleIn {
     from {
       opacity: 0;
       transform: scale(0.95);
@@ -368,14 +388,14 @@
   .quiz-loading-spinner {
     width: 2rem;
     height: 2rem;
-    border: 3px solid hsl(var(--fq-border));
-    border-top: 3px solid hsl(var(--fq-primary));
+    border: 3px solid hsl(var(--quiz-border));
+    border-top: 3px solid hsl(var(--quiz-primary));
     border-radius: 50%;
-    animation: fqSpin 1s linear infinite;
+    animation: quizSpin 1s linear infinite;
     margin-bottom: 1rem;
   }
 
-  @keyframes fqSpin {
+  @keyframes quizSpin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
@@ -446,8 +466,8 @@
 .futon-quiz-section {
   all: initial;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: hsl(var(--fq-background));
-  color: hsl(var(--fq-foreground));
+  background-color: hsl(var(--quiz-background));
+  color: hsl(var(--quiz-foreground));
   display: block;
   min-height: 100vh;
   padding: 2rem 0;
