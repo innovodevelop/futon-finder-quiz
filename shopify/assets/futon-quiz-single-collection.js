@@ -516,11 +516,23 @@ class FutonQuizSingleCollection {
   // ... (include remaining methods from original file)
 }
 
-// Initialize the quiz when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  const instance = new FutonQuizSingleCollection();
-  if (typeof instance.init === 'function') instance.init();
-  // Expose both names for compatibility with Liquid templates and existing assets
-  window.futonQuizSingleCollection = instance;
-  window.futonQuiz = instance;
-});
+// Initialize the quiz robustly (works with async/defer)
+(function() {
+  const run = () => {
+    try {
+      const instance = new FutonQuizSingleCollection();
+      if (typeof instance.init === 'function') instance.init();
+      // Expose both names for compatibility with Liquid templates and existing assets
+      window.futonQuizSingleCollection = instance;
+      window.futonQuiz = instance;
+    } catch (e) {
+      console.error('Futon quiz init failed', e);
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+})();
