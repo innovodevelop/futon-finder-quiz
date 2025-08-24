@@ -227,9 +227,15 @@
         stomach: {{ section.settings.stomach_sleeper_tags | split: ',' | json }}
       },
       couples: {{ section.settings.couples_tags | split: ',' | json }},
+      single: {{ section.settings.single_tags | split: ',' | json }},
       weightSupport: {
         light: {{ section.settings.light_weight_tags | split: ',' | json }},
         heavy: {{ section.settings.heavy_weight_tags | split: ',' | json }}
+      },
+      quality: {
+        premium: {{ section.settings.premium_tags | split: ',' | json }},
+        comfort: {{ section.settings.comfort_tags | split: ',' | json }},
+        material: {{ section.settings.material_tags | split: ',' | json }}
       }
     }
   };
@@ -277,22 +283,22 @@
       "type": "text",
       "id": "soft_tags",
       "label": "Soft Firmness Tags",
-      "default": "soft,blød,plush,mjuk",
-      "info": "Comma-separated tags for soft products"
+      "default": "soft,plush,cloud-like,gentle",
+      "info": "English tags for soft/plush products"
     },
     {
       "type": "text", 
       "id": "medium_tags",
       "label": "Medium Firmness Tags",
-      "default": "medium,medium-fast,balanced",
-      "info": "Comma-separated tags for medium firmness products"
+      "default": "medium,balanced,medium-firm,moderate",
+      "info": "English tags for medium firmness products"
     },
     {
       "type": "text",
       "id": "hard_tags", 
-      "label": "Hard Firmness Tags",
-      "default": "hard,fast,firm,stiv",
-      "info": "Comma-separated tags for firm products"
+      "label": "Firm Firmness Tags",
+      "default": "firm,hard,supportive,extra-firm",
+      "info": "English tags for firm/hard products"
     },
     {
       "type": "header",
@@ -302,47 +308,79 @@
       "type": "text",
       "id": "side_sleeper_tags",
       "label": "Side Sleeper Tags", 
-      "default": "side-sleeper,sideligger,side-sleep",
-      "info": "Comma-separated tags for products good for side sleepers"
+      "default": "side-sleeper,side-sleep,lateral-sleeper",
+      "info": "English tags for products suitable for side sleepers"
     },
     {
       "type": "text",
       "id": "back_sleeper_tags",
       "label": "Back Sleeper Tags",
-      "default": "back-sleeper,rygligger,back-sleep", 
-      "info": "Comma-separated tags for products good for back sleepers"
+      "default": "back-sleeper,back-sleep,supine-sleeper", 
+      "info": "English tags for products suitable for back sleepers"
     },
     {
       "type": "text",
       "id": "stomach_sleeper_tags",
       "label": "Stomach Sleeper Tags",
-      "default": "stomach-sleeper,maveligger,stomach-sleep",
-      "info": "Comma-separated tags for products good for stomach sleepers"
+      "default": "stomach-sleeper,stomach-sleep,prone-sleeper",
+      "info": "English tags for products suitable for stomach sleepers"
     },
     {
       "type": "header", 
-      "content": "Tag Mappings - Special Categories"
+      "content": "Tag Mappings - Size & Weight Categories"
     },
     {
       "type": "text",
       "id": "couples_tags",
-      "label": "Couples Tags",
-      "default": "couples,par,double,king,queen",
-      "info": "Comma-separated tags for products good for couples"
+      "label": "Couples/Large Size Tags",
+      "default": "couples,double,king,queen,two-person",
+      "info": "English tags for products suitable for couples or larger sizes"
+    },
+    {
+      "type": "text",
+      "id": "single_tags", 
+      "label": "Single Person Tags",
+      "default": "single,twin,individual,one-person",
+      "info": "English tags for single person products"
     },
     {
       "type": "text",
       "id": "light_weight_tags", 
       "label": "Light Weight Support Tags",
-      "default": "light-weight,let,under-70kg",
-      "info": "Comma-separated tags for products good for lighter people"
+      "default": "light-weight,under-70kg,petite,lightweight-support",
+      "info": "English tags for products suitable for lighter individuals"
     },
     {
       "type": "text",
       "id": "heavy_weight_tags",
       "label": "Heavy Weight Support Tags", 
-      "default": "heavy-weight,tung,over-90kg,plus-size",
-      "info": "Comma-separated tags for products good for heavier people"
+      "default": "heavy-weight,over-90kg,plus-size,heavy-duty",
+      "info": "English tags for products suitable for heavier individuals"
+    },
+    {
+      "type": "header", 
+      "content": "Tag Mappings - Quality Features"
+    },
+    {
+      "type": "text",
+      "id": "premium_tags",
+      "label": "Premium Quality Tags",
+      "default": "premium,luxury,high-end,deluxe",
+      "info": "English tags for premium quality products"
+    },
+    {
+      "type": "text",
+      "id": "comfort_tags",
+      "label": "Comfort Feature Tags",
+      "default": "comfortable,supportive,ergonomic,pressure-relief",
+      "info": "English tags for comfort-focused products"
+    },
+    {
+      "type": "text",
+      "id": "material_tags",
+      "label": "Material Feature Tags",
+      "default": "organic,natural,eco-friendly,sustainable",
+      "info": "English tags for special material features"
     }
   ],
   "blocks": [
