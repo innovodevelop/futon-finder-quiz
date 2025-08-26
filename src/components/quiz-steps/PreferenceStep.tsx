@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Cloud, Target, Square, Lightbulb } from "lucide-react";
 
 interface PreferenceStepProps {
   peopleCount: 1 | 2;
@@ -23,19 +24,19 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
     {
       value: "soft" as const,
       label: "Blød",
-      emoji: "☁️",
+      icon: Cloud,
       description: "Jeg kan lide at synke ned i madras"
     },
     {
       value: "medium" as const,
       label: "Medium",
-      emoji: "🎯",
+      icon: Target,
       description: "Jeg foretrækker afbalanceret støtte og komfort"
     },
     {
       value: "hard" as const,
       label: "Fast",
-      emoji: "🧱",
+      icon: Square,
       description: "Jeg kan lide en fast, støttende overflade"
     }
   ];
@@ -66,7 +67,7 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
                 onClick={() => updatePreference("person1", option.value)}
                 className="flex-col gap-3 h-24"
               >
-                <div className="text-3xl">{option.emoji}</div>
+                <option.icon className="w-8 h-8" />
                 <div className="text-center">
                   <div className="font-semibold">{option.label}</div>
                   <div className="text-xs text-muted-foreground">{option.description}</div>
@@ -89,7 +90,7 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
                   onClick={() => updatePreference("person2", option.value)}
                   className="flex-col gap-3 h-24"
                 >
-                  <div className="text-3xl">{option.emoji}</div>
+                  <option.icon className="w-8 h-8" />
                   <div className="text-center">
                     <div className="font-semibold">{option.label}</div>
                     <div className="text-xs text-muted-foreground">{option.description}</div>
@@ -103,7 +104,10 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
 
       <div className="bg-muted/50 rounded-lg p-4 mb-8 mt-8">
         <div className="text-sm text-muted-foreground">
-          <p className="font-medium mb-2">💡 Fasthedsguide:</p>
+          <p className="font-medium mb-2 flex items-center gap-2">
+            <Lightbulb className="w-4 h-4" />
+            Fasthedsguide:
+          </p>
           <ul className="space-y-1 ml-4">
             <li><strong>Blød:</strong> Perfekt til sidesovere og dem der kan lide en blød følelse</li>
             <li><strong>Medium:</strong> Perfekt balance til de fleste søvestillinger</li>

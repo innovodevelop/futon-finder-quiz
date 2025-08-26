@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Bed, Moon, RotateCcw } from "lucide-react";
 
 interface SleepPositionStepProps {
   peopleCount: 1 | 2;
@@ -23,19 +24,19 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
     {
       value: "side" as const,
       label: "På Siden",
-      emoji: "🛌",
+      icon: Bed,
       description: "Jeg sover primært på siden"
     },
     {
       value: "belly-back" as const,
       label: "Maven eller Ryggen",
-      emoji: "😴",
+      icon: Moon,
       description: "Jeg sover på maven eller ryggen"
     },
     {
       value: "both" as const,
       label: "Begge Stillinger",
-      emoji: "🔄",
+      icon: RotateCcw,
       description: "Jeg skifter mellem forskellige stillinger"
     }
   ];
@@ -66,7 +67,7 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
                 onClick={() => updateSleepPosition("person1", option.value)}
                 className="flex-col gap-3 h-24"
               >
-                <div className="text-3xl">{option.emoji}</div>
+                <option.icon className="w-8 h-8" />
                 <div className="text-center">
                   <div className="font-semibold">{option.label}</div>
                   <div className="text-xs text-muted-foreground">{option.description}</div>
@@ -89,7 +90,7 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
                   onClick={() => updateSleepPosition("person2", option.value)}
                   className="flex-col gap-3 h-24"
                 >
-                  <div className="text-3xl">{option.emoji}</div>
+                  <option.icon className="w-8 h-8" />
                   <div className="text-center">
                     <div className="font-semibold">{option.label}</div>
                     <div className="text-xs text-muted-foreground">{option.description}</div>

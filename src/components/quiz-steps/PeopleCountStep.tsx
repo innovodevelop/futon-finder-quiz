@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { User, Users } from "lucide-react";
 
 interface PeopleCountStepProps {
   value: 1 | 2;
@@ -26,7 +27,7 @@ export const PeopleCountStep = ({ value, onChange, onNext, onPrev }: PeopleCount
           onClick={() => onChange(1)}
           className="flex-col gap-3"
         >
-          <div className="text-4xl">👤</div>
+          <User className="w-10 h-10" />
           <div>
             <div className="font-semibold">Kun Mig</div>
             <div className="text-sm text-muted-foreground">Enkeltperson brug</div>
@@ -39,7 +40,7 @@ export const PeopleCountStep = ({ value, onChange, onNext, onPrev }: PeopleCount
           onClick={() => onChange(2)}
           className="flex-col gap-3"
         >
-          <div className="text-4xl">👥</div>
+          <Users className="w-10 h-10" />
           <div>
             <div className="font-semibold">To Personer</div>
             <div className="text-sm text-muted-foreground">Par eller delt brug</div>

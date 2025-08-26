@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Lightbulb } from "lucide-react";
 
 interface WeightStepProps {
   peopleCount: 1 | 2;
@@ -71,8 +72,9 @@ export const WeightStep = ({ peopleCount, weights, onChange, onNext, onPrev }: W
       </div>
 
       <div className="bg-muted/30 rounded-2xl p-4 mb-6">
-        <p className="text-sm text-muted-foreground text-center">
-          💡 Din vægtinformation hjælper os med at anbefale det rigtige fasthedsniveau for korrekt rygradsjustering og komfort.
+        <p className="text-sm text-muted-foreground text-center flex items-center justify-center gap-2">
+          <Lightbulb className="w-4 h-4" />
+          Din vægtinformation hjælper os med at anbefale det rigtige fasthedsniveau for korrekt rygradsjustering og komfort.
         </p>
       </div>
 
