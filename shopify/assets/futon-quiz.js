@@ -1,5 +1,6 @@
 /**
- * Futon Quiz - Pure JavaScript Implementation for Shopify
+ * Futon Quiz - Self-Contained JavaScript Implementation for Shopify
+ * Builds all HTML programmatically to avoid conflicts
  */
 
 class FutonQuiz {
@@ -31,6 +32,15 @@ class FutonQuiz {
   }
 
   init() {
+    // Wait for DOM to be fully loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => this.setup());
+    } else {
+      this.setup();
+    }
+  }
+
+  setup() {
     this.loadProductData();
     this.showStep(0);
     this.updateProgress();
@@ -57,21 +67,39 @@ class FutonQuiz {
   }
 
   showStep(stepIndex) {
-    // Hide all steps
-    const steps = document.querySelectorAll('.quiz-step');
-    steps.forEach(step => step.style.display = 'none');
+    const container = document.getElementById('quiz-container');
+    if (!container) return;
+
+    // Clear container
+    container.innerHTML = '';
     
-    // Show current step
-    const stepIds = [
-      'start-step', 'people-count-step', 'weight-step', 
-      'sleep-position-step', 'preference-step', 'contact-info-step', 
-      'recommendation-step'
-    ];
-    
-    const currentStepElement = document.getElementById(stepIds[stepIndex]);
-    if (currentStepElement) {
-      currentStepElement.style.display = 'block';
+    // Build and show current step
+    let stepHTML = '';
+    switch(stepIndex) {
+      case 0:
+        stepHTML = this.buildStartStep();
+        break;
+      case 1:
+        stepHTML = this.buildPeopleCountStep();
+        break;
+      case 2:
+        stepHTML = this.buildWeightStep();
+        break;
+      case 3:
+        stepHTML = this.buildSleepPositionStep();
+        break;
+      case 4:
+        stepHTML = this.buildPreferenceStep();
+        break;
+      case 5:
+        stepHTML = this.buildContactInfoStep();
+        break;
+      case 6:
+        stepHTML = this.buildRecommendationStep();
+        break;
     }
+    
+    container.innerHTML = stepHTML;
     
     // Show/hide progress indicator
     const progressIndicator = document.getElementById('progress-indicator');
@@ -81,20 +109,23 @@ class FutonQuiz {
       progressIndicator.style.display = 'block';
     }
     
-    // Update step-specific UI
-    this.updateStepUI(stepIndex);
+    // Initialize step-specific functionality
+    this.initializeStepEvents(stepIndex);
   }
 
-  updateStepUI(stepIndex) {
+  initializeStepEvents(stepIndex) {
     switch(stepIndex) {
       case 2: // Weight step
-        this.updateWeightStepUI();
+        this.validateWeightStep();
         break;
       case 3: // Sleep position step
-        this.updateSleepPositionStepUI();
+        this.validateSleepPositionStep();
         break;
       case 4: // Preference step
-        this.updatePreferenceStepUI();
+        this.validatePreferenceStep();
+        break;
+      case 5: // Contact info step
+        this.validateContactInfoStep();
         break;
       case 6: // Recommendation step
         this.showRecommendations();
@@ -102,103 +133,523 @@ class FutonQuiz {
     }
   }
 
-  updateWeightStepUI() {
+  buildStartStep() {
+    return `
+      <div class="quiz-step quiz-text-center quiz-container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="quiz-space-y-6">
+          <div class="quiz-space-y-4">
+            <img 
+              src="${window.location.origin}/cdn/shop/files/futon-hero.jpg" 
+              alt="Comfortable futon setup" 
+              class="quiz-hero-image"
+              loading="eager"
+            />
+            <h1 class="quiz-title">
+              Find Din Perfekte Futon
+            </h1>
+            <p class="quiz-description">
+              Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov. 
+              Baseret på dine søvnpræferencer anbefaler vi det perfekte match fra vores kollektion.
+            </p>
+          </div>
+
+          <div class="quiz-info-box">
+            <h3 class="quiz-subtitle quiz-mb-4">Hvad du får:</h3>
+            <div class="quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-3 quiz-gap-4">
+              <div class="quiz-flex quiz-items-center quiz-gap-2 quiz-justify-center">
+                <div class="quiz-bullet-success"></div>
+                <span>Personlige anbefalinger</span>
+              </div>
+              <div class="quiz-flex quiz-items-center quiz-gap-2 quiz-justify-center">
+                <div class="quiz-bullet-success"></div>
+                <span>Ekspert vejledning</span>
+              </div>
+              <div class="quiz-flex quiz-items-center quiz-gap-2 quiz-justify-center">
+                <div class="quiz-bullet-success"></div>
+                <span>Perfekt komfort match</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="quiz-space-y-4">
+            <button 
+              class="quiz-btn quiz-btn-primary"
+              style="height: 3rem; padding: 0 3rem; font-size: 1rem; border-radius: 0.5rem;"
+              onclick="futonQuiz.startQuiz()"
+            >
+              Start Test
+            </button>
+            
+            <p style="font-size: 0.75rem; color: hsl(var(--quiz-muted-foreground));">
+              Tager kun 2-3 minutter at gennemføre
+            </p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  buildPeopleCountStep() {
     const { peopleCount } = this.quizData;
-    const title = document.getElementById('weight-title');
-    const label1 = document.getElementById('weight1-label');
-    const weight2Container = document.getElementById('weight2-container');
-    const inputsContainer = document.getElementById('weight-inputs');
-    
-    if (peopleCount === 2) {
-      title.textContent = 'Hvad er jeres vægt?';
-      label1.textContent = 'Person 1 vægt (kg)';
-      weight2Container.style.display = 'block';
-      inputsContainer.className = 'mb-6 grid grid-cols-1 md:grid-cols-2 gap-6';
-    } else {
-      title.textContent = 'Hvad er din vægt?';
-      label1.textContent = 'Din vægt (kg)';
-      weight2Container.style.display = 'none';
-      inputsContainer.className = 'mb-6 space-y-4';
-    }
-    
-    this.validateWeightStep();
+    return `
+      <div class="quiz-step quiz-container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="quiz-text-center quiz-mb-8">
+          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+            Hvor mange personer skal bruge denne futon?
+          </h2>
+          <p class="quiz-description">
+            Dette hjælper os med at anbefale den rigtige størrelse og fasthed til dine behov.
+          </p>
+        </div>
+
+        <div class="quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-2 quiz-gap-4 quiz-mb-8">
+          <button
+            class="quiz-btn quiz-btn-option ${peopleCount === 1 ? 'quiz-btn-option-selected' : ''}"
+            style="flex-direction: column; gap: 0.75rem;"
+            onclick="futonQuiz.setPeopleCount(1)"
+          >
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <div>
+              <div class="quiz-option-title">Kun Mig</div>
+              <div class="quiz-option-description">Enkeltperson brug</div>
+            </div>
+          </button>
+
+          <button
+            class="quiz-btn quiz-btn-option ${peopleCount === 2 ? 'quiz-btn-option-selected' : ''}"
+            style="flex-direction: column; gap: 0.75rem;"
+            onclick="futonQuiz.setPeopleCount(2)"
+          >
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="m22 21-2-2"/>
+              <path d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0"/>
+            </svg>
+            <div>
+              <div class="quiz-option-title">To Personer</div>
+              <div class="quiz-option-description">Par eller delt brug</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="quiz-flex quiz-justify-between">
+          <button class="quiz-btn quiz-btn-secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuiz.prevStep()">
+            Tilbage
+          </button>
+          <button class="quiz-btn quiz-btn-primary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuiz.nextStep()">
+            Fortsæt
+          </button>
+        </div>
+      </div>
+    `;
   }
 
-  updateSleepPositionStepUI() {
-    const { peopleCount } = this.quizData;
-    const title = document.getElementById('sleep-position-title');
-    const singlePersonPositions = document.getElementById('single-person-positions');
-    const twoPersonPositions = document.getElementById('two-person-positions');
+  buildWeightStep() {
+    const { peopleCount, weights } = this.quizData;
+    const isTwoPeople = peopleCount === 2;
     
-    if (peopleCount === 2) {
-      title.textContent = 'Hvilke sovpositioner foretrækker I?';
-      singlePersonPositions.style.display = 'none';
-      twoPersonPositions.style.display = 'block';
-    } else {
-      title.textContent = 'Hvilken sovposition foretrækker du?';
-      singlePersonPositions.style.display = 'block';
-      twoPersonPositions.style.display = 'none';
-    }
-    
-    this.validateSleepPositionStep();
+    return `
+      <div class="quiz-step quiz-container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="quiz-text-center quiz-mb-8">
+          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+            ${isTwoPeople ? 'Hvad er jeres vægt?' : 'Hvad er din vægt?'}
+          </h2>
+          <p class="quiz-description">
+            Dette hjælper os med at anbefale den rigtige fasthed og støtte til dine behov.
+          </p>
+        </div>
+
+        <div class="quiz-mb-6 ${isTwoPeople ? 'quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-2 quiz-gap-6' : 'quiz-space-y-4'}">
+          <div>
+            <label class="quiz-option-title quiz-mb-4" style="display: block;">
+              ${isTwoPeople ? 'Person 1 vægt (kg)' : 'Din vægt (kg)'}
+            </label>
+            <input
+              type="number"
+              class="quiz-input"
+              placeholder="Indtast vægt i kg"
+              value="${weights.person1 || ''}"
+              oninput="futonQuiz.updateWeight('person1', this.value)"
+              min="30"
+              max="200"
+            />
+          </div>
+          ${isTwoPeople ? `
+            <div>
+              <label class="quiz-option-title quiz-mb-4" style="display: block;">
+                Person 2 vægt (kg)
+              </label>
+              <input
+                type="number"
+                class="quiz-input"
+                placeholder="Indtast vægt i kg"
+                value="${weights.person2 || ''}"
+                oninput="futonQuiz.updateWeight('person2', this.value)"
+                min="30"
+                max="200"
+              />
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="quiz-flex quiz-justify-between">
+          <button class="quiz-btn quiz-btn-secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuiz.prevStep()">
+            Tilbage
+          </button>
+          <button 
+            id="weight-next-btn" 
+            class="quiz-btn quiz-btn-primary" 
+            style="height: 2.5rem; padding: 0 1rem;" 
+            onclick="futonQuiz.nextStep()"
+            disabled
+          >
+            Fortsæt
+          </button>
+        </div>
+      </div>
+    `;
   }
 
-  updatePreferenceStepUI() {
-    const { peopleCount } = this.quizData;
-    const title = document.getElementById('preference-title');
-    const singlePersonPreferences = document.getElementById('single-person-preferences');
-    const twoPersonPreferences = document.getElementById('two-person-preferences');
+  buildSleepPositionStep() {
+    const { peopleCount, sleepPositions } = this.quizData;
+    const isTwoPeople = peopleCount === 2;
     
-    if (peopleCount === 2) {
-      title.textContent = 'Hvilken matras fasthed foretrækker I?';
-      singlePersonPreferences.style.display = 'none';
-      twoPersonPreferences.style.display = 'block';
-    } else {
-      title.textContent = 'Hvilken matras fasthed foretrækker du?';
-      singlePersonPreferences.style.display = 'block';
-      twoPersonPreferences.style.display = 'none';
-    }
-    
-    this.validatePreferenceStep();
+    return `
+      <div class="quiz-step quiz-container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="quiz-text-center quiz-mb-8">
+          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+            ${isTwoPeople ? 'Hvilke sovpositioner foretrækker I?' : 'Hvilken sovposition foretrækker du?'}
+          </h2>
+          <p class="quiz-description">
+            Din sovposition påvirker, hvilken type støtte og fasthed der er bedst for dig.
+          </p>
+        </div>
+
+        ${!isTwoPeople ? `
+          <div class="quiz-grid quiz-grid-cols-1 quiz-gap-4 quiz-mb-8">
+            ${this.buildSleepPositionButtons('person1', sleepPositions.person1)}
+          </div>
+        ` : `
+          <div class="quiz-space-y-6 quiz-mb-8">
+            <div>
+              <h3 class="quiz-subtitle quiz-mb-4">Person 1</h3>
+              <div class="quiz-grid quiz-grid-cols-1 quiz-gap-3">
+                ${this.buildSleepPositionButtons('person1', sleepPositions.person1)}
+              </div>
+            </div>
+            <div>
+              <h3 class="quiz-subtitle quiz-mb-4">Person 2</h3>
+              <div class="quiz-grid quiz-grid-cols-1 quiz-gap-3">
+                ${this.buildSleepPositionButtons('person2', sleepPositions.person2)}
+              </div>
+            </div>
+          </div>
+        `}
+
+        <div class="quiz-flex quiz-justify-between">
+          <button class="quiz-btn quiz-btn-secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuiz.prevStep()">
+            Tilbage
+          </button>
+          <button 
+            id="sleep-position-next-btn" 
+            class="quiz-btn quiz-btn-primary" 
+            style="height: 2.5rem; padding: 0 1rem;" 
+            onclick="futonQuiz.nextStep()"
+            disabled
+          >
+            Fortsæt
+          </button>
+        </div>
+      </div>
+    `;
   }
 
-  updateProgress() {
-    if (this.currentStep === 0 || this.currentStep === 6) return;
+  buildSleepPositionButtons(person, selectedPosition) {
+    const positions = [
+      { value: 'back', title: 'Ryg', description: 'Jeg sover på ryggen', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="m19 7-1.5 1.5M5 7l1.5 1.5"/></svg>' },
+      { value: 'side', title: 'Side', description: 'Jeg sover på siden', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18h20"/><path d="M6 14h12"/><path d="M8 10h8"/><circle cx="12" cy="6" r="2"/></svg>' },
+      { value: 'stomach', title: 'Mave', description: 'Jeg sover på maven', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="11" rx="8" ry="6"/><circle cx="12" cy="5" r="2"/></svg>' }
+    ];
     
-    const adjustedStep = this.currentStep;
-    const adjustedTotal = this.totalSteps - 1; // Exclude start and recommendation steps
-    const percentage = Math.round((adjustedStep / adjustedTotal) * 100);
-    
-    document.getElementById('step-text').textContent = `Trin ${adjustedStep} af ${adjustedTotal}`;
-    document.getElementById('progress-percent').textContent = `${percentage}%`;
-    document.getElementById('progress-bar').style.width = `${percentage}%`;
-    
-    this.updateStepIndicators();
+    return positions.map(position => `
+      <button
+        class="quiz-btn quiz-btn-option ${selectedPosition === position.value ? 'quiz-btn-option-selected' : ''}"
+        style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;"
+        onclick="futonQuiz.setSleepPosition('${person}', '${position.value}')"
+      >
+        <div style="flex-shrink: 0;">
+          ${position.icon}
+        </div>
+        <div>
+          <div class="quiz-option-title">${position.title}</div>
+          <div class="quiz-option-description">${position.description}</div>
+        </div>
+      </button>
+    `).join('');
   }
 
-  updateStepIndicators() {
-    const container = document.getElementById('step-indicators');
-    container.innerHTML = '';
+  buildPreferenceStep() {
+    const { peopleCount, preferences } = this.quizData;
+    const isTwoPeople = peopleCount === 2;
     
-    const adjustedTotal = this.totalSteps - 1;
+    return `
+      <div class="quiz-step quiz-container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="quiz-text-center quiz-mb-8">
+          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+            ${isTwoPeople ? 'Hvilken matras fasthed foretrækker I?' : 'Hvilken matras fasthed foretrækker du?'}
+          </h2>
+          <p class="quiz-description">
+            Fasthed påvirker komfort og støtte. Vælg hvad der føles bedst for dig.
+          </p>
+        </div>
+
+        ${!isTwoPeople ? `
+          <div class="quiz-grid quiz-grid-cols-1 quiz-gap-4 quiz-mb-8">
+            ${this.buildPreferenceButtons('person1', preferences.person1)}
+          </div>
+        ` : `
+          <div class="quiz-space-y-6 quiz-mb-8">
+            <div>
+              <h3 class="quiz-subtitle quiz-mb-4">Person 1</h3>
+              <div class="quiz-grid quiz-grid-cols-1 quiz-gap-3">
+                ${this.buildPreferenceButtons('person1', preferences.person1)}
+              </div>
+            </div>
+            <div>
+              <h3 class="quiz-subtitle quiz-mb-4">Person 2</h3>
+              <div class="quiz-grid quiz-grid-cols-1 quiz-gap-3">
+                ${this.buildPreferenceButtons('person2', preferences.person2)}
+              </div>
+            </div>
+          </div>
+        `}
+
+        <div class="quiz-flex quiz-justify-between">
+          <button class="quiz-btn quiz-btn-secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuiz.prevStep()">
+            Tilbage
+          </button>
+          <button 
+            id="preference-next-btn" 
+            class="quiz-btn quiz-btn-primary" 
+            style="height: 2.5rem; padding: 0 1rem;" 
+            onclick="futonQuiz.nextStep()"
+            disabled
+          >
+            Fortsæt
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  buildPreferenceButtons(person, selectedPreference) {
+    const preferences = [
+      { value: 'soft', title: 'Blød', description: 'Jeg foretrækker bløde madrasser', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 19V5"/><path d="M10 19V6.8"/><path d="M14 19v-7.8"/><path d="M18 5v4"/><path d="M18 19v-6"/></svg>' },
+      { value: 'medium', title: 'Medium', description: 'Jeg foretrækker medium-faste madrasser', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 19V5"/><path d="M10 19V7"/><path d="M14 19V9"/><path d="M18 19v-8"/></svg>' },
+      { value: 'hard', title: 'Fast', description: 'Jeg foretrækker faste madrasser', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 12h18"/></svg>' }
+    ];
     
-    for (let i = 1; i <= adjustedTotal; i++) {
-      const indicator = document.createElement('div');
-      indicator.className = 'w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300';
-      
-      if (i < this.currentStep) {
-        indicator.className += ' bg-success text-success-foreground';
-        indicator.textContent = '✓';
-      } else if (i === this.currentStep) {
-        indicator.className += ' bg-step-active text-primary-foreground';
-        indicator.textContent = i;
-      } else {
-        indicator.className += ' bg-step-inactive text-muted-foreground';
-        indicator.textContent = i;
-      }
-      
-      container.appendChild(indicator);
-    }
+    return preferences.map(preference => `
+      <button
+        class="quiz-btn quiz-btn-option ${selectedPreference === preference.value ? 'quiz-btn-option-selected' : ''}"
+        style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;"
+        onclick="futonQuiz.setPreference('${person}', '${preference.value}')"
+      >
+        <div style="flex-shrink: 0;">
+          ${preference.icon}
+        </div>
+        <div>
+          <div class="quiz-option-title">${preference.title}</div>
+          <div class="quiz-option-description">${preference.description}</div>
+        </div>
+      </button>
+    `).join('');
+  }
+
+  buildContactInfoStep() {
+    const { contactInfo } = this.quizData;
+    
+    return `
+      <div class="quiz-step quiz-container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="quiz-text-center quiz-mb-8">
+          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+            Kontaktoplysninger
+          </h2>
+          <p class="quiz-description">
+            Indtast dine kontaktoplysninger, så vi kan sende dig dine personlige anbefalinger.
+          </p>
+        </div>
+
+        <div class="quiz-space-y-4 quiz-mb-6">
+          <div>
+            <label class="quiz-option-title quiz-mb-4" style="display: block;">Fulde navn *</label>
+            <input
+              type="text"
+              class="quiz-input"
+              placeholder="Indtast dit fulde navn"
+              value="${contactInfo.name}"
+              oninput="futonQuiz.updateContactInfo('name', this.value)"
+              required
+            />
+          </div>
+          
+          <div>
+            <label class="quiz-option-title quiz-mb-4" style="display: block;">Email adresse *</label>
+            <input
+              type="email"
+              class="quiz-input"
+              placeholder="din@email.dk"
+              value="${contactInfo.email}"
+              oninput="futonQuiz.updateContactInfo('email', this.value)"
+              required
+            />
+          </div>
+          
+          <div>
+            <label class="quiz-option-title quiz-mb-4" style="display: block;">Telefonnummer *</label>
+            <input
+              type="tel"
+              class="quiz-input"
+              placeholder="+45 12 34 56 78"
+              value="${contactInfo.phone}"
+              oninput="futonQuiz.updateContactInfo('phone', this.value)"
+              required
+            />
+          </div>
+          
+          <div>
+            <label class="quiz-option-title quiz-mb-4" style="display: block;">Yderligere kommentarer (valgfrit)</label>
+            <textarea
+              class="quiz-input quiz-textarea"
+              placeholder="Har du specielle ønsker eller spørgsmål?"
+              oninput="futonQuiz.updateContactInfo('comments', this.value)"
+            >${contactInfo.comments}</textarea>
+          </div>
+        </div>
+
+        <div class="quiz-info-box quiz-mb-6">
+          <h3 class="quiz-subtitle quiz-mb-4">Næste skridt:</h3>
+          <div class="quiz-space-y-2">
+            <div class="quiz-flex quiz-items-center quiz-gap-2">
+              <div class="quiz-bullet-success"></div>
+              <span>Få personlige produktanbefalinger</span>
+            </div>
+            <div class="quiz-flex quiz-items-center quiz-gap-2">
+              <div class="quiz-bullet-success"></div>
+              <span>Kontakt fra vores eksperter</span>
+            </div>
+            <div class="quiz-flex quiz-items-center quiz-gap-2">
+              <div class="quiz-bullet-success"></div>
+              <span>Særlige tilbud og rabatter</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-mb-6">
+          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input
+              type="checkbox"
+              ${contactInfo.marketingConsent ? 'checked' : ''}
+              onchange="futonQuiz.updateContactInfo('marketingConsent', this.checked)"
+              style="width: 1rem; height: 1rem;"
+            />
+            <span style="font-size: 0.875rem;">
+              Jeg accepterer at modtage markedsføringsmateriale og produktanbefalinger via email og telefon. *
+            </span>
+          </label>
+        </div>
+
+        <div class="quiz-flex quiz-justify-between">
+          <button class="quiz-btn quiz-btn-secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuiz.prevStep()">
+            Tilbage
+          </button>
+          <button 
+            id="contact-next-btn" 
+            class="quiz-btn quiz-btn-primary" 
+            style="height: 2.5rem; padding: 0 1rem;" 
+            onclick="futonQuiz.nextStep()"
+            disabled
+          >
+            Få Anbefalinger
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  buildRecommendationStep() {
+    return `
+      <div class="quiz-step">
+        <!-- Loading State -->
+        <div id="recommendations-loading" class="quiz-loading">
+          <div class="quiz-loading-spinner"></div>
+          <h2 class="quiz-subtitle quiz-mb-4">Finder dine perfekte futoner...</h2>
+          <p class="quiz-description">
+            Vi analyserer dine præferencer og finder de bedste matches fra vores kollektion.
+          </p>
+        </div>
+
+        <!-- Results State -->
+        <div id="recommendations-results" style="display: none;">
+          <div class="quiz-text-center quiz-mb-8">
+            <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+              Dine Personlige Anbefalinger
+            </h2>
+            <p id="recommendations-greeting" class="quiz-description"></p>
+          </div>
+
+          <div id="recommendations-grid" class="quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-2 quiz-gap-6 quiz-mb-8">
+            <!-- Product recommendations will be inserted here -->
+          </div>
+
+          <div class="quiz-text-center">
+            <button 
+              class="quiz-btn quiz-btn-secondary" 
+              style="height: 2.5rem; padding: 0 1rem; margin-right: 1rem;"
+              onclick="futonQuiz.restart()"
+            >
+              Tag Test Igen
+            </button>
+            <a 
+              href="/collections/all" 
+              class="quiz-btn quiz-btn-primary" 
+              style="height: 2.5rem; padding: 0 1rem; display: inline-flex; align-items: center; text-decoration: none;"
+            >
+              Se Alle Produkter
+            </a>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="recommendations-empty" style="display: none;" class="quiz-text-center">
+          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+            Ingen anbefalinger fundet
+          </h2>
+          <p class="quiz-description quiz-mb-6">
+            Vi kunne ikke finde specifikke produkter der matcher dine præferencer. 
+            Prøv at tage testen igen eller kontakt os direkte for personlig vejledning.
+          </p>
+          <button 
+            class="quiz-btn quiz-btn-primary" 
+            style="height: 2.5rem; padding: 0 1rem;"
+            onclick="futonQuiz.restart()"
+          >
+            Tag Test Igen
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // Quiz navigation and interaction methods
+  startQuiz() {
+    this.currentStep = 1;
+    this.showStep(this.currentStep);
+    this.updateProgress();
   }
 
   nextStep() {
@@ -217,18 +668,54 @@ class FutonQuiz {
     }
   }
 
+  updateProgress() {
+    if (this.currentStep === 0 || this.currentStep === 6) return;
+    
+    const adjustedStep = this.currentStep;
+    const adjustedTotal = this.totalSteps - 2; // Exclude start and recommendation steps
+    const percentage = Math.round((adjustedStep / adjustedTotal) * 100);
+    
+    const stepText = document.getElementById('step-text');
+    const progressPercent = document.getElementById('progress-percent');
+    const progressBar = document.getElementById('progress-bar');
+    
+    if (stepText) stepText.textContent = `Trin ${adjustedStep} af ${adjustedTotal}`;
+    if (progressPercent) progressPercent.textContent = `${percentage}%`;
+    if (progressBar) progressBar.style.width = `${percentage}%`;
+    
+    this.updateStepIndicators();
+  }
+
+  updateStepIndicators() {
+    const container = document.getElementById('step-indicators');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    const adjustedTotal = this.totalSteps - 2;
+    
+    for (let i = 1; i <= adjustedTotal; i++) {
+      const indicator = document.createElement('div');
+      indicator.className = 'quiz-step-indicator';
+      
+      if (i < this.currentStep) {
+        indicator.classList.add('completed');
+        indicator.textContent = '✓';
+      } else if (i === this.currentStep) {
+        indicator.classList.add('active');
+        indicator.textContent = i;
+      } else {
+        indicator.classList.add('inactive');
+        indicator.textContent = i;
+      }
+      
+      container.appendChild(indicator);
+    }
+  }
+
+  // Data update methods
   setPeopleCount(count) {
     this.quizData.peopleCount = count;
-    
-    // Update UI to show selection
-    const buttons = document.querySelectorAll('#people-count-step button[data-value]');
-    buttons.forEach(btn => {
-      if (btn.getAttribute('data-value') == count) {
-        btn.className = btn.className.replace('quiz-btn-option', 'quiz-btn-option quiz-btn-option-selected');
-      } else {
-        btn.className = btn.className.replace('quiz-btn-option-selected', '').replace('quiz-btn-option quiz-btn-option', 'quiz-btn-option');
-      }
-    });
+    this.showStep(this.currentStep); // Refresh to update UI
   }
 
   updateWeight(person, value) {
@@ -237,71 +724,16 @@ class FutonQuiz {
     this.validateWeightStep();
   }
 
-  validateWeightStep() {
-    const { peopleCount, weights } = this.quizData;
-    const isValid = weights.person1 > 0 && (peopleCount === 1 || weights.person2 > 0);
-    const nextBtn = document.getElementById('weight-next-btn');
-    nextBtn.disabled = !isValid;
-  }
-
   setSleepPosition(person, position) {
     this.quizData.sleepPositions[person] = position;
-    
-    // Update UI
-    const buttons = document.querySelectorAll(`button[data-position="${position}"][data-person="${person}"], button[data-position="${position}"]:not([data-person])`);
-    buttons.forEach(btn => {
-      if ((btn.hasAttribute('data-person') && btn.getAttribute('data-person') === person) || 
-          (!btn.hasAttribute('data-person') && this.quizData.peopleCount === 1)) {
-        btn.className = btn.className.replace('quiz-btn-option', 'quiz-btn-option quiz-btn-option-selected');
-      }
-    });
-    
-    // Reset other buttons for this person
-    const allButtons = document.querySelectorAll(`button[data-person="${person}"], button[data-position]:not([data-person])`);
-    allButtons.forEach(btn => {
-      if (btn.getAttribute('data-position') !== position) {
-        btn.className = btn.className.replace('quiz-btn-option-selected', '').replace('quiz-btn-option quiz-btn-option', 'quiz-btn-option');
-      }
-    });
-    
+    this.showStep(this.currentStep); // Refresh to update UI
     this.validateSleepPositionStep();
-  }
-
-  validateSleepPositionStep() {
-    const { peopleCount, sleepPositions } = this.quizData;
-    const isValid = sleepPositions.person1 && (peopleCount === 1 || sleepPositions.person2);
-    const nextBtn = document.getElementById('sleep-position-next-btn');
-    nextBtn.disabled = !isValid;
   }
 
   setPreference(person, preference) {
     this.quizData.preferences[person] = preference;
-    
-    // Update UI
-    const buttons = document.querySelectorAll(`button[data-preference="${preference}"][data-person="${person}"], button[data-preference="${preference}"]:not([data-person])`);
-    buttons.forEach(btn => {
-      if ((btn.hasAttribute('data-person') && btn.getAttribute('data-person') === person) || 
-          (!btn.hasAttribute('data-person') && this.quizData.peopleCount === 1)) {
-        btn.className = btn.className.replace('quiz-btn-option', 'quiz-btn-option quiz-btn-option-selected');
-      }
-    });
-    
-    // Reset other buttons for this person
-    const allButtons = document.querySelectorAll(`button[data-person="${person}"], button[data-preference]:not([data-person])`);
-    allButtons.forEach(btn => {
-      if (btn.getAttribute('data-preference') !== preference) {
-        btn.className = btn.className.replace('quiz-btn-option-selected', '').replace('quiz-btn-option quiz-btn-option', 'quiz-btn-option');
-      }
-    });
-    
+    this.showStep(this.currentStep); // Refresh to update UI
     this.validatePreferenceStep();
-  }
-
-  validatePreferenceStep() {
-    const { peopleCount, preferences } = this.quizData;
-    const isValid = preferences.person1 && (peopleCount === 1 || preferences.person2);
-    const nextBtn = document.getElementById('preference-next-btn');
-    nextBtn.disabled = !isValid;
   }
 
   updateContactInfo(field, value) {
@@ -309,16 +741,71 @@ class FutonQuiz {
     this.validateContactInfoStep();
   }
 
+  // Validation methods
+  validateWeightStep() {
+    const { peopleCount, weights } = this.quizData;
+    const isValid = weights.person1 > 0 && (peopleCount === 1 || weights.person2 > 0);
+    const nextBtn = document.getElementById('weight-next-btn');
+    if (nextBtn) nextBtn.disabled = !isValid;
+  }
+
+  validateSleepPositionStep() {
+    const { peopleCount, sleepPositions } = this.quizData;
+    const isValid = sleepPositions.person1 && (peopleCount === 1 || sleepPositions.person2);
+    const nextBtn = document.getElementById('sleep-position-next-btn');
+    if (nextBtn) nextBtn.disabled = !isValid;
+  }
+
+  validatePreferenceStep() {
+    const { peopleCount, preferences } = this.quizData;
+    const isValid = preferences.person1 && (peopleCount === 1 || preferences.person2);
+    const nextBtn = document.getElementById('preference-next-btn');
+    if (nextBtn) nextBtn.disabled = !isValid;
+  }
+
   validateContactInfoStep() {
     const { contactInfo } = this.quizData;
     const isValid = contactInfo.name && contactInfo.email && contactInfo.phone && contactInfo.marketingConsent;
     const nextBtn = document.getElementById('contact-next-btn');
-    nextBtn.disabled = !isValid;
+    if (nextBtn) nextBtn.disabled = !isValid;
   }
 
-  /**
-   * Get product recommendations based on quiz responses
-   */
+  // Recommendation methods
+  showRecommendations() {
+    const loadingElement = document.getElementById('recommendations-loading');
+    const resultsElement = document.getElementById('recommendations-results');
+    const emptyElement = document.getElementById('recommendations-empty');
+    
+    if (loadingElement) loadingElement.style.display = 'block';
+    if (resultsElement) resultsElement.style.display = 'none';
+    if (emptyElement) emptyElement.style.display = 'none';
+    
+    // Submit quiz data
+    this.submitQuizData();
+    
+    // Simulate loading delay
+    setTimeout(() => {
+      const recommendations = this.getRecommendations();
+      
+      if (loadingElement) loadingElement.style.display = 'none';
+      
+      if (recommendations.length === 0) {
+        if (emptyElement) emptyElement.style.display = 'block';
+      } else {
+        if (resultsElement) resultsElement.style.display = 'block';
+        const greetingElement = document.getElementById('recommendations-greeting');
+        const gridElement = document.getElementById('recommendations-grid');
+        
+        if (greetingElement) {
+          greetingElement.textContent = `Baseret på dine præferencer, her er vores top anbefalinger til ${this.quizData.contactInfo.name}:`;
+        }
+        if (gridElement) {
+          this.renderRecommendations(recommendations, gridElement);
+        }
+      }
+    }, 2000);
+  }
+
   getRecommendations() {
     const recommendations = [];
     const { peopleCount, preferences, sleepPositions, weights } = this.quizData;
@@ -370,9 +857,6 @@ class FutonQuiz {
       .slice(0, 4);
   }
 
-  /**
-   * Calculate a score for how well a product matches the quiz responses
-   */
   calculateProductScore(product, category) {
     let score = 50; // Base score
     
@@ -391,66 +875,35 @@ class FutonQuiz {
     // Sleep position matching (check product tags)
     const productTags = product.tags.map(tag => tag.toLowerCase());
     
-    if (sleepPositions.person1 === 'back' && productTags.includes('back-sleeper')) {
+    if (sleepPositions.person1 === 'back' && productTags.includes('futon-back-sleeper')) {
       score += 15;
     }
-    if (sleepPositions.person1 === 'side' && productTags.includes('side-sleeper')) {
+    if (sleepPositions.person1 === 'side' && productTags.includes('futon-side-sleeper')) {
       score += 15;
     }
-    if (sleepPositions.person1 === 'stomach' && productTags.includes('stomach-sleeper')) {
+    if (sleepPositions.person1 === 'stomach' && productTags.includes('futon-stomach-sleeper')) {
       score += 15;
     }
     
     if (peopleCount === 2) {
-      if (sleepPositions.person2 === 'back' && productTags.includes('back-sleeper')) {
+      if (sleepPositions.person2 === 'back' && productTags.includes('futon-back-sleeper')) {
         score += 10;
       }
-      if (sleepPositions.person2 === 'side' && productTags.includes('side-sleeper')) {
+      if (sleepPositions.person2 === 'side' && productTags.includes('futon-side-sleeper')) {
         score += 10;
       }
-      if (sleepPositions.person2 === 'stomach' && productTags.includes('stomach-sleeper')) {
+      if (sleepPositions.person2 === 'stomach' && productTags.includes('futon-stomach-sleeper')) {
         score += 10;
       }
     }
     
     // Weight considerations
     const totalWeight = weights.person1 + (peopleCount === 2 ? weights.person2 : 0);
-    if (totalWeight > 140 && productTags.includes('heavy-duty')) {
+    if (totalWeight > 140 && productTags.includes('futon-heavy-duty')) {
       score += 10;
     }
     
     return Math.min(score, 100); // Cap at 100
-  }
-
-  showRecommendations() {
-    const loadingElement = document.getElementById('recommendations-loading');
-    const resultsElement = document.getElementById('recommendations-results');
-    const emptyElement = document.getElementById('recommendations-empty');
-    const greetingElement = document.getElementById('recommendations-greeting');
-    const gridElement = document.getElementById('recommendations-grid');
-    
-    // Show loading first
-    loadingElement.style.display = 'block';
-    resultsElement.style.display = 'none';
-    emptyElement.style.display = 'none';
-    
-    // Submit quiz data
-    this.submitQuizData();
-    
-    // Simulate loading delay
-    setTimeout(() => {
-      const recommendations = this.getRecommendations();
-      
-      loadingElement.style.display = 'none';
-      
-      if (recommendations.length === 0) {
-        emptyElement.style.display = 'block';
-      } else {
-        resultsElement.style.display = 'block';
-        greetingElement.textContent = `Baseret på dine præferencer, her er vores top anbefalinger til ${this.quizData.contactInfo.name}:`;
-        this.renderRecommendations(recommendations, gridElement);
-      }
-    }, 2000);
   }
 
   renderRecommendations(recommendations, container) {
@@ -458,52 +911,45 @@ class FutonQuiz {
     
     recommendations.forEach((product, index) => {
       const productCard = document.createElement('div');
-      productCard.className = `relative bg-card border rounded-lg overflow-hidden ${index === 0 ? 'ring-2 ring-primary' : ''}`;
+      productCard.className = `quiz-card ${index === 0 ? 'quiz-best-match' : ''}`;
+      productCard.style.position = 'relative';
       
       productCard.innerHTML = `
-        ${index === 0 ? '<div class="absolute -top-2 -right-2 bg-primary text-primary-foreground px-2 py-1 rounded text-xs font-medium">Bedste Match</div>' : ''}
+        ${index === 0 ? '<div style="position: absolute; top: -8px; right: -8px; background: hsl(var(--quiz-primary)); color: hsl(var(--quiz-primary-foreground)); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">Bedste Match</div>' : ''}
         ${product.featured_image ? `
-          <div class="aspect-w-16 aspect-h-9 bg-muted">
+          <div style="aspect-ratio: 16/9; background: hsl(var(--quiz-muted));">
             <img 
               src="${product.featured_image}" 
               alt="${product.title}"
-              class="w-full h-48 object-cover"
+              style="width: 100%; height: 12rem; object-fit: cover;"
               loading="lazy"
             />
           </div>
         ` : ''}
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-2">
+        <div class="quiz-card-content">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
             <div>
-              <h3 class="text-lg font-semibold">${product.title}</h3>
-              ${product.vendor ? `<p class="text-sm text-muted-foreground">${product.vendor}</p>` : ''}
+              <h3 style="font-size: 1.125rem; font-weight: 600;">${product.title}</h3>
+              ${product.vendor ? `<p style="font-size: 0.875rem; color: hsl(var(--quiz-muted-foreground));">${product.vendor}</p>` : ''}
             </div>
           </div>
-          <div class="flex items-center gap-2 mb-4">
-            <div class="text-2xl font-bold text-primary">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+            <div style="font-size: 1.5rem; font-weight: 700; color: hsl(var(--quiz-primary));">
               ${this.formatPrice(product.price)}
             </div>
             ${product.compare_at_price && product.compare_at_price > product.price ? `
-              <div class="text-sm text-muted-foreground line-through">
+              <div style="font-size: 0.875rem; color: hsl(var(--quiz-muted-foreground)); text-decoration: line-through;">
                 ${this.formatPrice(product.compare_at_price)}
               </div>
             ` : ''}
           </div>
-          <p class="text-sm text-muted-foreground mb-4">
+          <p style="font-size: 0.875rem; color: hsl(var(--quiz-muted-foreground)); margin-bottom: 1rem;">
             ${product.description}
           </p>
-          ${product.tags.length > 0 ? `
-            <div class="space-y-2 mb-4">
-              <div class="flex flex-wrap gap-1">
-                ${product.tags.slice(0, 3).map(tag => `
-                  <span class="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded">${tag}</span>
-                `).join('')}
-              </div>
-            </div>
-          ` : ''}
-          <div class="space-y-2">
+          <div class="quiz-space-y-2">
             <button 
-              class="quiz-btn quiz-btn-primary w-full h-10"
+              class="quiz-btn quiz-btn-primary"
+              style="width: 100%; height: 2.5rem;"
               onclick="futonQuiz.addToCart(${product.variants[0].id})"
               ${!product.variants[0].available ? 'disabled' : ''}
             >
@@ -513,7 +959,8 @@ class FutonQuiz {
               href="${product.url}" 
               target="_blank" 
               rel="noopener noreferrer"
-              class="quiz-btn quiz-btn-secondary w-full h-10 inline-flex items-center justify-center"
+              class="quiz-btn quiz-btn-secondary"
+              style="width: 100%; height: 2.5rem; display: flex; align-items: center; justify-content: center; text-decoration: none;"
             >
               Se detaljer
             </a>
@@ -533,7 +980,6 @@ class FutonQuiz {
   }
 
   addToCart(variantId) {
-    // Use Shopify's AJAX API to add to cart
     fetch('/cart/add.js', {
       method: 'POST',
       headers: {
@@ -548,7 +994,6 @@ class FutonQuiz {
     })
     .then(response => response.json())
     .then(data => {
-      // Show success message or redirect to cart
       if (window.location.pathname !== '/cart') {
         window.location.href = '/cart';
       }
@@ -559,12 +1004,8 @@ class FutonQuiz {
     });
   }
 
-  /**
-   * Submit quiz data to backend/analytics
-   */
   async submitQuizData() {
     try {
-      // Submit to Shopify contact form
       const formData = new FormData();
       formData.append('contact[first_name]', this.quizData.contactInfo.name.split(' ')[0] || '');
       formData.append('contact[last_name]', this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '');
@@ -587,15 +1028,10 @@ Comments: ${this.quizData.contactInfo.comments || 'None'}`);
         body: formData
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to submit quiz data');
-      }
-
-      return await response.text();
+      return response.ok;
     } catch (error) {
       console.error('Error submitting quiz data:', error);
-      // Don't throw error to avoid breaking the user experience
-      return null;
+      return false;
     }
   }
 
@@ -615,26 +1051,20 @@ Comments: ${this.quizData.contactInfo.comments || 'None'}`);
       }
     };
     
-    // Reset form inputs
-    document.querySelectorAll('input, textarea').forEach(input => {
-      if (input.type === 'checkbox') {
-        input.checked = false;
-      } else {
-        input.value = '';
-      }
-    });
-    
-    // Reset button selections
-    document.querySelectorAll('.quiz-btn-option-selected').forEach(btn => {
-      btn.className = btn.className.replace('quiz-btn-option-selected', '');
-    });
-    
     this.showStep(0);
     this.updateProgress();
   }
 }
 
-// Initialize the quiz when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-  window.futonQuiz = new FutonQuiz();
-});
+// Initialize the quiz when the DOM is ready
+(function() {
+  function initQuiz() {
+    window.futonQuiz = new FutonQuiz();
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initQuiz);
+  } else {
+    initQuiz();
+  }
+})();

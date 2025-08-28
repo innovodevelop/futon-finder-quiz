@@ -1,55 +1,9 @@
 {%- comment -%}
-Futon Quiz Section - Pure Liquid/JavaScript Implementation
+Futon Quiz Section - Self-Contained Implementation
 {%- endcomment -%}
 
-<style>
-  @import url('https://cdn.tailwindcss.com');
-  
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --primary: 247 49% 47%;
-    --primary-foreground: 210 40% 98%;
-    --primary-hover: 247 49% 37%;
-    --secondary: 247 12% 95%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 247 12% 95%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --success: 142 71% 45%;
-    --success-foreground: 210 40% 98%;
-    --border: 247 12% 88%;
-    --ring: 247 49% 47%;
-    --progress-bg: 247 12% 95%;
-    --step-active: 247 49% 47%;
-    --step-completed: 142 71% 45%;
-    --step-inactive: 247 12% 88%;
-    --radius: 1.5rem;
-  }
-
-  .quiz-btn {
-    @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
-  }
-  
-  .quiz-btn-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary-hover;
-  }
-  
-  .quiz-btn-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
-  }
-  
-  .quiz-btn-option {
-    @apply border border-border bg-background hover:bg-accent hover:text-accent-foreground h-auto min-h-[80px] p-4;
-  }
-  
-  .quiz-btn-option-selected {
-    @apply border-primary bg-primary/10 text-primary;
-  }
-  
-  .quiz-input {
-    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
-  }
-</style>
+{%- comment -%} Load styles from external CSS file for complete scoping {%- endcomment -%}
+{{ 'futon-quiz-styles.css' | asset_url | stylesheet_tag }}
 
 <section class="futon-quiz-section bg-background text-foreground min-h-screen py-8" data-section-id="{{ section.id }}">
   <div class="container mx-auto px-4 max-w-4xl">
@@ -66,8 +20,8 @@ Futon Quiz Section - Pure Liquid/JavaScript Implementation
     </div>
 
     <!-- Quiz Container -->
-    <div id="quiz-container" class="bg-background">
-      <!-- Step content will be inserted here -->
+    <div id="quiz-container" class="quiz-container">
+      <!-- Step content will be dynamically inserted here -->
     </div>
   </div>
 
@@ -180,35 +134,23 @@ Futon Quiz Section - Pure Liquid/JavaScript Implementation
               {%- endfor -%}
             ]
           }{%- unless forloop.last -%},{%- endunless -%}
-        {%- endfor -%}
-      ]
     }
   </script>
 </section>
 
-  <!-- Quiz Step Templates (Hidden) -->
-  <div id="quiz-templates" style="display: none;">
-    <!-- Start Step Template -->
-    {% render 'futon-quiz-start-step' %}
-    
-    <!-- People Count Step Template -->
-    {% render 'futon-quiz-people-count-step' %}
-    
-    <!-- Weight Step Template -->
-    {% render 'futon-quiz-weight-step' %}
-    
-    <!-- Sleep Position Step Template -->
-    {% render 'futon-quiz-sleep-position-step' %}
-    
-    <!-- Preference Step Template -->
-    {% render 'futon-quiz-preference-step' %}
-    
-    <!-- Contact Info Step Template -->
-    {% render 'futon-quiz-contact-info-step' %}
-    
-    <!-- Recommendation Step Template -->
-    {% render 'futon-quiz-recommendation-step' %}
-  </div>
+{%- comment -%} Load the Quiz JavaScript {%- endcomment -%}
+<script>
+  window.quizConfig = {
+    softCollection: "{{ section.settings.soft_collection.id | default: '' }}",
+    mediumCollection: "{{ section.settings.medium_collection.id | default: '' }}",
+    hardCollection: "{{ section.settings.hard_collection.id | default: '' }}",
+    couplesCollection: "{{ section.settings.couples_collection.id | default: '' }}",
+    shopUrl: "{{ shop.permanent_domain }}",
+    quizTitle: "{{ section.settings.quiz_title | escape }}",
+    quizSubtitle: "{{ section.settings.quiz_subtitle | escape }}"
+  };
+</script>
+{{ 'futon-quiz.js' | asset_url | script_tag }}
 </section>
 
 {%- comment -%} Load the Quiz JavaScript {%- endcomment -%}

@@ -453,22 +453,26 @@
   }
 }
 
-/* High specificity reset for common conflicts */
-.futon-quiz-section .quiz-btn,
-.futon-quiz-section .quiz-input,
-.futon-quiz-section .quiz-card {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
+/* High specificity reset to override theme conflicts */
+.futon-quiz-section,
+.futon-quiz-section *,
+.futon-quiz-section *:before,
+.futon-quiz-section *:after {
+  box-sizing: border-box !important;
 }
 
-/* Ensure quiz doesn't inherit unwanted styles */
-.futon-quiz-section {
-  all: initial;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: hsl(var(--quiz-background));
-  color: hsl(var(--quiz-foreground));
-  display: block;
-  min-height: 100vh;
-  padding: 2rem 0;
+/* Ensure quiz styles always take precedence */
+.futon-quiz-section .quiz-btn,
+.futon-quiz-section .quiz-input,
+.futon-quiz-section .quiz-card,
+.futon-quiz-section .quiz-container {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  line-height: 1.5 !important;
+}
+
+/* Critical fix: Ensure container styles are applied */
+.futon-quiz-section .quiz-container {
+  max-width: 64rem !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
 }
