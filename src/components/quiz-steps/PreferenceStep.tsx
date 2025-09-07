@@ -68,9 +68,9 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
                 className="flex-col gap-4 h-36 overflow-hidden"
               >
                 <option.icon className="w-8 h-8 flex-shrink-0" />
-                <div className="text-center px-3 w-full">
+                <div className="text-center px-1 w-full">
                   <div className="font-semibold mb-1">{option.label}</div>
-                  <div className="text-xs text-muted-foreground leading-tight line-clamp-2">
+                  <div className="text-xs text-muted-foreground leading-tight">
                     {option.description}
                   </div>
                 </div>
@@ -93,9 +93,9 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
                   className="flex-col gap-4 h-36 overflow-hidden"
                 >
                   <option.icon className="w-8 h-8 flex-shrink-0" />
-                  <div className="text-center px-3 w-full">
+                  <div className="text-center px-1 w-full">
                     <div className="font-semibold mb-1">{option.label}</div>
-                    <div className="text-xs text-muted-foreground leading-tight line-clamp-2">
+                    <div className="text-xs text-muted-foreground leading-tight">
                       {option.description}
                     </div>
                   </div>
