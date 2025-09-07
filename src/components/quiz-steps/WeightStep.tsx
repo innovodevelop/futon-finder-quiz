@@ -26,15 +26,23 @@ export const WeightStep = ({ peopleCount, weights, heights, onChange, onNext, on
     }, heights);
   };
 
-  const updateHeight = (person: "person1" | "person2", height: number) => {
-    onChange(weights, {
-      ...heights,
-      [person]: height,
-    });
+  const safeHeights = {
+    person1: heights?.person1 ?? 0,
+    person2: heights?.person2,
   };
 
-  const isValid = weights.person1 > 0 && heights.person1 > 0 && 
-    (peopleCount === 1 || (weights.person2 && weights.person2 > 0 && heights.person2 && heights.person2 > 0));
+  const updateHeight = (person: "person1" | "person2", height: number) => {
+    const nextHeights = {
+      person1: heights?.person1 ?? 0,
+      person2: heights?.person2,
+    } as { person1: number; person2?: number };
+    nextHeights[person] = height;
+    onChange(weights, nextHeights);
+  };
+
+  // Height is optional and not required for validation
+  const isValid = weights.person1 > 0 &&
+    (peopleCount === 1 || (weights.person2 && weights.person2 > 0));
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -77,7 +85,7 @@ export const WeightStep = ({ peopleCount, weights, heights, onChange, onNext, on
                 id="height1"
                 type="number"
                 placeholder="Indtast højde i cm"
-                value={heights.person1 || ""}
+                value={safeHeights.person1 || ""}
                 onChange={(e) => updateHeight("person1", parseInt(e.target.value) || 0)}
                 min="140"
                 max="220"
@@ -114,7 +122,7 @@ export const WeightStep = ({ peopleCount, weights, heights, onChange, onNext, on
                   id="height2"
                   type="number"
                   placeholder="Indtast højde i cm"
-                  value={heights.person2 || ""}
+                  value={safeHeights.person2 || ""}
                   onChange={(e) => updateHeight("person2", parseInt(e.target.value) || 0)}
                   min="140"
                   max="220"
