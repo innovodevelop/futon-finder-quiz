@@ -56,7 +56,7 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
         {/* Person 1 */}
         <div>
           <h3 className="text-xl font-semibold mb-4">
-            {peopleCount === 1 ? "Din Søvestilling" : "Person 1 Søvestilling"}
+            {peopleCount === 1 ? "Din Soveposition" : "Person 1 Soveposition"}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {sleepOptions.map((option) => (
@@ -82,7 +82,7 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
         {/* Person 2 */}
         {peopleCount === 2 && (
           <div>
-            <h3 className="text-xl font-semibold mb-4">Person 2 Søvestilling</h3>
+            <h3 className="text-xl font-semibold mb-4">Person 2 Soveposition</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {sleepOptions.map((option) => (
                 <Button
