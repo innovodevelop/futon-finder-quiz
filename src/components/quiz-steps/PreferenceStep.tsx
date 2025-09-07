@@ -70,7 +70,7 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
                 <option.icon className="w-8 h-8 flex-shrink-0" />
                 <div className="text-center px-3 w-full">
                   <div className="font-semibold mb-1">{option.label}</div>
-                  <div className="text-xs text-muted-foreground leading-tight whitespace-normal hyphens-auto">
+                  <div className="text-xs text-muted-foreground leading-tight line-clamp-2">
                     {option.description}
                   </div>
                 </div>
@@ -95,7 +95,7 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
                   <option.icon className="w-8 h-8 flex-shrink-0" />
                   <div className="text-center px-3 w-full">
                     <div className="font-semibold mb-1">{option.label}</div>
-                    <div className="text-xs text-muted-foreground leading-tight whitespace-normal hyphens-auto">
+                    <div className="text-xs text-muted-foreground leading-tight line-clamp-2">
                       {option.description}
                     </div>
                   </div>

@@ -68,9 +68,11 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
                   className="flex-col gap-4 h-32"
                 >
                   <option.icon className="w-8 h-8" />
-                  <div className="text-center px-2">
-                    <div className="font-semibold">{option.label}</div>
-                    <div className="text-sm text-muted-foreground leading-tight break-words">{option.description}</div>
+                  <div className="text-center px-3 w-full">
+                    <div className="font-semibold mb-1">{option.label}</div>
+                    <div className="text-xs text-muted-foreground leading-tight line-clamp-2">
+                      {option.description}
+                    </div>
                   </div>
                 </Button>
             ))}
@@ -91,9 +93,11 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
                   className="flex-col gap-4 h-32"
                 >
                   <option.icon className="w-8 h-8" />
-                  <div className="text-center px-2">
-                    <div className="font-semibold">{option.label}</div>
-                    <div className="text-sm text-muted-foreground leading-tight break-words">{option.description}</div>
+                  <div className="text-center px-3 w-full">
+                    <div className="font-semibold mb-1">{option.label}</div>
+                    <div className="text-xs text-muted-foreground leading-tight line-clamp-2">
+                      {option.description}
+                    </div>
                   </div>
                 </Button>
               ))}
