@@ -14,6 +14,10 @@ export interface QuizData {
     person1: number;
     person2?: number;
   };
+  heights: {
+    person1: number;
+    person2?: number;
+  };
   sleepPositions: {
     person1: "side" | "belly-back" | "both";
     person2?: "side" | "belly-back" | "both";
@@ -34,6 +38,9 @@ export interface QuizData {
 const initialQuizData: QuizData = {
   peopleCount: 1,
   weights: {
+    person1: 0,
+  },
+  heights: {
     person1: 0,
   },
   sleepPositions: {
@@ -90,7 +97,8 @@ export const FutonQuiz = () => {
           <WeightStep
             peopleCount={quizData.peopleCount}
             weights={quizData.weights}
-            onChange={(weights) => updateQuizData({ weights })}
+            heights={quizData.heights}
+            onChange={(weights, heights) => updateQuizData({ weights, heights })}
             onNext={nextStep}
             onPrev={prevStep}
           />
