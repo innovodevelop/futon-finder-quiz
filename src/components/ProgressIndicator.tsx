@@ -33,12 +33,12 @@ export const ProgressIndicator = ({ currentStep, totalSteps }: ProgressIndicator
           return (
             <div
               key={stepNumber}
-              className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300",
-                isCompleted && "bg-success text-success-foreground",
-                isCurrent && "bg-step-active text-primary-foreground",
-                !isCompleted && !isCurrent && "bg-step-inactive text-muted-foreground"
-              )}
+            className={cn(
+              "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300",
+              isCompleted && "bg-primary text-primary-foreground",
+              isCurrent && "bg-primary text-primary-foreground ring-2 ring-primary/30",
+              !isCompleted && !isCurrent && "bg-muted text-muted-foreground"
+            )}
             >
               {isCompleted ? "✓" : stepNumber}
             </div>
