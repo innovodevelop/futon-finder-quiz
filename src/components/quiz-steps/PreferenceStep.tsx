@@ -65,12 +65,14 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
                 variant={preferences.person1 === option.value ? "option-selected" : "option"}
                 size="option"
                 onClick={() => updatePreference("person1", option.value)}
-                className="flex-col gap-4 h-32"
+                className="flex-col gap-4 h-36 overflow-hidden"
               >
-                <option.icon className="w-8 h-8" />
-                <div className="text-center px-2">
-                  <div className="font-semibold">{option.label}</div>
-                  <div className="text-sm text-muted-foreground leading-tight break-words">{option.description}</div>
+                <option.icon className="w-8 h-8 flex-shrink-0" />
+                <div className="text-center px-3 w-full">
+                  <div className="font-semibold mb-1">{option.label}</div>
+                  <div className="text-xs text-muted-foreground leading-tight whitespace-normal hyphens-auto">
+                    {option.description}
+                  </div>
                 </div>
               </Button>
             ))}
@@ -88,12 +90,14 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
                   variant={preferences.person2 === option.value ? "option-selected" : "option"}
                   size="option"
                   onClick={() => updatePreference("person2", option.value)}
-                  className="flex-col gap-4 h-32"
+                  className="flex-col gap-4 h-36 overflow-hidden"
                 >
-                  <option.icon className="w-8 h-8" />
-                  <div className="text-center px-2">
-                    <div className="font-semibold">{option.label}</div>
-                    <div className="text-sm text-muted-foreground leading-tight break-words">{option.description}</div>
+                  <option.icon className="w-8 h-8 flex-shrink-0" />
+                  <div className="text-center px-3 w-full">
+                    <div className="font-semibold mb-1">{option.label}</div>
+                    <div className="text-xs text-muted-foreground leading-tight whitespace-normal hyphens-auto">
+                      {option.description}
+                    </div>
                   </div>
                 </Button>
               ))}
