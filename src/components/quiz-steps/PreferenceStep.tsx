@@ -65,12 +65,12 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
                 variant={preferences.person1 === option.value ? "option-selected" : "option"}
                 size="option"
                 onClick={() => updatePreference("person1", option.value)}
-                className="flex-col gap-4 h-36 overflow-hidden"
+                className="flex-col gap-2 min-h-[10rem] h-auto"
               >
                 <option.icon className="w-8 h-8 flex-shrink-0" />
                 <div className="text-center px-2 w-full">
                   <div className="font-semibold mb-1">{option.label}</div>
-                  <div className="text-xs text-muted-foreground leading-tight break-words">
+                  <div className="text-xs text-muted-foreground leading-tight break-words whitespace-normal">
                     {option.description}
                   </div>
                 </div>
@@ -90,12 +90,12 @@ export const PreferenceStep = ({ peopleCount, preferences, onChange, onNext, onP
                   variant={preferences.person2 === option.value ? "option-selected" : "option"}
                   size="option"
                   onClick={() => updatePreference("person2", option.value)}
-                  className="flex-col gap-4 h-36 overflow-hidden"
+                  className="flex-col gap-2 min-h-[10rem] h-auto"
                 >
                   <option.icon className="w-8 h-8 flex-shrink-0" />
                   <div className="text-center px-2 w-full">
                     <div className="font-semibold mb-1">{option.label}</div>
-                    <div className="text-xs text-muted-foreground leading-tight break-words">
+                    <div className="text-xs text-muted-foreground leading-tight break-words whitespace-normal">
                       {option.description}
                     </div>
                   </div>

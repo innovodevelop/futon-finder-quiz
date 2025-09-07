@@ -65,7 +65,7 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
                   variant={sleepPositions.person1 === option.value ? "option-selected" : "option"}
                   size="option"
                   onClick={() => updateSleepPosition("person1", option.value)}
-                  className="flex-col gap-4 h-32"
+                  className="flex-col gap-2 min-h-[10rem] h-auto"
                 >
                   <option.icon className="w-8 h-8" />
                   <div className="text-center px-2 w-full">
@@ -90,7 +90,7 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
                   variant={sleepPositions.person2 === option.value ? "option-selected" : "option"}
                   size="option"
                   onClick={() => updateSleepPosition("person2", option.value)}
-                  className="flex-col gap-4 h-32"
+                  className="flex-col gap-2 min-h-[10rem] h-auto"
                 >
                   <option.icon className="w-8 h-8" />
                   <div className="text-center px-2 w-full">
