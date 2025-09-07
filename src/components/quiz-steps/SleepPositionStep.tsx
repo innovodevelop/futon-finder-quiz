@@ -60,19 +60,19 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {sleepOptions.map((option) => (
-              <Button
-                key={option.value}
-                variant={sleepPositions.person1 === option.value ? "option-selected" : "option"}
-                size="option"
-                onClick={() => updateSleepPosition("person1", option.value)}
-                className="flex-col gap-3 h-24"
-              >
-                <option.icon className="w-8 h-8" />
-                <div className="text-center">
-                  <div className="font-semibold">{option.label}</div>
-                  <div className="text-xs text-muted-foreground">{option.description}</div>
-                </div>
-              </Button>
+                <Button
+                  key={option.value}
+                  variant={sleepPositions.person1 === option.value ? "option-selected" : "option"}
+                  size="option"
+                  onClick={() => updateSleepPosition("person1", option.value)}
+                  className="flex-col gap-4 h-32"
+                >
+                  <option.icon className="w-8 h-8" />
+                  <div className="text-center">
+                    <div className="font-semibold">{option.label}</div>
+                    <div className="text-sm text-muted-foreground">{option.description}</div>
+                  </div>
+                </Button>
             ))}
           </div>
         </div>
@@ -88,12 +88,12 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
                   variant={sleepPositions.person2 === option.value ? "option-selected" : "option"}
                   size="option"
                   onClick={() => updateSleepPosition("person2", option.value)}
-                  className="flex-col gap-3 h-24"
+                  className="flex-col gap-4 h-32"
                 >
                   <option.icon className="w-8 h-8" />
                   <div className="text-center">
                     <div className="font-semibold">{option.label}</div>
-                    <div className="text-xs text-muted-foreground">{option.description}</div>
+                    <div className="text-sm text-muted-foreground">{option.description}</div>
                   </div>
                 </Button>
               ))}
