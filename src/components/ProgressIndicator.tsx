@@ -7,24 +7,24 @@ interface ProgressIndicatorProps {
 
 export const ProgressIndicator = ({ currentStep, totalSteps }: ProgressIndicatorProps) => {
   return (
-    <div className="w-full max-w-2xl mx-auto mb-8">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-sm font-medium text-muted-foreground">
+    <div id="fq-progress-indicator" className="fq-progress">
+      <div className="fq-progress__header">
+        <span className="fq-progress__text">
           Trin {currentStep} af {totalSteps}
         </span>
-        <span className="text-sm font-medium text-muted-foreground">
+        <span className="fq-progress__text">
           {Math.round((currentStep / totalSteps) * 100)}%
         </span>
       </div>
-      <div className="w-full bg-progress-bg rounded-full h-2 overflow-hidden">
+      <div className="fq-progress__bar">
         <div
-          className="h-full bg-gradient-to-r from-primary to-primary-hover transition-all duration-500 ease-in-out"
+          className="fq-progress__fill"
           style={{
             width: `${(currentStep / totalSteps) * 100}%`,
           }}
         />
       </div>
-      <div className="flex justify-between mt-4">
+      <div className="fq-progress__steps">
         {Array.from({ length: totalSteps }, (_, index) => {
           const stepNumber = index + 1;
           const isCompleted = stepNumber < currentStep;
@@ -33,12 +33,13 @@ export const ProgressIndicator = ({ currentStep, totalSteps }: ProgressIndicator
           return (
             <div
               key={stepNumber}
-            className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300",
-              isCompleted && "bg-primary text-primary-foreground",
-              isCurrent && "bg-primary text-primary-foreground ring-2 ring-primary/30",
-              !isCompleted && !isCurrent && "bg-muted text-muted-foreground"
-            )}
+              id={`fq-progress-step-${stepNumber}`}
+              className={cn(
+                "fq-progress__step",
+                isCompleted && "fq-progress__step--completed",
+                isCurrent && "fq-progress__step--current",
+                !isCompleted && !isCurrent && "fq-progress__step--inactive"
+              )}
             >
               {isCompleted ? "✓" : stepNumber}
             </div>

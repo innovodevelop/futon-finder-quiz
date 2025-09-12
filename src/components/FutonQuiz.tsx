@@ -148,15 +148,15 @@ export const FutonQuiz = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-primary/5 py-6 px-4">
-      <div className="max-w-3xl mx-auto">
+    <section id="futon-quiz-container" className="futon-quiz">
+      <div className="futon-quiz__container">
         {currentStep > 1 && (
           <ProgressIndicator currentStep={currentStep - 1} totalSteps={6} />
         )}
-        <div className="bg-card rounded-3xl shadow-card p-6 md:p-10">
+        <div className="futon-quiz__card">
           {renderStep()}
         </div>
       </div>
-    </div>
+    </section>
   );
 };

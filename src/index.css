@@ -99,3 +99,212 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* Futon Quiz App Styles */
+@layer components {
+  /* App Container */
+  .futon-quiz-app {
+    @apply w-full;
+  }
+
+  /* Main Quiz Container */
+  .futon-quiz {
+    @apply min-h-screen py-6 px-4;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05));
+  }
+
+  .futon-quiz__container {
+    @apply max-w-3xl mx-auto;
+  }
+
+  .futon-quiz__card {
+    @apply bg-card rounded-3xl p-6 md:p-10;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Progress Indicator */
+  .fq-progress {
+    @apply w-full max-w-2xl mx-auto mb-8;
+  }
+
+  .fq-progress__header {
+    @apply flex items-center justify-between mb-2;
+  }
+
+  .fq-progress__text {
+    @apply text-sm font-medium text-muted-foreground;
+  }
+
+  .fq-progress__bar {
+    @apply w-full bg-progress-bg rounded-full h-2 overflow-hidden;
+  }
+
+  .fq-progress__fill {
+    @apply h-full transition-all duration-500 ease-in-out;
+    background: var(--gradient-primary);
+  }
+
+  .fq-progress__steps {
+    @apply flex justify-between mt-4;
+  }
+
+  .fq-progress__step {
+    @apply w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300;
+  }
+
+  .fq-progress__step--completed {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .fq-progress__step--current {
+    @apply bg-primary text-primary-foreground ring-2 ring-primary/30;
+  }
+
+  .fq-progress__step--inactive {
+    @apply bg-muted text-muted-foreground;
+  }
+
+  /* Step Common Styles */
+  .fq-step {
+    @apply max-w-2xl mx-auto;
+  }
+
+  .fq-step__header {
+    @apply text-center mb-8;
+  }
+
+  .fq-step__title {
+    @apply text-3xl font-bold text-foreground mb-4;
+  }
+
+  .fq-step__subtitle {
+    @apply text-muted-foreground;
+  }
+
+  .fq-step__content {
+    @apply space-y-6;
+  }
+
+  .fq-step__navigation {
+    @apply flex justify-between;
+  }
+
+  /* Start Step Specific */
+  .fq-start {
+    @apply text-center max-w-2xl mx-auto space-y-6;
+  }
+
+  .fq-start__hero {
+    @apply w-full h-48 object-cover rounded-2xl;
+  }
+
+  .fq-start__title {
+    @apply text-3xl md:text-4xl font-bold text-foreground;
+  }
+
+  .fq-start__description {
+    @apply text-muted-foreground text-base leading-relaxed;
+  }
+
+  .fq-start__features {
+    @apply bg-muted/30 rounded-2xl p-5;
+  }
+
+  .fq-start__features-title {
+    @apply font-semibold text-foreground mb-3;
+  }
+
+  .fq-start__features-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-3 text-sm;
+  }
+
+  .fq-start__feature {
+    @apply flex items-center gap-2 justify-center md:justify-start;
+  }
+
+  .fq-start__feature-dot {
+    @apply w-2 h-2 bg-success rounded-full;
+  }
+
+  .fq-start__cta {
+    @apply space-y-3;
+  }
+
+  .fq-start__note {
+    @apply text-xs text-muted-foreground;
+  }
+
+  /* Option Grid */
+  .fq-options {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4 mb-8;
+  }
+
+  .fq-options--single {
+    @apply grid-cols-1;
+  }
+
+  .fq-options--triple {
+    @apply md:grid-cols-3;
+  }
+
+  /* Input Groups */
+  .fq-input-group {
+    @apply space-y-2;
+  }
+
+  .fq-input-group__label {
+    @apply text-base font-medium;
+  }
+
+  .fq-input-group__input {
+    @apply h-12 text-center text-lg;
+  }
+
+  .fq-inputs-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+  }
+
+  /* Info Box */
+  .fq-info-box {
+    @apply bg-muted/30 rounded-2xl p-4 mb-6;
+  }
+
+  .fq-info-box__content {
+    @apply text-sm text-muted-foreground text-center flex items-center justify-center gap-2;
+  }
+
+  /* Form Sections */
+  .fq-form-section {
+    @apply space-y-6;
+  }
+
+  .fq-form-section__title {
+    @apply text-xl font-semibold mb-4;
+  }
+
+  .fq-form-section--spaced {
+    @apply space-y-8;
+  }
+
+  /* Cards */
+  .fq-card {
+    @apply bg-card text-card-foreground rounded-lg border shadow-card;
+  }
+
+  /* Buttons - Using semantic classes that reference design system */
+  .fq-btn--option {
+    @apply min-h-20 px-6 py-4 rounded-lg w-full justify-center text-center flex-col gap-3;
+    @apply bg-card border-2 border-border text-card-foreground hover:border-primary hover:shadow-card transition-all duration-200;
+  }
+
+  .fq-btn--option-selected {
+    @apply min-h-20 px-6 py-4 rounded-lg w-full justify-center text-center flex-col gap-3;
+    @apply bg-primary/10 border-2 border-primary text-primary shadow-card;
+  }
+
+  .fq-btn--quiz {
+    @apply text-primary-foreground hover:shadow-lg hover:scale-[1.02] transform-gpu;
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-soft);
+  }
+}

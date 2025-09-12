@@ -42,30 +42,31 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
   ];
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-foreground mb-4">
+    <div id="fq-sleep-position-step" className="fq-step">
+      <div className="fq-step__header">
+        <h2 className="fq-step__title">
           Hvordan sover du?
         </h2>
-        <p className="text-muted-foreground">
+        <p className="fq-step__subtitle">
           Din søvestilling påvirker den type støtte og fasthed, du har brug for.
         </p>
       </div>
 
-      <div className="space-y-8">
+      <div className="fq-form-section fq-form-section--spaced">
         {/* Person 1 */}
-        <div>
-          <h3 className="text-xl font-semibold mb-4">
+        <div id="fq-sleep-person1">
+          <h3 className="fq-form-section__title">
             {peopleCount === 1 ? "Din Soveposition" : "Person 1 Soveposition"}
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="fq-options fq-options--triple">
             {sleepOptions.map((option) => (
                 <Button
                   key={option.value}
+                  id={`fq-sleep-p1-${option.value}`}
                   variant={sleepPositions.person1 === option.value ? "option-selected" : "option"}
                   size="option"
                   onClick={() => updateSleepPosition("person1", option.value)}
-                  className="flex-col gap-2 min-h-[10rem] h-auto"
+                  className={`${sleepPositions.person1 === option.value ? "fq-btn--option-selected" : "fq-btn--option"} flex-col gap-2 min-h-[10rem] h-auto`}
                 >
                   <option.icon className="w-8 h-8" />
                   <div className="text-center px-2 w-full">
@@ -81,16 +82,17 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
 
         {/* Person 2 */}
         {peopleCount === 2 && (
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Person 2 Soveposition</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div id="fq-sleep-person2">
+            <h3 className="fq-form-section__title">Person 2 Soveposition</h3>
+            <div className="fq-options fq-options--triple">
               {sleepOptions.map((option) => (
                 <Button
                   key={option.value}
+                  id={`fq-sleep-p2-${option.value}`}
                   variant={sleepPositions.person2 === option.value ? "option-selected" : "option"}
                   size="option"
                   onClick={() => updateSleepPosition("person2", option.value)}
-                  className="flex-col gap-2 min-h-[10rem] h-auto"
+                  className={`${sleepPositions.person2 === option.value ? "fq-btn--option-selected" : "fq-btn--option"} flex-col gap-2 min-h-[10rem] h-auto`}
                 >
                   <option.icon className="w-8 h-8" />
                   <div className="text-center px-2 w-full">
@@ -106,11 +108,11 @@ export const SleepPositionStep = ({ peopleCount, sleepPositions, onChange, onNex
         )}
       </div>
 
-      <div className="flex justify-between mt-8">
-        <Button variant="secondary" onClick={onPrev}>
+      <div className="fq-step__navigation">
+        <Button id="fq-sleep-back" variant="secondary" onClick={onPrev}>
           Tilbage
         </Button>
-        <Button variant="quiz" onClick={onNext}>
+        <Button id="fq-sleep-next" variant="quiz" onClick={onNext} className="fq-btn--quiz">
           Fortsæt
         </Button>
       </div>

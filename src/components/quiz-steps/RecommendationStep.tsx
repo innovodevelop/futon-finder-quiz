@@ -89,12 +89,12 @@ export const RecommendationStep = ({ quizData, onRestart }: RecommendationStepPr
   const filteredRecommendations = getRecommendations();
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-foreground mb-4">
+    <div id="fq-recommendation-step" className="fq-step">
+      <div className="fq-step__header">
+        <h2 className="fq-step__title">
           🎉 Dine Perfekte Futon Matches!
         </h2>
-        <p className="text-muted-foreground">
+        <p className="fq-step__subtitle">
           Baseret på dine præferencer, her er vores top anbefalinger til {quizData.contactInfo.name}:
         </p>
       </div>
@@ -106,15 +106,15 @@ export const RecommendationStep = ({ quizData, onRestart }: RecommendationStepPr
           <p className="text-muted-foreground mb-6">
             Dine specifikke krav er ret unikke! Vores søvneksperter vil gennemgå dine præferencer og kontakte dig med tilpassede anbefalinger.
           </p>
-          <Button variant="quiz" onClick={onRestart}>
+          <Button id="fq-rec-restart" variant="quiz" onClick={onRestart} className="fq-btn--quiz">
             Tag Test Igen
           </Button>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div id="fq-recommendations-grid" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {filteredRecommendations.map((product, index) => (
-              <Card key={product.id} className={`relative ${index === 0 ? 'ring-2 ring-primary' : ''}`}>
+              <Card key={product.id} id={`fq-rec-product-${product.id}`} className={`fq-card relative ${index === 0 ? 'ring-2 ring-primary' : ''}`}>
                 {index === 0 && (
                   <Badge className="absolute -top-2 -right-2 bg-primary">
                     Bedste Match
@@ -164,14 +164,16 @@ export const RecommendationStep = ({ quizData, onRestart }: RecommendationStepPr
                   )}
                   <div className="space-y-2">
                     <Button 
+                      id={`fq-rec-add-cart-${product.id}`}
                       onClick={() => handleAddToCart(product.variants[0].id)}
                       disabled={!product.variants[0].available}
-                      className="w-full"
+                      className="w-full fq-btn--quiz"
                       variant="quiz"
                     >
                       {product.variants[0].available ? 'Tilføj til kurv' : 'Udsolgt'}
                     </Button>
                     <Button 
+                      id={`fq-rec-details-${product.id}`}
                       asChild
                       variant="outline"
                       className="w-full"
@@ -186,24 +188,26 @@ export const RecommendationStep = ({ quizData, onRestart }: RecommendationStepPr
             ))}
           </div>
 
-          <div className="bg-success/10 border border-success/20 rounded-lg p-6 mb-8">
-            <h3 className="font-semibold text-success-foreground mb-2">
-              ✨ Hvad sker der nu?
-            </h3>
-            <ul className="text-sm text-success-foreground/80 space-y-1">
-              <li>• Vores søvneksperter kontakter dig inden for 24 timer</li>
-              <li>• Du modtager detaljerede produktoplysninger og priser</li>
-              <li>• Vi planlægger en konsultation for at besvare eventuelle spørgsmål</li>
-              <li>• Gratis hjemmeprøvning tilgængelig på alle anbefalede futoner</li>
-            </ul>
+          <div className="fq-info-box bg-success/10 border border-success/20">
+            <div className="fq-info-box__content text-success-foreground">
+              <h3 className="font-semibold mb-2">
+                ✨ Hvad sker der nu?
+              </h3>
+              <ul className="text-sm text-success-foreground/80 space-y-1 text-left">
+                <li>• Vores søvneksperter kontakter dig inden for 24 timer</li>
+                <li>• Du modtager detaljerede produktoplysninger og priser</li>
+                <li>• Vi planlægger en konsultation for at besvare eventuelle spørgsmål</li>
+                <li>• Gratis hjemmeprøvning tilgængelig på alle anbefalede futoner</li>
+              </ul>
+            </div>
           </div>
 
           <div className="text-center space-y-4">
-            <Button variant="quiz" size="lg">
+            <Button id="fq-rec-contact-experts" variant="quiz" size="lg" className="fq-btn--quiz">
               Kontakt Vores Eksperter
             </Button>
             <div>
-              <Button variant="link" onClick={onRestart}>
+              <Button id="fq-rec-retake" variant="link" onClick={onRestart}>
                 Tag Test Igen
               </Button>
             </div>

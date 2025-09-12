@@ -45,88 +45,88 @@ export const WeightStep = ({ peopleCount, weights, heights, onChange, onNext, on
     (peopleCount === 1 || (weights.person2 && weights.person2 > 0));
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="text-center mb-6">
-        <h2 className="text-3xl font-bold text-foreground mb-4">
+    <div id="fq-weight-step" className="fq-step">
+      <div className="fq-step__header">
+        <h2 className="fq-step__title">
           Hvad er {peopleCount === 1 ? "din vægt og højde" : "jeres vægt og højde"}?
         </h2>
-        <p className="text-muted-foreground">
+        <p className="fq-step__subtitle">
           Vægt og højde hjælper vores medarbejdere med at give dig personlig rådgivning.
         </p>
       </div>
 
-      <div className={`mb-6 ${peopleCount === 2 ? "space-y-8" : "space-y-6"}`}>
+      <div className={`fq-form-section ${peopleCount === 2 ? "fq-form-section--spaced" : ""}`}>
         {/* Person 1 */}
-        <div>
-          <h3 className="text-xl font-semibold mb-4">
+        <div id="fq-weight-person1">
+          <h3 className="fq-form-section__title">
             {peopleCount === 1 ? "Dine oplysninger" : "Person 1 oplysninger"}
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="weight1" className="text-base font-medium">
+          <div className="fq-inputs-grid">
+            <div className="fq-input-group">
+              <Label htmlFor="fq-weight1" className="fq-input-group__label">
                 Vægt (kg)
               </Label>
               <Input
-                id="weight1"
+                id="fq-weight1"
                 type="number"
                 placeholder="Indtast vægt i kg"
                 value={weights.person1 || ""}
                 onChange={(e) => updateWeight("person1", parseInt(e.target.value) || 0)}
                 min="35"
                 max="180"
-                className="h-12 text-center text-lg"
+                className="fq-input-group__input"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="height1" className="text-base font-medium">
+            <div className="fq-input-group">
+              <Label htmlFor="fq-height1" className="fq-input-group__label">
                 Højde (cm)
               </Label>
               <Input
-                id="height1"
+                id="fq-height1"
                 type="number"
                 placeholder="Indtast højde i cm"
                 value={safeHeights.person1 || ""}
                 onChange={(e) => updateHeight("person1", parseInt(e.target.value) || 0)}
                 min="140"
                 max="220"
-                className="h-12 text-center text-lg"
+                className="fq-input-group__input"
               />
             </div>
           </div>
         </div>
 
         {peopleCount === 2 && (
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Person 2 oplysninger</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="weight2" className="text-base font-medium">
+          <div id="fq-weight-person2">
+            <h3 className="fq-form-section__title">Person 2 oplysninger</h3>
+            <div className="fq-inputs-grid">
+              <div className="fq-input-group">
+                <Label htmlFor="fq-weight2" className="fq-input-group__label">
                   Vægt (kg)
                 </Label>
                 <Input
-                  id="weight2"
+                  id="fq-weight2"
                   type="number"
                   placeholder="Indtast vægt i kg"
                   value={weights.person2 || ""}
                   onChange={(e) => updateWeight("person2", parseInt(e.target.value) || 0)}
                   min="35"
                   max="180"
-                  className="h-12 text-center text-lg"
+                  className="fq-input-group__input"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="height2" className="text-base font-medium">
+              <div className="fq-input-group">
+                <Label htmlFor="fq-height2" className="fq-input-group__label">
                   Højde (cm)
                 </Label>
                 <Input
-                  id="height2"
+                  id="fq-height2"
                   type="number"
                   placeholder="Indtast højde i cm"
                   value={safeHeights.person2 || ""}
                   onChange={(e) => updateHeight("person2", parseInt(e.target.value) || 0)}
                   min="140"
                   max="220"
-                  className="h-12 text-center text-lg"
+                  className="fq-input-group__input"
                 />
               </div>
             </div>
@@ -134,21 +134,23 @@ export const WeightStep = ({ peopleCount, weights, heights, onChange, onNext, on
         )}
       </div>
 
-      <div className="bg-muted/30 rounded-2xl p-4 mb-6">
-        <p className="text-sm text-muted-foreground text-center flex items-center justify-center gap-2">
+      <div className="fq-info-box">
+        <p className="fq-info-box__content">
           <Lightbulb className="w-4 h-4" />
           Vægt og højde bruges kun som reference for vores medarbejdere ved personlig rådgivning.
         </p>
       </div>
 
-      <div className="flex justify-between">
-        <Button variant="secondary" onClick={onPrev}>
+      <div className="fq-step__navigation">
+        <Button id="fq-weight-back" variant="secondary" onClick={onPrev}>
           Tilbage
         </Button>
         <Button 
+          id="fq-weight-next"
           variant="quiz" 
           onClick={onNext}
           disabled={!isValid}
+          className="fq-btn--quiz"
         >
           Fortsæt
         </Button>

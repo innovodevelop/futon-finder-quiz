@@ -18,9 +18,9 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary-hover",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        quiz: "bg-gradient-to-r from-primary to-primary-hover text-primary-foreground hover:shadow-lg hover:scale-[1.02] transform-gpu shadow-soft",
-        option: "bg-card border-2 border-border text-card-foreground hover:border-primary hover:shadow-card transition-all duration-200",
-        "option-selected": "bg-primary/10 border-2 border-primary text-primary shadow-card",
+        quiz: "fq-btn--quiz",
+        option: "fq-btn--option",
+        "option-selected": "fq-btn--option-selected",
       },
       size: {
         default: "h-10 px-4 py-2",
