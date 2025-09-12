@@ -58,6 +58,10 @@ export default {
 					DEFAULT: 'hsl(var(--success))',
 					foreground: 'hsl(var(--success-foreground))'
 				},
+				'progress-bg': 'hsl(var(--progress-bg))',
+				'step-active': 'hsl(var(--step-active))',
+				'step-completed': 'hsl(var(--step-completed))',
+				'step-inactive': 'hsl(var(--step-inactive))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
