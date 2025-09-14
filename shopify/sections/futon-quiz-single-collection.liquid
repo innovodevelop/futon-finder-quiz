@@ -96,6 +96,7 @@
     productCollection: "{{ section.settings.product_collection.id | default: '' }}",
     shopUrl: "{{ shop.permanent_domain }}",
     totalSteps: {{ section.blocks.size }},
+    heroImageUrl: "{{ 'futon-hero.jpg' | asset_url }}",
     
     // Tag mapping configuration
     tagMappings: {
