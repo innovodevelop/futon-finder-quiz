@@ -629,7 +629,6 @@ class FutonQuizSingleCollection {
       </div>
     `;
   }
-  }
 
   // Quiz navigation methods
   startQuiz() {
