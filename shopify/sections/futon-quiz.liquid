@@ -5,28 +5,28 @@ Futon Quiz Section - Self-Contained Implementation
 {%- comment -%} Load styles from external CSS file for complete scoping {%- endcomment -%}
 {{ 'futon-quiz-styles.css' | asset_url | stylesheet_tag }}
 
-<section class="futon-quiz-section bg-background text-foreground min-h-screen py-8" data-section-id="{{ section.id }}">
-  <div class="container mx-auto px-4 max-w-4xl">
+<section class="futon-quiz bg-background text-foreground min-h-screen py-8" data-section-id="{{ section.id }}">
+  <div class="futon-quiz__container mx-auto px-4 max-w-4xl">
     <!-- Progress Indicator -->
-    <div id="progress-indicator" class="hidden w-full max-w-2xl mx-auto mb-8">
-      <div class="flex items-center justify-between mb-2">
-        <span class="text-sm font-medium text-muted-foreground" id="step-text">Trin 1 af 7</span>
-        <span class="text-sm font-medium text-muted-foreground" id="progress-percent">14%</span>
+    <div id="futon-quiz__progress-indicator" class="hidden w-full max-w-2xl mx-auto mb-8">
+      <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__justify-between mb-2">
+        <span class="text-sm font-medium text-muted-foreground" id="futon-quiz__step-text">Trin 1 af 7</span>
+        <span class="text-sm font-medium text-muted-foreground" id="futon-quiz__progress-percent">14%</span>
       </div>
       <div class="w-full bg-progress-bg rounded-full h-2 overflow-hidden">
-        <div id="progress-bar" class="h-full bg-gradient-to-r from-primary to-primary-hover transition-all duration-500 ease-in-out" style="width: 14%;"></div>
+        <div id="futon-quiz__progress-bar" class="h-full bg-gradient-to-r from-primary to-primary-hover transition-all duration-500 ease-in-out" style="width: 14%;"></div>
       </div>
-      <div id="step-indicators" class="flex justify-between mt-4"></div>
+      <div id="futon-quiz__step-indicators" class="futon-quiz__flex futon-quiz__justify-between mt-4"></div>
     </div>
 
     <!-- Quiz Container -->
-    <div id="quiz-container" class="quiz-container">
+    <div id="futon-quiz__container" class="futon-quiz__container">
       <!-- Step content will be dynamically inserted here -->
     </div>
   </div>
 
   {%- comment -%} Hidden product data for JavaScript access {%- endcomment -%}
-  <script type="application/json" id="quiz-products-data">
+  <script type="application/json" id="futon-quiz__products-data">
     {
       "soft_products": [
         {%- for product in collections[section.settings.soft_collection].products limit: 20 -%}

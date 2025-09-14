@@ -1,42 +1,43 @@
-<div id="start-step" class="quiz-step">
-  <div class="text-center max-w-2xl mx-auto space-y-6">
-    <div class="space-y-4">
+<div id="futon-quiz__start-step" class="futon-quiz__step">
+  <div class="futon-quiz__text-center max-w-2xl mx-auto futon-quiz__space-y-6">
+    <div class="futon-quiz__space-y-4">
       <img 
         src="{{ 'futon-hero.jpg' | asset_url }}" 
         alt="Comfortable futon setup" 
-        class="w-full h-48 object-cover rounded-2xl"
+        class="futon-quiz__hero-image"
         loading="eager"
       />
-      <h1 class="text-3xl md:text-4xl font-bold text-foreground">
+      <h1 class="futon-quiz__title">
         Find Din Perfekte Futon
       </h1>
-      <p class="text-muted-foreground text-base leading-relaxed">
+      <p class="futon-quiz__description">
         Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov. 
         Baseret på dine søvnpræferencer anbefaler vi det perfekte match fra vores kollektion.
       </p>
     </div>
 
-    <div class="bg-muted/30 rounded-2xl p-5">
-      <h3 class="font-semibold text-foreground mb-3">Hvad du får:</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-        <div class="flex items-center gap-2 justify-center md:justify-start">
-          <div class="w-2 h-2 bg-success rounded-full"></div>
+    <div class="futon-quiz__info-box">
+      <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Hvad du får:</h3>
+      <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__grid--md-cols-3 futon-quiz__gap-4">
+        <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
+          <div class="futon-quiz__bullet--success"></div>
           <span>Personlige anbefalinger</span>
         </div>
-        <div class="flex items-center gap-2 justify-center md:justify-start">
-          <div class="w-2 h-2 bg-success rounded-full"></div>
+        <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
+          <div class="futon-quiz__bullet--success"></div>
           <span>Ekspert vejledning</span>
         </div>
-        <div class="flex items-center gap-2 justify-center md:justify-start">
-          <div class="w-2 h-2 bg-success rounded-full"></div>
+        <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
+          <div class="futon-quiz__bullet--success"></div>
           <span>Perfekt komfort match</span>
         </div>
       </div>
     </div>
 
-    <div class="space-y-3">
+    <div class="futon-quiz__space-y-4">
       <button 
-        class="quiz-btn quiz-btn-primary h-12 px-12 py-3 text-base rounded-lg"
+        class="futon-quiz__btn futon-quiz__btn--primary"
+        style="height: 3rem; padding: 0 3rem; font-size: 1rem;"
         onclick="futonQuiz.startQuiz()"
       >
         Start Test

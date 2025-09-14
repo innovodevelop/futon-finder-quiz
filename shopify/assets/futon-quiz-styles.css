@@ -1,10 +1,10 @@
 /**
- * Futon Quiz - Scoped Styles
- * All styles are prefixed with .futon-quiz to prevent conflicts
+ * Futon Quiz - BEM-style Component System
+ * All styles follow BEM naming convention: futon-quiz__element--modifier
  */
 
-/* Quiz Container Scope - All styles are contained within this class */
-.futon-quiz-section {
+/* Main Quiz Block */
+.futon-quiz {
   /* CSS Custom Properties - Scoped to quiz only */
   --quiz-background: 0 0% 100%;
   --quiz-foreground: 222.2 84% 4.9%;
@@ -55,8 +55,8 @@
   min-height: 100vh;
   padding: 2rem 0;
 
-  /* Typography - Scoped to quiz */
-  .quiz-title {
+  /* Typography Elements */
+  .futon-quiz__title {
     font-size: 2.25rem;
     font-weight: 700;
     line-height: 1.2;
@@ -64,7 +64,7 @@
     color: hsl(var(--quiz-foreground));
   }
 
-  .quiz-subtitle {
+  .futon-quiz__subtitle {
     font-size: 1.125rem;
     font-weight: 600;
     line-height: 1.4;
@@ -72,33 +72,33 @@
     color: hsl(var(--quiz-foreground));
   }
 
-  .quiz-description {
+  .futon-quiz__description {
     color: hsl(var(--quiz-muted-foreground));
     line-height: 1.6;
   }
 
-  /* Option styling */
-  .quiz-emoji {
+  /* Option Elements */
+  .futon-quiz__emoji {
     font-size: 2.5rem;
     line-height: 1;
     margin-bottom: 0.5rem;
   }
 
-  .quiz-option-title {
+  .futon-quiz__option-title {
     font-weight: 600;
     font-size: 1rem;
     color: hsl(var(--quiz-foreground));
     margin-bottom: 0.25rem;
   }
 
-  .quiz-option-description {
+  .futon-quiz__option-description {
     font-size: 0.875rem;
     color: hsl(var(--quiz-muted-foreground));
     line-height: 1.4;
   }
 
-  /* Button Styles - Scoped */
-  .quiz-btn {
+  /* Button Styles */
+  .futon-quiz__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -116,17 +116,17 @@
     overflow: hidden;
   }
 
-  .quiz-btn:focus-visible {
+  .futon-quiz__btn:focus-visible {
     outline: 2px solid hsl(var(--quiz-ring));
     outline-offset: 2px;
   }
 
-  .quiz-btn:disabled {
+  .futon-quiz__btn:disabled {
     pointer-events: none;
     opacity: 0.5;
   }
 
-  .quiz-btn-primary {
+  .futon-quiz__btn--primary {
     background: linear-gradient(135deg, hsl(var(--quiz-primary)), hsl(var(--quiz-primary-hover)));
     color: hsl(var(--quiz-primary-foreground));
     box-shadow: var(--quiz-shadow-sm);
@@ -134,12 +134,12 @@
     height: 2.75rem;
   }
 
-  .quiz-btn-primary:hover:not(:disabled) {
+  .futon-quiz__btn--primary:hover:not(:disabled) {
     transform: translateY(-1px);
     box-shadow: var(--quiz-shadow-md);
   }
 
-  .quiz-btn-secondary {
+  .futon-quiz__btn--secondary {
     background-color: hsl(var(--quiz-secondary));
     color: hsl(var(--quiz-secondary-foreground));
     border: 1px solid hsl(var(--quiz-border));
@@ -147,11 +147,11 @@
     height: 2.75rem;
   }
 
-  .quiz-btn-secondary:hover:not(:disabled) {
+  .futon-quiz__btn--secondary:hover:not(:disabled) {
     background-color: hsl(var(--quiz-secondary) / 0.8);
   }
 
-  .quiz-btn-option {
+  .futon-quiz__btn--option {
     background-color: hsl(var(--quiz-background));
     border: 2px solid hsl(var(--quiz-border));
     color: hsl(var(--quiz-foreground));
@@ -167,37 +167,37 @@
     gap: 0.75rem;
   }
 
-  .quiz-btn-option:hover:not(:disabled) {
+  .futon-quiz__btn--option:hover:not(:disabled) {
     border-color: hsl(var(--quiz-primary));
     background-color: hsl(var(--quiz-primary) / 0.05);
     transform: translateY(-2px);
     box-shadow: var(--quiz-shadow-lg);
   }
 
-  .quiz-btn-option-selected {
+  .futon-quiz__btn--option-selected {
     border-color: hsl(var(--quiz-primary));
     background: linear-gradient(135deg, hsl(var(--quiz-primary) / 0.1), hsl(var(--quiz-primary) / 0.05));
     color: hsl(var(--quiz-primary));
     box-shadow: 0 0 0 1px hsl(var(--quiz-primary) / 0.2);
   }
 
-  /* Media & Helper elements */
-  .quiz-hero-image {
+  /* Media & Helper Elements */
+  .futon-quiz__hero-image {
     width: 100%;
     height: 12rem; /* 48 */
     object-fit: cover;
     border-radius: calc(var(--quiz-radius) * 0.8);
   }
 
-  .quiz-bullet-success {
+  .futon-quiz__bullet--success {
     width: 0.5rem; /* 2 */
     height: 0.5rem;
     background-color: hsl(var(--quiz-success));
     border-radius: 9999px;
   }
 
-  /* Input Styles - Scoped */
-  .quiz-input {
+  /* Input Elements */
+  .futon-quiz__input {
     display: flex;
     height: 2.75rem;
     width: 100%;
@@ -210,30 +210,30 @@
     color: hsl(var(--quiz-foreground));
   }
 
-  .quiz-input::placeholder {
+  .futon-quiz__input::placeholder {
     color: hsl(var(--quiz-muted-foreground));
   }
 
-  .quiz-input:focus {
+  .futon-quiz__input:focus {
     outline: none;
     border-color: hsl(var(--quiz-primary));
     box-shadow: 0 0 0 2px hsl(var(--quiz-primary) / 0.2);
   }
 
-  .quiz-textarea {
+  .futon-quiz__textarea {
     min-height: 5rem;
     padding: 0.75rem;
     resize: vertical;
   }
 
-  /* Progress Indicator - Scoped */
-  .quiz-progress-container {
+  /* Progress Elements */
+  .futon-quiz__progress-container {
     width: 100%;
     max-width: 32rem;
     margin: 0 auto 2rem;
   }
 
-  .quiz-progress-bar {
+  .futon-quiz__progress-bar {
     width: 100%;
     background-color: hsl(var(--quiz-progress-bg));
     border-radius: 9999px;
@@ -242,20 +242,20 @@
     position: relative;
   }
 
-  .quiz-progress-fill {
+  .futon-quiz__progress-fill {
     height: 100%;
     background: linear-gradient(90deg, hsl(var(--quiz-primary)), hsl(var(--quiz-primary-hover)));
     transition: width 0.5s ease-in-out;
     border-radius: 9999px;
   }
 
-  .quiz-step-indicators {
+  .futon-quiz__step-indicators {
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
   }
 
-  .quiz-step-indicator {
+  .futon-quiz__step-indicator {
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
@@ -267,23 +267,23 @@
     transition: all 0.3s ease;
   }
 
-  .quiz-step-indicator.active {
+  .futon-quiz__step-indicator--active {
     background-color: hsl(var(--quiz-step-active));
     color: hsl(var(--quiz-primary-foreground));
   }
 
-  .quiz-step-indicator.completed {
+  .futon-quiz__step-indicator--completed {
     background-color: hsl(var(--quiz-step-completed));
     color: hsl(var(--quiz-success-foreground));
   }
 
-  .quiz-step-indicator.inactive {
+  .futon-quiz__step-indicator--inactive {
     background-color: hsl(var(--quiz-step-inactive));
     color: hsl(var(--quiz-muted-foreground));
   }
 
-  /* Card Styles - Scoped */
-  .quiz-card {
+  /* Card Elements */
+  .futon-quiz__card {
     background-color: hsl(var(--quiz-background));
     border: 1px solid hsl(var(--quiz-border));
     border-radius: var(--quiz-radius);
@@ -291,12 +291,12 @@
     overflow: hidden;
   }
 
-  .quiz-card-content {
+  .futon-quiz__card-content {
     padding: 1.5rem;
   }
 
-  /* Info Box - Scoped */
-  .quiz-info-box {
+  /* Info Box Elements */
+  .futon-quiz__info-box {
     background: linear-gradient(135deg, hsl(var(--quiz-muted) / 0.3), hsl(var(--quiz-muted) / 0.1));
     border: 1px solid hsl(var(--quiz-border));
     border-radius: var(--quiz-radius);
@@ -304,51 +304,51 @@
     margin: 1rem 0;
   }
 
-  .quiz-success-box {
+  .futon-quiz__success-box {
     background: linear-gradient(135deg, hsl(var(--quiz-success) / 0.1), hsl(var(--quiz-success) / 0.05));
     border: 1px solid hsl(var(--quiz-success) / 0.2);
     color: hsl(var(--quiz-success-foreground));
   }
 
-  /* Grid Layout - Scoped */
-  .quiz-grid {
+  /* Grid Layout Elements */
+  .futon-quiz__grid {
     display: grid;
     gap: 1rem;
   }
 
-  .quiz-grid-cols-1 {
+  .futon-quiz__grid--cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
-  .quiz-grid-cols-2 {
+  .futon-quiz__grid--cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .quiz-grid-cols-3 {
+  .futon-quiz__grid--cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   /* Responsive Design */
   @media (min-width: 768px) {
-    .quiz-title {
+    .futon-quiz__title {
       font-size: 3rem;
     }
     
-    .quiz-md\:grid-cols-2 {
+    .futon-quiz__grid--md-cols-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     
-    .quiz-md\:grid-cols-3 {
+    .futon-quiz__grid--md-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
   /* Animation Classes */
-  .quiz-fade-in {
+  .futon-quiz__fade-in {
     animation: quizFadeIn 0.3s ease-out;
   }
 
-  .quiz-scale-in {
+  .futon-quiz__scale-in {
     animation: quizScaleIn 0.2s ease-out;
   }
 
@@ -376,7 +376,7 @@
   }
 
   /* Loading States */
-  .quiz-loading {
+  .futon-quiz__loading {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -385,7 +385,7 @@
     text-align: center;
   }
 
-  .quiz-loading-spinner {
+  .futon-quiz__loading-spinner {
     width: 2rem;
     height: 2rem;
     border: 3px solid hsl(var(--quiz-border));
@@ -401,51 +401,51 @@
   }
 
   /* Utility Classes */
-  .quiz-container {
+  .futon-quiz__container {
     max-width: 64rem;
     margin: 0 auto;
     padding: 0 1rem;
   }
 
-  .quiz-text-center {
+  .futon-quiz__text-center {
     text-align: center;
   }
 
-  .quiz-mb-4 { margin-bottom: 1rem; }
-  .quiz-mb-6 { margin-bottom: 1.5rem; }
-  .quiz-mb-8 { margin-bottom: 2rem; }
-  .quiz-mt-4 { margin-top: 1rem; }
-  .quiz-mt-6 { margin-top: 1.5rem; }
-  .quiz-mt-8 { margin-top: 2rem; }
+  .futon-quiz__mb-4 { margin-bottom: 1rem; }
+  .futon-quiz__mb-6 { margin-bottom: 1.5rem; }
+  .futon-quiz__mb-8 { margin-bottom: 2rem; }
+  .futon-quiz__mt-4 { margin-top: 1rem; }
+  .futon-quiz__mt-6 { margin-top: 1.5rem; }
+  .futon-quiz__mt-8 { margin-top: 2rem; }
 
-  .quiz-space-y-2 > * + * { margin-top: 0.5rem; }
-  .quiz-space-y-4 > * + * { margin-top: 1rem; }
-  .quiz-space-y-6 > * + * { margin-top: 1.5rem; }
+  .futon-quiz__space-y-2 > * + * { margin-top: 0.5rem; }
+  .futon-quiz__space-y-4 > * + * { margin-top: 1rem; }
+  .futon-quiz__space-y-6 > * + * { margin-top: 1.5rem; }
 
-  .quiz-flex {
+  .futon-quiz__flex {
     display: flex;
   }
 
-  .quiz-justify-between {
+  .futon-quiz__justify-between {
     justify-content: space-between;
   }
 
-  .quiz-items-center {
+  .futon-quiz__items-center {
     align-items: center;
   }
 
-  .quiz-gap-2 { gap: 0.5rem; }
-  .quiz-gap-4 { gap: 1rem; }
-  .quiz-gap-6 { gap: 1.5rem; }
+  .futon-quiz__gap-2 { gap: 0.5rem; }
+  .futon-quiz__gap-4 { gap: 1rem; }
+  .futon-quiz__gap-6 { gap: 1.5rem; }
 
   /* Print Styles */
   @media print {
-    .futon-quiz-section {
+    .futon-quiz {
       background: white !important;
       color: black !important;
     }
     
-    .quiz-btn {
+    .futon-quiz__btn {
       border: 1px solid #ccc !important;
       background: white !important;
       color: black !important;
@@ -454,24 +454,24 @@
 }
 
 /* High specificity reset to override theme conflicts */
-.futon-quiz-section,
-.futon-quiz-section *,
-.futon-quiz-section *:before,
-.futon-quiz-section *:after {
+.futon-quiz,
+.futon-quiz *,
+.futon-quiz *:before,
+.futon-quiz *:after {
   box-sizing: border-box !important;
 }
 
 /* Ensure quiz styles always take precedence */
-.futon-quiz-section .quiz-btn,
-.futon-quiz-section .quiz-input,
-.futon-quiz-section .quiz-card,
-.futon-quiz-section .quiz-container {
+.futon-quiz .futon-quiz__btn,
+.futon-quiz .futon-quiz__input,
+.futon-quiz .futon-quiz__card,
+.futon-quiz .futon-quiz__container {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   line-height: 1.5 !important;
 }
 
 /* Critical fix: Ensure container styles are applied */
-.futon-quiz-section .quiz-container {
+.futon-quiz .futon-quiz__container {
   max-width: 64rem !important;
   margin: 0 auto !important;
   padding: 0 1rem !important;
