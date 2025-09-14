@@ -96,7 +96,7 @@
     productCollection: "{{ section.settings.product_collection.id | default: '' }}",
     shopUrl: "{{ shop.permanent_domain }}",
     totalSteps: {{ section.blocks.size }},
-    heroImageUrl: "{{ 'futon-hero.jpg' | asset_url }}",
+    heroImageUrl: "{% if section.settings.hero_image != blank %}{{ section.settings.hero_image | image_url: width: 1200 }}{% else %}{{ 'futon-hero.jpg' | asset_url }}{% endif %}",
     
     // Tag mapping configuration
     tagMappings: {
@@ -148,6 +148,12 @@
       "id": "quiz_subtitle", 
       "label": "Quiz Undertitel",
       "default": "Tag vores personlige test og få anbefalinger tilpasset dine behov"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image",
+      "info": "Optional. If set, this image will appear on the start step."
     },
     {
       "type": "header",

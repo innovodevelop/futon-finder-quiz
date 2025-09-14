@@ -36,6 +36,7 @@ class FutonQuizSingleCollection {
   }
 
   setup() {
+    console.log('Futon Quiz (Single Collection) config:', window.quizConfig);
     this.loadProductData();
     this.showStep(0);
   }
@@ -122,10 +123,11 @@ class FutonQuizSingleCollection {
         <div class="futon-quiz__space-y-6">
           <div class="futon-quiz__space-y-4">
             <img 
-              src="${window.quizConfig?.heroImageUrl || '/assets/futon-hero.jpg'}" 
+              src="${window.quizConfig?.heroImageUrl || ''}" 
               alt="Comfortable futon setup" 
               class="futon-quiz__hero-image"
               loading="eager"
+              onerror="this.style.display='none'"
             />
             <h1 class="futon-quiz__title">
               Find Din Perfekte Futon
