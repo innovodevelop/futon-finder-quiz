@@ -1,67 +1,69 @@
-<div id="recommendation-step" class="quiz-step" style="display: none;">
-  <div class="max-w-4xl mx-auto">
+<div id="futon-quiz__recommendation-step" class="futon-quiz__step" style="display: none;">
+  <div class="futon-quiz__container" style="max-width: 64rem; margin: 0 auto;">
     <!-- Loading State -->
-    <div id="recommendations-loading" class="text-center py-12">
-      <div class="text-6xl mb-4">⏳</div>
-      <h3 class="text-xl font-semibold mb-2">Finder Dine Perfekte Matches...</h3>
-      <p class="text-muted-foreground">
-        Vi analyserer dine præferencer og finder de bedste produkter til dig.
+    <div id="futon-quiz__recommendations-loading" class="futon-quiz__loading">
+      <div class="futon-quiz__loading-spinner"></div>
+      <h2 class="futon-quiz__title futon-quiz__mb-4">Finder dine perfekte matches...</h2>
+      <p class="futon-quiz__description">
+        Vi analyserer dine svar og finder de bedste futoner til dine behov.
       </p>
     </div>
 
-    <!-- Results -->
-    <div id="recommendations-results" style="display: none;">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-bold text-foreground mb-4">
-          🎉 Dine Perfekte Futon Matches!
+    <!-- Results State -->
+    <div id="futon-quiz__recommendations-results" style="display: none;">
+      <div class="futon-quiz__text-center futon-quiz__mb-8">
+        <h2 class="futon-quiz__title futon-quiz__mb-4">
+          Dine Personlige Futon Anbefalinger
         </h2>
-        <p class="text-muted-foreground" id="recommendations-greeting">
-          Baseret på dine præferencer, her er vores top anbefalinger:
-        </p>
+        <div id="futon-quiz__recommendations-greeting" class="futon-quiz__description futon-quiz__mb-6">
+          <!-- Greeting will be populated by JavaScript -->
+        </div>
       </div>
 
-      <!-- Products Grid -->
-      <div id="recommendations-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <!-- Products will be inserted here by JavaScript -->
+      <!-- Product Grid -->
+      <div id="futon-quiz__recommendations-grid" class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__grid--md-cols-2 futon-quiz__gap-6 futon-quiz__mb-8">
+        <!-- Product recommendations will be populated by JavaScript -->
       </div>
 
       <!-- Next Steps -->
-      <div class="bg-success/10 border border-success/20 rounded-lg p-6 mb-8">
-        <h3 class="font-semibold text-success-foreground mb-2">
-          ✨ Hvad sker der nu?
-        </h3>
-        <ul class="text-sm text-success-foreground/80 space-y-1">
-          <li>• Vores søvneksperter kontakter dig inden for 24 timer</li>
-          <li>• Du modtager detaljerede produktoplysninger og priser</li>
-          <li>• Vi planlægger en konsultation for at besvare eventuelle spørgsmål</li>
-          <li>• Gratis hjemmeprøvning tilgængelig på alle anbefalede futoner</li>
-        </ul>
-      </div>
-
-      <div class="text-center space-y-4">
-        <button class="quiz-btn quiz-btn-primary h-12 px-8 text-base">
-          Kontakt Vores Eksperter
-        </button>
-        <div>
-          <button class="text-primary hover:underline" onclick="futonQuiz.restart()">
-            Tag Test Igen
-          </button>
+      <div class="futon-quiz__info-box futon-quiz__mb-6">
+        <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Næste skridt:</h3>
+        <div class="futon-quiz__space-y-2">
+          <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+            <div class="futon-quiz__bullet--success"></div>
+            <span class="futon-quiz__option-description">Gennemse dine anbefalinger og vælg din favorit</span>
+          </div>
+          <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+            <div class="futon-quiz__bullet--success"></div>
+            <span class="futon-quiz__option-description">Tilføj til kurv eller se flere detaljer</span>
+          </div>
+          <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+            <div class="futon-quiz__bullet--success"></div>
+            <span class="futon-quiz__option-description">Vores team kontakter dig med personlig rådgivning</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- No Results -->
-    <div id="recommendations-empty" style="display: none;">
-      <div class="text-center py-12">
-        <div class="text-6xl mb-4">😅</div>
-        <h3 class="text-xl font-semibold mb-2">Ingen Perfekte Matches Fundet</h3>
-        <p class="text-muted-foreground mb-6">
-          Dine specifikke krav er ret unikke! Vores søvneksperter vil gennemgå dine præferencer og kontakte dig med tilpassede anbefalinger.
-        </p>
-        <button class="quiz-btn quiz-btn-primary h-10 px-6" onclick="futonQuiz.restart()">
+      <!-- Action Buttons -->
+      <div class="futon-quiz__flex futon-quiz__justify-center futon-quiz__gap-4">
+        <button class="futon-quiz__btn futon-quiz__btn--secondary" onclick="futonQuiz.restartQuiz()">
           Tag Test Igen
         </button>
       </div>
+    </div>
+
+    <!-- Empty State -->
+    <div id="futon-quiz__recommendations-empty" class="futon-quiz__text-center" style="display: none;">
+      <h2 class="futon-quiz__title futon-quiz__mb-4">
+        Ingen anbefalinger fundet
+      </h2>
+      <p class="futon-quiz__description futon-quiz__mb-6">
+        Vi kunne desværre ikke finde passende futoner baseret på dine svar. 
+        Prøv at tag testen igen eller kontakt os direkte for personlig hjælp.
+      </p>
+      <button class="futon-quiz__btn futon-quiz__btn--primary" onclick="futonQuiz.restartQuiz()">
+        Tag Test Igen
+      </button>
     </div>
   </div>
 </div>

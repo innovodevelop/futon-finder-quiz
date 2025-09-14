@@ -1,49 +1,55 @@
-<div id="people-count-step" class="quiz-step" style="display: none;">
-  <div class="max-w-2xl mx-auto">
-    <div class="text-center mb-8">
-      <h2 class="text-3xl font-bold text-foreground mb-4">
+<div id="futon-quiz__people-count-step" class="futon-quiz__step" style="display: none;">
+  <div class="futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+    <div class="futon-quiz__text-center futon-quiz__mb-8">
+      <h2 class="futon-quiz__title" style="font-size: 1.875rem; margin-bottom: 1rem;">
         Hvor mange personer skal bruge denne futon?
       </h2>
-      <p class="text-muted-foreground">
+      <p class="futon-quiz__description">
         Dette hjælper os med at anbefale den rigtige størrelse og fasthed til dine behov.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+    <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__grid--md-cols-2 futon-quiz__gap-4 futon-quiz__mb-8">
       <button
-        class="quiz-btn quiz-btn-option flex-col gap-3"
+        class="futon-quiz__btn futon-quiz__btn--option"
+        style="flex-direction: column; gap: 0.75rem;"
         data-value="1"
         onclick="futonQuiz.setPeopleCount(1)"
       >
-        <div class="w-10 h-10 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </div>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
         <div>
-          <div class="font-semibold">Kun Mig</div>
-          <div class="text-sm text-muted-foreground">Enkeltperson brug</div>
+          <div class="futon-quiz__option-title">Kun Mig</div>
+          <div class="futon-quiz__option-description">Enkeltperson brug</div>
         </div>
       </button>
 
       <button
-        class="quiz-btn quiz-btn-option flex-col gap-3"
+        class="futon-quiz__btn futon-quiz__btn--option"
+        style="flex-direction: column; gap: 0.75rem;"
         data-value="2"
         onclick="futonQuiz.setPeopleCount(2)"
       >
-        <div class="w-10 h-10 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m22 21-2-2"/><path d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0"/></svg>
-        </div>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="m22 21-2-2"/>
+          <path d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0"/>
+        </svg>
         <div>
-          <div class="font-semibold">To Personer</div>
-          <div class="text-sm text-muted-foreground">Par eller delt brug</div>
+          <div class="futon-quiz__option-title">To Personer</div>
+          <div class="futon-quiz__option-description">Par eller delt brug</div>
         </div>
       </button>
     </div>
 
-    <div class="flex justify-between">
-      <button class="quiz-btn quiz-btn-secondary h-10 px-4" onclick="futonQuiz.prevStep()">
+    <div class="futon-quiz__flex futon-quiz__justify-between">
+      <button class="futon-quiz__btn futon-quiz__btn--secondary" onclick="futonQuiz.prevStep()">
         Tilbage
       </button>
-      <button class="quiz-btn quiz-btn-primary h-10 px-4" onclick="futonQuiz.nextStep()">
+      <button class="futon-quiz__btn futon-quiz__btn--primary" onclick="futonQuiz.nextStep()">
         Fortsæt
       </button>
     </div>

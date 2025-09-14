@@ -766,7 +766,7 @@ class FutonQuiz {
   validateContactInfoStep() {
     const { contactInfo } = this.quizData;
     const isValid = contactInfo.name && contactInfo.email && contactInfo.phone && contactInfo.marketingConsent;
-    const nextBtn = document.getElementById('contact-next-btn');
+    const nextBtn = document.getElementById('futon-quiz__contact-next-btn');
     if (nextBtn) nextBtn.disabled = !isValid;
   }
 

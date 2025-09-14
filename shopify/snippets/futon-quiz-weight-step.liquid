@@ -1,60 +1,72 @@
-<div id="weight-step" class="quiz-step" style="display: none;">
-  <div class="max-w-2xl mx-auto">
-    <div class="text-center mb-6">
-      <h2 class="text-3xl font-bold text-foreground mb-4" id="weight-title">
+<div id="futon-quiz__weight-step" class="futon-quiz__step" style="display: none;">
+  <div class="futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+    <div class="futon-quiz__text-center futon-quiz__mb-8">
+      <h2 id="futon-quiz__weight-title" 
+          class="futon-quiz__title" 
+          style="font-size: 1.875rem; margin-bottom: 1rem;"
+          data-single-title="Hvad er din vægt?"
+          data-couple-title="Hvad er jeres vægt?">
         Hvad er din vægt?
       </h2>
-      <p class="text-muted-foreground">
-        Vægt hjælper os med at bestemme det rigtige fasthedsniveau og støtte for optimal komfort.
+      <p class="futon-quiz__description">
+        Dette hjælper os med at anbefale den rigtige fasthed og støtte til dine behov.
       </p>
     </div>
 
-    <div id="weight-inputs" class="mb-6 space-y-4">
-      <div class="space-y-2">
-        <label for="weight1" class="text-base font-medium block" id="weight1-label">
+    <div id="futon-quiz__weight-inputs" class="futon-quiz__mb-6 futon-quiz__space-y-4">
+      <div>
+        <label id="futon-quiz__weight1-label" 
+               class="futon-quiz__option-title futon-quiz__mb-4" 
+               style="display: block;"
+               data-single-label="Din vægt (kg)"
+               data-person1-label="Person 1 vægt (kg)">
           Din vægt (kg)
         </label>
         <input
-          id="weight1"
           type="number"
+          class="futon-quiz__input"
           placeholder="Indtast vægt i kg"
-          min="35"
-          max="180"
-          class="quiz-input h-12 text-center text-lg"
           oninput="futonQuiz.updateWeight('person1', this.value)"
+          min="30"
+          max="200"
         />
       </div>
-
-      <div id="weight2-container" class="space-y-2" style="display: none;">
-        <label for="weight2" class="text-base font-medium block">
+      
+      <div id="futon-quiz__weight2-container" style="display: none;">
+        <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">
           Person 2 vægt (kg)
         </label>
         <input
-          id="weight2"
           type="number"
+          class="futon-quiz__input"
           placeholder="Indtast vægt i kg"
-          min="35"
-          max="180"
-          class="quiz-input h-12 text-center text-lg"
           oninput="futonQuiz.updateWeight('person2', this.value)"
+          min="30"
+          max="200"
         />
       </div>
     </div>
 
-    <div class="bg-muted/30 rounded-2xl p-4 mb-6">
-      <p class="text-sm text-muted-foreground text-center flex items-center justify-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lightbulb"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
-        Din vægtinformation hjælper os med at anbefale det rigtige fasthedsniveau for korrekt rygradsjustering og komfort.
-      </p>
+    <div class="futon-quiz__info-box futon-quiz__mb-6">
+      <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4"/>
+          <path d="M12 8h.01"/>
+        </svg>
+        <span class="futon-quiz__option-description">
+          Vægt hjælper os med at anbefale den rigtige fasthed for optimal komfort og støtte.
+        </span>
+      </div>
     </div>
 
-    <div class="flex justify-between">
-      <button class="quiz-btn quiz-btn-secondary h-10 px-4" onclick="futonQuiz.prevStep()">
+    <div class="futon-quiz__flex futon-quiz__justify-between">
+      <button class="futon-quiz__btn futon-quiz__btn--secondary" onclick="futonQuiz.prevStep()">
         Tilbage
       </button>
       <button 
-        id="weight-next-btn"
-        class="quiz-btn quiz-btn-primary h-10 px-4" 
+        id="futon-quiz__weight-next-btn" 
+        class="futon-quiz__btn futon-quiz__btn--primary" 
         onclick="futonQuiz.nextStep()"
         disabled
       >
