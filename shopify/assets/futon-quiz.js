@@ -51,7 +51,7 @@ class FutonQuiz {
    */
   loadProductData() {
     try {
-      const productDataElement = document.getElementById('quiz-products-data');
+      const productDataElement = document.getElementById('futon-quiz__products-data');
       if (productDataElement) {
         const data = JSON.parse(productDataElement.textContent);
         this.products = {
@@ -675,9 +675,9 @@ class FutonQuiz {
     const adjustedTotal = this.totalSteps - 2; // Exclude start and recommendation steps
     const percentage = Math.round((adjustedStep / adjustedTotal) * 100);
     
-    const stepText = document.getElementById('step-text');
-    const progressPercent = document.getElementById('progress-percent');
-    const progressBar = document.getElementById('progress-bar');
+    const stepText = document.getElementById('futon-quiz__step-text');
+    const progressPercent = document.getElementById('futon-quiz__progress-percent');
+    const progressBar = document.getElementById('futon-quiz__progress-bar');
     
     if (stepText) stepText.textContent = `Trin ${adjustedStep} af ${adjustedTotal}`;
     if (progressPercent) progressPercent.textContent = `${percentage}%`;
@@ -687,7 +687,7 @@ class FutonQuiz {
   }
 
   updateStepIndicators() {
-    const container = document.getElementById('step-indicators');
+    const container = document.getElementById('futon-quiz__step-indicators');
     if (!container) return;
     
     container.innerHTML = '';
@@ -695,16 +695,16 @@ class FutonQuiz {
     
     for (let i = 1; i <= adjustedTotal; i++) {
       const indicator = document.createElement('div');
-      indicator.className = 'quiz-step-indicator';
+      indicator.className = 'futon-quiz__step-indicator';
       
       if (i < this.currentStep) {
-        indicator.classList.add('completed');
+        indicator.classList.add('futon-quiz__step-indicator--completed');
         indicator.textContent = '✓';
       } else if (i === this.currentStep) {
-        indicator.classList.add('active');
+        indicator.classList.add('futon-quiz__step-indicator--active');
         indicator.textContent = i;
       } else {
-        indicator.classList.add('inactive');
+        indicator.classList.add('futon-quiz__step-indicator--inactive');
         indicator.textContent = i;
       }
       

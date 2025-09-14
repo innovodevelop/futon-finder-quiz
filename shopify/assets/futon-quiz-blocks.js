@@ -106,7 +106,7 @@ class FutonQuizBlocks {
    */
   loadProductData() {
     try {
-      const productDataElement = document.getElementById('quiz-products-data');
+      const productDataElement = document.getElementById('futon-quiz__products-data');
       if (productDataElement) {
         const data = JSON.parse(productDataElement.textContent);
         this.products = {
@@ -127,19 +127,19 @@ class FutonQuizBlocks {
       block.element.style.display = 'none';
     });
     
+    // Toggle start step visibility
+    const startStep = document.getElementById('futon-quiz__start-step');
+    if (startStep) startStep.style.display = stepIndex === 0 ? 'block' : 'none';
+    
     // Show current step
     if (this.stepBlocks[stepIndex]) {
       this.stepBlocks[stepIndex].element.style.display = 'block';
     }
     
-    // Show/hide progress indicator based on step type
-    const progressIndicator = document.getElementById('progress-indicator');
-    const currentStepType = this.stepBlocks[stepIndex]?.stepType;
-    
-    if (currentStepType === 'start-step' || currentStepType === 'recommendation-step') {
-      progressIndicator.style.display = 'none';
-    } else {
-      progressIndicator.style.display = 'block';
+    // Show/hide progress indicator (hidden on start)
+    const progressIndicator = document.getElementById('futon-quiz__progress-indicator');
+    if (progressIndicator) {
+      progressIndicator.style.display = stepIndex === 0 ? 'none' : 'block';
     }
     
     // Update step-specific UI
@@ -253,9 +253,9 @@ class FutonQuizBlocks {
     const adjustedTotal = progressSteps.length;
     const percentage = Math.round((adjustedStep / adjustedTotal) * 100);
     
-    const stepTextEl = document.getElementById('step-text');
-    const progressPercentEl = document.getElementById('progress-percent');
-    const progressBarEl = document.getElementById('progress-bar');
+    const stepTextEl = document.getElementById('futon-quiz__step-text');
+    const progressPercentEl = document.getElementById('futon-quiz__progress-percent');
+    const progressBarEl = document.getElementById('futon-quiz__progress-bar');
     
     if (stepTextEl) stepTextEl.textContent = `Trin ${adjustedStep} af ${adjustedTotal}`;
     if (progressPercentEl) progressPercentEl.textContent = `${percentage}%`;
@@ -265,7 +265,7 @@ class FutonQuizBlocks {
   }
 
   updateStepIndicators(currentStep, totalSteps) {
-    const container = document.getElementById('step-indicators');
+    const container = document.getElementById('futon-quiz__step-indicators');
     if (!container) return;
     
     container.innerHTML = '';
