@@ -45,7 +45,7 @@ class FutonQuizSingleCollection {
    */
   loadProductData() {
     try {
-      const productDataElement = document.getElementById('quiz-products-data');
+      const productDataElement = document.getElementById('futon-quiz__products-data');
       if (productDataElement) {
         const data = JSON.parse(productDataElement.textContent);
         this.products = data.products || [];
@@ -58,7 +58,7 @@ class FutonQuizSingleCollection {
   }
 
   showStep(stepIndex) {
-    const container = document.getElementById('quiz-container');
+    const container = document.getElementById('futon-quiz__container');
     if (!container) return;
 
     // Clear container
@@ -118,45 +118,45 @@ class FutonQuizSingleCollection {
 
   buildStartStep() {
     return `
-      <div class="quiz-step quiz-text-center quiz-container" style="max-width: 32rem; margin: 0 auto;">
-        <div class="quiz-space-y-6">
-          <div class="quiz-space-y-4">
+      <div class="futon-quiz__step futon-quiz__text-center futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="futon-quiz__space-y-6">
+          <div class="futon-quiz__space-y-4">
             <img 
               src="${window.location.origin}/cdn/shop/files/futon-hero.jpg" 
               alt="Comfortable futon setup" 
-              class="quiz-hero-image"
+              class="futon-quiz__hero-image"
               loading="eager"
             />
-            <h1 class="quiz-title">
+            <h1 class="futon-quiz__title">
               Find Din Perfekte Futon
             </h1>
-            <p class="quiz-description">
+            <p class="futon-quiz__description">
               Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov. 
               Baseret på dine søvnpræferencer anbefaler vi det perfekte match fra vores kollektion.
             </p>
           </div>
 
-          <div class="quiz-info-box">
-            <h3 class="quiz-subtitle quiz-mb-4">Hvad du får:</h3>
-            <div class="quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-3 quiz-gap-4">
-              <div class="quiz-flex quiz-items-center quiz-gap-2 quiz-justify-center">
-                <div class="quiz-bullet-success"></div>
+          <div class="futon-quiz__info-box">
+            <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Hvad du får:</h3>
+            <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__grid--md-cols-3 futon-quiz__gap-4">
+              <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
+                <div class="futon-quiz__bullet--success"></div>
                 <span>Personlige anbefalinger</span>
               </div>
-              <div class="quiz-flex quiz-items-center quiz-gap-2 quiz-justify-center">
-                <div class="quiz-bullet-success"></div>
+              <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
+                <div class="futon-quiz__bullet--success"></div>
                 <span>Ekspert vejledning</span>
               </div>
-              <div class="quiz-flex quiz-items-center quiz-gap-2 quiz-justify-center">
-                <div class="quiz-bullet-success"></div>
+              <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
+                <div class="futon-quiz__bullet--success"></div>
                 <span>Perfekt komfort match</span>
               </div>
             </div>
           </div>
 
-          <div class="quiz-space-y-4">
+          <div class="futon-quiz__space-y-4">
             <button 
-              class="quiz-btn quiz-btn-primary"
+              class="futon-quiz__btn futon-quiz__btn--primary"
               style="height: 3rem; padding: 0 3rem; font-size: 1rem; border-radius: 0.5rem;"
               onclick="futonQuizSingleCollection.startQuiz()"
             >
@@ -187,7 +187,7 @@ class FutonQuizSingleCollection {
 
         <div class="quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-2 quiz-gap-4 quiz-mb-8">
           <button
-            class="quiz-btn quiz-btn-option ${peopleCount === 1 ? 'quiz-btn-option-selected' : ''}"
+            class="futon-quiz__btn futon-quiz__btn--option ${peopleCount === 1 ? 'futon-quiz__btn--option-selected' : ''}"
             style="flex-direction: column; gap: 0.75rem;"
             onclick="futonQuizSingleCollection.setPeopleCount(1)"
           >
@@ -196,8 +196,8 @@ class FutonQuizSingleCollection {
               <circle cx="12" cy="7" r="4"/>
             </svg>
             <div>
-              <div class="quiz-option-title">Kun Mig</div>
-              <div class="quiz-option-description">Enkeltperson brug</div>
+              <div class="futon-quiz__option-title">Kun Mig</div>
+              <div class="futon-quiz__option-description">Enkeltperson brug</div>
             </div>
           </button>
 
@@ -248,12 +248,12 @@ class FutonQuizSingleCollection {
 
         <div class="quiz-mb-6 ${isTwoPeople ? 'quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-2 quiz-gap-6' : 'quiz-space-y-4'}">
           <div>
-            <label class="quiz-option-title quiz-mb-4" style="display: block;">
+            <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">
               ${isTwoPeople ? 'Person 1 vægt (kg)' : 'Din vægt (kg)'}
             </label>
             <input
               type="number"
-              class="quiz-input"
+              class="futon-quiz__input"
               placeholder="Indtast vægt i kg"
               value="${weights.person1 || ''}"
               oninput="futonQuizSingleCollection.updateWeight('person1', this.value)"
@@ -263,12 +263,12 @@ class FutonQuizSingleCollection {
           </div>
           ${isTwoPeople ? `
             <div>
-              <label class="quiz-option-title quiz-mb-4" style="display: block;">
+              <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">
                 Person 2 vægt (kg)
               </label>
               <input
                 type="number"
-                class="quiz-input"
+                class="futon-quiz__input"
                 placeholder="Indtast vægt i kg"
                 value="${weights.person2 || ''}"
                 oninput="futonQuizSingleCollection.updateWeight('person2', this.value)"
@@ -280,12 +280,12 @@ class FutonQuizSingleCollection {
         </div>
 
         <div class="quiz-flex quiz-justify-between">
-          <button class="quiz-btn quiz-btn-secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
+          <button class="futon-quiz__btn futon-quiz__btn--secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
             Tilbage
           </button>
           <button 
-            id="weight-next-btn" 
-            class="quiz-btn quiz-btn-primary" 
+            id="futon-quiz__weight-next-btn" 
+            class="futon-quiz__btn futon-quiz__btn--primary" 
             style="height: 2.5rem; padding: 0 1rem;" 
             onclick="futonQuizSingleCollection.nextStep()"
             disabled
@@ -685,21 +685,21 @@ class FutonQuizSingleCollection {
   validateWeightStep() {
     const { peopleCount, weights } = this.quizData;
     const isValid = weights.person1 > 0 && (peopleCount === 1 || weights.person2 > 0);
-    const nextBtn = document.getElementById('weight-next-btn');
+    const nextBtn = document.getElementById('futon-quiz__weight-next-btn');
     if (nextBtn) nextBtn.disabled = !isValid;
   }
 
   validateSleepPositionStep() {
     const { peopleCount, sleepPositions } = this.quizData;
     const isValid = sleepPositions.person1 && (peopleCount === 1 || sleepPositions.person2);
-    const nextBtn = document.getElementById('sleep-position-next-btn');
+    const nextBtn = document.getElementById('futon-quiz__sleep-position-next-btn');
     if (nextBtn) nextBtn.disabled = !isValid;
   }
 
   validatePreferenceStep() {
     const { peopleCount, preferences } = this.quizData;
     const isValid = preferences.person1 && (peopleCount === 1 || preferences.person2);
-    const nextBtn = document.getElementById('preference-next-btn');
+    const nextBtn = document.getElementById('futon-quiz__preference-next-btn');
     if (nextBtn) nextBtn.disabled = !isValid;
   }
 

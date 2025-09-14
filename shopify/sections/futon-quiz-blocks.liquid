@@ -7,57 +7,57 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
   @import url('./futon-quiz-styles.css');
 </style>
 
-<section class="futon-quiz-section" data-section-id="{{ section.id }}">
-  <div class="fq-container">
+<section class="futon-quiz" data-section-id="{{ section.id }}">
+  <div class="futon-quiz__container">
     <!-- Progress Indicator -->
-    <div id="progress-indicator" class="fq-progress-container" style="display: none;">
-      <div class="fq-flex fq-justify-between fq-items-center fq-mb-4">
-        <span class="fq-description" id="step-text">Trin 1 af {{ section.blocks.size | minus: 2 }}</span>
-        <span class="fq-description" id="progress-percent">14%</span>
+    <div id="futon-quiz__progress-indicator" class="futon-quiz__progress-container" style="display: none;">
+      <div class="futon-quiz__flex futon-quiz__justify-between futon-quiz__items-center futon-quiz__mb-4">
+        <span class="futon-quiz__description" id="futon-quiz__step-text">Trin 1 af {{ section.blocks.size | minus: 2 }}</span>
+        <span class="futon-quiz__description" id="futon-quiz__progress-percent">14%</span>
       </div>
-      <div class="fq-progress-bar">
-        <div id="progress-bar" class="fq-progress-fill" style="width: 14%;"></div>
+      <div class="futon-quiz__progress-bar">
+        <div id="futon-quiz__progress-bar" class="futon-quiz__progress-fill" style="width: 14%;"></div>
       </div>
-      <div id="step-indicators" class="fq-step-indicators"></div>
+      <div id="futon-quiz__step-indicators" class="futon-quiz__step-indicators"></div>
     </div>
 
     <!-- Quiz Container -->
-    <div id="quiz-container">
+    <div id="futon-quiz__container">
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'start_step' %}
-            <div id="start-step" class="quiz-step fq-fade-in" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
-              <div class="fq-text-center fq-space-y-6" style="max-width: 32rem; margin: 0 auto;">
-                <div class="fq-space-y-4">
+            <div id="futon-quiz__start-step" class="futon-quiz__step futon-quiz__fade-in" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div class="futon-quiz__text-center futon-quiz__space-y-6" style="max-width: 32rem; margin: 0 auto;">
+                <div class="futon-quiz__space-y-4">
                   {% if block.settings.hero_image %}
                     <img 
                       src="{{ block.settings.hero_image | image_url: width: 800 }}" 
                       alt="{{ block.settings.hero_image.alt | default: 'Quiz hero image' }}" 
-                      class="fq-hero-image"
-                      style="width: 100%; height: 12rem; object-fit: cover; border-radius: var(--fq-radius);"
+                      class="futon-quiz__hero-image"
+                      style="width: 100%; height: 12rem; object-fit: cover; border-radius: var(--quiz-radius);"
                       width="800"
                       height="192"
                       loading="eager"
                     />
                   {% endif %}
-                  <h1 class="fq-title">
+                  <h1 class="futon-quiz__title">
                     {{ block.settings.title | default: 'Find Din Perfekte Futon' }}
                   </h1>
-                  <p class="fq-description">
+                  <p class="futon-quiz__description">
                     {{ block.settings.description | default: 'Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov.' }}
                   </p>
                 </div>
 
                 {% if block.settings.show_benefits %}
-                <div class="fq-info-box">
-                  <h3 class="fq-subtitle fq-mb-4">{{ block.settings.benefits_title | default: 'Hvad du får:' }}</h3>
-                  <div class="fq-grid fq-md:grid-cols-3 fq-gap-4">
+                <div class="futon-quiz__info-box">
+                  <h3 class="futon-quiz__subtitle futon-quiz__mb-4">{{ block.settings.benefits_title | default: 'Hvad du får:' }}</h3>
+                  <div class="futon-quiz__grid futon-quiz__grid--md-cols-3 futon-quiz__gap-4">
                     {% for i in (1..3) %}
                       {% assign benefit_key = 'benefit_' | append: i %}
                       {% if block.settings[benefit_key] != blank %}
-                      <div class="fq-flex fq-items-center fq-gap-2">
-                        <div style="width: 0.5rem; height: 0.5rem; background-color: hsl(var(--fq-success)); border-radius: 50%;"></div>
-                        <span class="fq-description">{{ block.settings[benefit_key] }}</span>
+                      <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+                        <div class="futon-quiz__bullet--success"></div>
+                        <span class="futon-quiz__description">{{ block.settings[benefit_key] }}</span>
                       </div>
                       {% endif %}
                     {% endfor %}
@@ -65,9 +65,9 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
                 </div>
                 {% endif %}
 
-                <div class="fq-space-y-4">
+                <div class="futon-quiz__space-y-4">
                   <button 
-                    class="fq-btn fq-btn-primary"
+                    class="futon-quiz__btn futon-quiz__btn--primary"
                     style="height: 3rem; padding: 0 3rem; font-size: 1rem;"
                     onclick="futonQuiz.nextStep()"
                   >
@@ -75,7 +75,7 @@ Futon Quiz Section with Blocks - Shopify Sections 2.0 Implementation
                   </button>
                   
                   {% if block.settings.show_duration %}
-                  <p class="fq-description" style="font-size: 0.75rem;">
+                  <p class="futon-quiz__description" style="font-size: 0.75rem;">
                     {{ block.settings.duration_text | default: 'Tager kun 2-3 minutter at gennemføre' }}
                   </p>
                   {% endif %}

@@ -3,16 +3,16 @@
   Uses product tags to categorize products instead of multiple collections
 {% endcomment %}
 
-<section class="futon-quiz-section py-16">
-  <div class="quiz-container">
+<section class="futon-quiz py-16">
+  <div class="futon-quiz__container">
     <!-- Quiz Container -->
-    <div id="quiz-container" class="quiz-container">
+    <div id="futon-quiz__container" class="futon-quiz__container">
       <!-- Step content will be dynamically inserted here -->
     </div>
   </div>
 
   {%- comment -%} Single Collection Product Data with Tag-Based Categorization {%- endcomment -%}
-  <script type="application/json" id="quiz-products-data">
+  <script type="application/json" id="futon-quiz__products-data">
     {
       "products": [
         {%- for product in collections[section.settings.product_collection].products limit: 50 -%}
