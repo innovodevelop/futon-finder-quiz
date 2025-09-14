@@ -148,7 +148,8 @@ Futon Quiz Section - Self-Contained Implementation
       couplesCollection: "{{ section.settings.couples_collection.id | default: '' }}",
       shopUrl: "{{ shop.permanent_domain }}",
       quizTitle: "{{ section.settings.quiz_title | escape }}",
-      quizSubtitle: "{{ section.settings.quiz_subtitle | escape }}"
+      quizSubtitle: "{{ section.settings.quiz_subtitle | escape }}",
+      heroImageUrl: "{{ 'futon-hero.jpg' | asset_url }}"
     };
   </script>
   {{ 'futon-quiz.js' | asset_url | script_tag }}

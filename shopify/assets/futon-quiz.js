@@ -139,7 +139,7 @@ class FutonQuiz {
         <div class="futon-quiz__space-y-6">
           <div class="futon-quiz__space-y-4">
             <img 
-              src="${window.location.origin}/cdn/shop/files/futon-hero.jpg" 
+              src="${window.quizConfig?.heroImageUrl || '/assets/futon-hero.jpg'}" 
               alt="Comfortable futon setup" 
               class="futon-quiz__hero-image"
               loading="eager"
