@@ -177,17 +177,17 @@ class FutonQuizSingleCollection {
   buildPeopleCountStep() {
     const { peopleCount } = this.quizData;
     return `
-      <div class="quiz-step quiz-container" style="max-width: 32rem; margin: 0 auto;">
-        <div class="quiz-text-center quiz-mb-8">
-          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+      <div class="futon-quiz__step futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="futon-quiz__text-center futon-quiz__mb-8">
+          <h2 class="futon-quiz__title" style="font-size: 1.875rem; margin-bottom: 1rem;">
             Hvor mange personer skal bruge denne futon?
           </h2>
-          <p class="quiz-description">
+          <p class="futon-quiz__description">
             Dette hjælper os med at anbefale den rigtige størrelse og fasthed til dine behov.
           </p>
         </div>
 
-        <div class="quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-2 quiz-gap-4 quiz-mb-8">
+        <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__grid--md-cols-2 futon-quiz__gap-4 futon-quiz__mb-8">
           <button
             class="futon-quiz__btn futon-quiz__btn--option ${peopleCount === 1 ? 'futon-quiz__btn--option-selected' : ''}"
             style="flex-direction: column; gap: 0.75rem;"
@@ -204,7 +204,7 @@ class FutonQuizSingleCollection {
           </button>
 
           <button
-            class="quiz-btn quiz-btn-option ${peopleCount === 2 ? 'quiz-btn-option-selected' : ''}"
+            class="futon-quiz__btn futon-quiz__btn--option ${peopleCount === 2 ? 'futon-quiz__btn--option-selected' : ''}"
             style="flex-direction: column; gap: 0.75rem;"
             onclick="futonQuizSingleCollection.setPeopleCount(2)"
           >
@@ -215,17 +215,17 @@ class FutonQuizSingleCollection {
               <path d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0"/>
             </svg>
             <div>
-              <div class="quiz-option-title">To Personer</div>
-              <div class="quiz-option-description">Par eller delt brug</div>
+              <div class="futon-quiz__option-title">To Personer</div>
+              <div class="futon-quiz__option-description">Par eller delt brug</div>
             </div>
           </button>
         </div>
 
-        <div class="quiz-flex quiz-justify-between">
-          <button class="quiz-btn quiz-btn-secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
+        <div class="futon-quiz__flex futon-quiz__justify-between">
+          <button class="futon-quiz__btn futon-quiz__btn--secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
             Tilbage
           </button>
-          <button class="quiz-btn quiz-btn-primary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.nextStep()">
+          <button class="futon-quiz__btn futon-quiz__btn--primary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.nextStep()">
             Fortsæt
           </button>
         </div>
@@ -238,17 +238,17 @@ class FutonQuizSingleCollection {
     const isTwoPeople = peopleCount === 2;
     
     return `
-      <div class="quiz-step quiz-container" style="max-width: 32rem; margin: 0 auto;">
-        <div class="quiz-text-center quiz-mb-8">
-          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+      <div class="futon-quiz__step futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="futon-quiz__text-center futon-quiz__mb-8">
+          <h2 class="futon-quiz__title" style="font-size: 1.875rem; margin-bottom: 1rem;">
             ${isTwoPeople ? 'Hvad er jeres vægt?' : 'Hvad er din vægt?'}
           </h2>
-          <p class="quiz-description">
+          <p class="futon-quiz__description">
             Dette hjælper os med at anbefale den rigtige fasthed og støtte til dine behov.
           </p>
         </div>
 
-        <div class="quiz-mb-6 ${isTwoPeople ? 'quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-2 quiz-gap-6' : 'quiz-space-y-4'}">
+        <div class="futon-quiz__mb-6 ${isTwoPeople ? 'futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__grid--md-cols-2 futon-quiz__gap-6' : 'futon-quiz__space-y-4'}">
           <div>
             <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">
               ${isTwoPeople ? 'Person 1 vægt (kg)' : 'Din vægt (kg)'}
@@ -281,7 +281,7 @@ class FutonQuizSingleCollection {
           ` : ''}
         </div>
 
-        <div class="quiz-flex quiz-justify-between">
+        <div class="futon-quiz__flex futon-quiz__justify-between">
           <button class="futon-quiz__btn futon-quiz__btn--secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
             Tilbage
           </button>
@@ -304,44 +304,44 @@ class FutonQuizSingleCollection {
     const isTwoPeople = peopleCount === 2;
     
     return `
-      <div class="quiz-step quiz-container" style="max-width: 32rem; margin: 0 auto;">
-        <div class="quiz-text-center quiz-mb-8">
-          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+      <div class="futon-quiz__step futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="futon-quiz__text-center futon-quiz__mb-8">
+          <h2 class="futon-quiz__title" style="font-size: 1.875rem; margin-bottom: 1rem;">
             ${isTwoPeople ? 'Hvilke sovpositioner foretrækker I?' : 'Hvilken sovposition foretrækker du?'}
           </h2>
-          <p class="quiz-description">
+          <p class="futon-quiz__description">
             Din sovposition påvirker, hvilken type støtte og fasthed der er bedst for dig.
           </p>
         </div>
 
         ${!isTwoPeople ? `
-          <div class="quiz-grid quiz-grid-cols-1 quiz-gap-4 quiz-mb-8">
+          <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__gap-4 futon-quiz__mb-8">
             ${this.buildSleepPositionButtons('person1', sleepPositions.person1)}
           </div>
         ` : `
-          <div class="quiz-space-y-6 quiz-mb-8">
+          <div class="futon-quiz__space-y-6 futon-quiz__mb-8">
             <div>
-              <h3 class="quiz-subtitle quiz-mb-4">Person 1</h3>
-              <div class="quiz-grid quiz-grid-cols-1 quiz-gap-3">
+              <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Person 1</h3>
+              <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__gap-3">
                 ${this.buildSleepPositionButtons('person1', sleepPositions.person1)}
               </div>
             </div>
             <div>
-              <h3 class="quiz-subtitle quiz-mb-4">Person 2</h3>
-              <div class="quiz-grid quiz-grid-cols-1 quiz-gap-3">
+              <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Person 2</h3>
+              <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__gap-3">
                 ${this.buildSleepPositionButtons('person2', sleepPositions.person2)}
               </div>
             </div>
           </div>
         `}
 
-        <div class="quiz-flex quiz-justify-between">
-          <button class="quiz-btn quiz-btn-secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
+        <div class="futon-quiz__flex futon-quiz__justify-between">
+          <button class="futon-quiz__btn futon-quiz__btn--secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
             Tilbage
           </button>
           <button 
             id="sleep-position-next-btn" 
-            class="quiz-btn quiz-btn-primary" 
+            class="futon-quiz__btn futon-quiz__btn--primary" 
             style="height: 2.5rem; padding: 0 1rem;" 
             onclick="futonQuizSingleCollection.nextStep()"
             disabled
@@ -362,7 +362,7 @@ class FutonQuizSingleCollection {
     
     return positions.map(position => `
       <button
-        class="quiz-btn quiz-btn-option ${selectedPosition === position.value ? 'quiz-btn-option-selected' : ''}"
+        class="futon-quiz__btn futon-quiz__btn--option ${selectedPosition === position.value ? 'futon-quiz__btn--option-selected' : ''}"
         style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;"
         onclick="futonQuizSingleCollection.setSleepPosition('${person}', '${position.value}')"
       >
@@ -370,8 +370,8 @@ class FutonQuizSingleCollection {
           ${position.icon}
         </div>
         <div>
-          <div class="quiz-option-title">${position.title}</div>
-          <div class="quiz-option-description">${position.description}</div>
+          <div class="futon-quiz__option-title">${position.title}</div>
+          <div class="futon-quiz__option-description">${position.description}</div>
         </div>
       </button>
     `).join('');
@@ -382,44 +382,44 @@ class FutonQuizSingleCollection {
     const isTwoPeople = peopleCount === 2;
     
     return `
-      <div class="quiz-step quiz-container" style="max-width: 32rem; margin: 0 auto;">
-        <div class="quiz-text-center quiz-mb-8">
-          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+      <div class="futon-quiz__step futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="futon-quiz__text-center futon-quiz__mb-8">
+          <h2 class="futon-quiz__title" style="font-size: 1.875rem; margin-bottom: 1rem;">
             ${isTwoPeople ? 'Hvilken matras fasthed foretrækker I?' : 'Hvilken matras fasthed foretrækker du?'}
           </h2>
-          <p class="quiz-description">
+          <p class="futon-quiz__description">
             Fasthed påvirker komfort og støtte. Vælg hvad der føles bedst for dig.
           </p>
         </div>
 
         ${!isTwoPeople ? `
-          <div class="quiz-grid quiz-grid-cols-1 quiz-gap-4 quiz-mb-8">
+          <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__gap-4 futon-quiz__mb-8">
             ${this.buildPreferenceButtons('person1', preferences.person1)}
           </div>
         ` : `
-          <div class="quiz-space-y-6 quiz-mb-8">
+          <div class="futon-quiz__space-y-6 futon-quiz__mb-8">
             <div>
-              <h3 class="quiz-subtitle quiz-mb-4">Person 1</h3>
-              <div class="quiz-grid quiz-grid-cols-1 quiz-gap-3">
+              <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Person 1</h3>
+              <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__gap-3">
                 ${this.buildPreferenceButtons('person1', preferences.person1)}
               </div>
             </div>
             <div>
-              <h3 class="quiz-subtitle quiz-mb-4">Person 2</h3>
-              <div class="quiz-grid quiz-grid-cols-1 quiz-gap-3">
+              <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Person 2</h3>
+              <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__gap-3">
                 ${this.buildPreferenceButtons('person2', preferences.person2)}
               </div>
             </div>
           </div>
         `}
 
-        <div class="quiz-flex quiz-justify-between">
-          <button class="quiz-btn quiz-btn-secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
+        <div class="futon-quiz__flex futon-quiz__justify-between">
+          <button class="futon-quiz__btn futon-quiz__btn--secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
             Tilbage
           </button>
           <button 
             id="preference-next-btn" 
-            class="quiz-btn quiz-btn-primary" 
+            class="futon-quiz__btn futon-quiz__btn--primary" 
             style="height: 2.5rem; padding: 0 1rem;" 
             onclick="futonQuizSingleCollection.nextStep()"
             disabled
@@ -440,7 +440,7 @@ class FutonQuizSingleCollection {
     
     return preferences.map(preference => `
       <button
-        class="quiz-btn quiz-btn-option ${selectedPreference === preference.value ? 'quiz-btn-option-selected' : ''}"
+        class="futon-quiz__btn futon-quiz__btn--option ${selectedPreference === preference.value ? 'futon-quiz__btn--option-selected' : ''}"
         style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;"
         onclick="futonQuizSingleCollection.setPreference('${person}', '${preference.value}')"
       >
@@ -448,8 +448,8 @@ class FutonQuizSingleCollection {
           ${preference.icon}
         </div>
         <div>
-          <div class="quiz-option-title">${preference.title}</div>
-          <div class="quiz-option-description">${preference.description}</div>
+          <div class="futon-quiz__option-title">${preference.title}</div>
+          <div class="futon-quiz__option-description">${preference.description}</div>
         </div>
       </button>
     `).join('');
@@ -459,22 +459,22 @@ class FutonQuizSingleCollection {
     const { contactInfo } = this.quizData;
     
     return `
-      <div class="quiz-step quiz-container" style="max-width: 32rem; margin: 0 auto;">
-        <div class="quiz-text-center quiz-mb-8">
-          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+      <div class="futon-quiz__step futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+        <div class="futon-quiz__text-center futon-quiz__mb-8">
+          <h2 class="futon-quiz__title" style="font-size: 1.875rem; margin-bottom: 1rem;">
             Kontaktoplysninger
           </h2>
-          <p class="quiz-description">
+          <p class="futon-quiz__description">
             Indtast dine kontaktoplysninger, så vi kan sende dig dine personlige anbefalinger.
           </p>
         </div>
 
-        <div class="quiz-space-y-4 quiz-mb-6">
+        <div class="futon-quiz__space-y-4 futon-quiz__mb-6">
           <div>
-            <label class="quiz-option-title quiz-mb-4" style="display: block;">Fulde navn *</label>
+            <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">Fulde navn *</label>
             <input
               type="text"
-              class="quiz-input"
+              class="futon-quiz__input"
               placeholder="Indtast dit fulde navn"
               value="${contactInfo.name}"
               oninput="futonQuizSingleCollection.updateContactInfo('name', this.value)"
@@ -483,10 +483,10 @@ class FutonQuizSingleCollection {
           </div>
           
           <div>
-            <label class="quiz-option-title quiz-mb-4" style="display: block;">Email adresse *</label>
+            <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">Email adresse *</label>
             <input
               type="email"
-              class="quiz-input"
+              class="futon-quiz__input"
               placeholder="din@email.dk"
               value="${contactInfo.email}"
               oninput="futonQuizSingleCollection.updateContactInfo('email', this.value)"
@@ -495,10 +495,10 @@ class FutonQuizSingleCollection {
           </div>
           
           <div>
-            <label class="quiz-option-title quiz-mb-4" style="display: block;">Telefonnummer *</label>
+            <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">Telefonnummer *</label>
             <input
               type="tel"
-              class="quiz-input"
+              class="futon-quiz__input"
               placeholder="+45 12 34 56 78"
               value="${contactInfo.phone}"
               oninput="futonQuizSingleCollection.updateContactInfo('phone', this.value)"
@@ -507,34 +507,34 @@ class FutonQuizSingleCollection {
           </div>
           
           <div>
-            <label class="quiz-option-title quiz-mb-4" style="display: block;">Yderligere kommentarer (valgfrit)</label>
+            <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">Yderligere kommentarer (valgfrit)</label>
             <textarea
-              class="quiz-input quiz-textarea"
+              class="futon-quiz__input futon-quiz__textarea"
               placeholder="Har du specielle ønsker eller spørgsmål?"
               oninput="futonQuizSingleCollection.updateContactInfo('comments', this.value)"
             >${contactInfo.comments}</textarea>
           </div>
         </div>
 
-        <div class="quiz-info-box quiz-mb-6">
-          <h3 class="quiz-subtitle quiz-mb-4">Næste skridt:</h3>
-          <div class="quiz-space-y-2">
-            <div class="quiz-flex quiz-items-center quiz-gap-2">
-              <div class="quiz-bullet-success"></div>
+        <div class="futon-quiz__info-box futon-quiz__mb-6">
+          <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Næste skridt:</h3>
+          <div class="futon-quiz__space-y-2">
+            <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+              <div class="futon-quiz__bullet--success"></div>
               <span>Få personlige produktanbefalinger</span>
             </div>
-            <div class="quiz-flex quiz-items-center quiz-gap-2">
-              <div class="quiz-bullet-success"></div>
+            <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+              <div class="futon-quiz__bullet--success"></div>
               <span>Kontakt fra vores eksperter</span>
             </div>
-            <div class="quiz-flex quiz-items-center quiz-gap-2">
-              <div class="quiz-bullet-success"></div>
+            <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+              <div class="futon-quiz__bullet--success"></div>
               <span>Særlige tilbud og rabatter</span>
             </div>
           </div>
         </div>
 
-        <div class="quiz-mb-6">
+        <div class="futon-quiz__mb-6">
           <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
             <input
               type="checkbox"
@@ -548,13 +548,13 @@ class FutonQuizSingleCollection {
           </label>
         </div>
 
-        <div class="quiz-flex quiz-justify-between">
-          <button class="quiz-btn quiz-btn-secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
+        <div class="futon-quiz__flex futon-quiz__justify-between">
+          <button class="futon-quiz__btn futon-quiz__btn--secondary" style="height: 2.5rem; padding: 0 1rem;" onclick="futonQuizSingleCollection.prevStep()">
             Tilbage
           </button>
           <button 
             id="contact-next-btn" 
-            class="quiz-btn quiz-btn-primary" 
+            class="futon-quiz__btn futon-quiz__btn--primary" 
             style="height: 2.5rem; padding: 0 1rem;" 
             onclick="futonQuizSingleCollection.nextStep()"
             disabled
@@ -568,32 +568,32 @@ class FutonQuizSingleCollection {
 
   buildRecommendationStep() {
     return `
-      <div class="quiz-step">
+      <div class="futon-quiz__step">
         <!-- Loading State -->
-        <div id="recommendations-loading" class="quiz-loading">
-          <div class="quiz-loading-spinner"></div>
-          <h2 class="quiz-subtitle quiz-mb-4">Finder dine perfekte futoner...</h2>
-          <p class="quiz-description">
+        <div id="recommendations-loading" class="futon-quiz__loading">
+          <div class="futon-quiz__loading-spinner"></div>
+          <h2 class="futon-quiz__subtitle futon-quiz__mb-4">Finder dine perfekte futoner...</h2>
+          <p class="futon-quiz__description">
             Vi analyserer dine præferencer og finder de bedste matches fra vores kollektion.
           </p>
         </div>
 
         <!-- Results State -->
         <div id="recommendations-results" style="display: none;">
-          <div class="quiz-text-center quiz-mb-8">
-            <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+          <div class="futon-quiz__text-center futon-quiz__mb-8">
+            <h2 class="futon-quiz__title" style="font-size: 1.875rem; margin-bottom: 1rem;">
               Dine Personlige Anbefalinger
             </h2>
-            <p id="recommendations-greeting" class="quiz-description"></p>
+            <p id="recommendations-greeting" class="futon-quiz__description"></p>
           </div>
 
-          <div id="recommendations-grid" class="quiz-grid quiz-grid-cols-1 quiz-md:grid-cols-2 quiz-gap-6 quiz-mb-8">
+          <div id="recommendations-grid" class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__grid--md-cols-2 futon-quiz__gap-6 futon-quiz__mb-8">
             <!-- Product recommendations will be inserted here -->
           </div>
 
-          <div class="quiz-text-center">
+          <div class="futon-quiz__text-center">
             <button 
-              class="quiz-btn quiz-btn-secondary" 
+              class="futon-quiz__btn futon-quiz__btn--secondary" 
               style="height: 2.5rem; padding: 0 1rem; margin-right: 1rem;"
               onclick="futonQuizSingleCollection.restart()"
             >
@@ -601,7 +601,7 @@ class FutonQuizSingleCollection {
             </button>
             <a 
               href="/collections/all" 
-              class="quiz-btn quiz-btn-primary" 
+              class="futon-quiz__btn futon-quiz__btn--primary" 
               style="height: 2.5rem; padding: 0 1rem; display: inline-flex; align-items: center; text-decoration: none;"
             >
               Se Alle Produkter
@@ -610,16 +610,16 @@ class FutonQuizSingleCollection {
         </div>
 
         <!-- Empty State -->
-        <div id="recommendations-empty" style="display: none;" class="quiz-text-center">
-          <h2 class="quiz-title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+        <div id="recommendations-empty" style="display: none;" class="futon-quiz__text-center">
+          <h2 class="futon-quiz__title" style="font-size: 1.875rem; margin-bottom: 1rem;">
             Ingen anbefalinger fundet
           </h2>
-          <p class="quiz-description quiz-mb-6">
+          <p class="futon-quiz__description futon-quiz__mb-6">
             Vi kunne ikke finde specifikke produkter der matcher dine præferencer. 
             Prøv at tage testen igen eller kontakt os direkte for personlig vejledning.
           </p>
           <button 
-            class="quiz-btn quiz-btn-primary" 
+            class="futon-quiz__btn futon-quiz__btn--primary" 
             style="height: 2.5rem; padding: 0 1rem;"
             onclick="futonQuizSingleCollection.restart()"
           >
@@ -628,6 +628,7 @@ class FutonQuizSingleCollection {
         </div>
       </div>
     `;
+  }
   }
 
   // Quiz navigation methods
