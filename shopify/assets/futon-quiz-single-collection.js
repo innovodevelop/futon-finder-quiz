@@ -340,7 +340,7 @@ class FutonQuizSingleCollection {
             Tilbage
           </button>
           <button 
-            id="sleep-position-next-btn" 
+            id="futon-quiz__sleep-position-next-btn" 
             class="futon-quiz__btn futon-quiz__btn--primary" 
             style="height: 2.5rem; padding: 0 1rem;" 
             onclick="futonQuizSingleCollection.nextStep()"
@@ -418,7 +418,7 @@ class FutonQuizSingleCollection {
             Tilbage
           </button>
           <button 
-            id="preference-next-btn" 
+            id="futon-quiz__preference-next-btn" 
             class="futon-quiz__btn futon-quiz__btn--primary" 
             style="height: 2.5rem; padding: 0 1rem;" 
             onclick="futonQuizSingleCollection.nextStep()"
