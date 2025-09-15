@@ -9,6 +9,7 @@ class FutonQuizSingleCollection {
     this.quizData = {
       peopleCount: 1,
       weights: { person1: 0, person2: 0 },
+      heights: { person1: 0, person2: 0 },
       sleepPositions: { person1: '', person2: '' },
       preferences: { person1: '', person2: '' },
       contactInfo: {
@@ -39,6 +40,42 @@ class FutonQuizSingleCollection {
     console.log('Futon Quiz (Single Collection) config:', window.quizConfig);
     this.loadProductData();
     this.showStep(0);
+  }
+
+  updateProgress() {
+    const progressContainer = document.getElementById('futon-quiz__progress-indicator');
+    if (!progressContainer || this.currentStep === 0 || this.currentStep === 6) return;
+
+    const progressSteps = this.totalSteps - 2; // Exclude start and end steps
+    const currentProgress = this.currentStep;
+    const progressPercentage = Math.round((currentProgress / progressSteps) * 100);
+
+    const progressText = progressContainer.querySelector('.futon-quiz__progress-text');
+    const progressBar = progressContainer.querySelector('.futon-quiz__progress-bar');
+    const stepIndicators = progressContainer.querySelectorAll('.futon-quiz__step-indicator');
+
+    if (progressText) {
+      progressText.textContent = `Trin ${currentProgress} af ${progressSteps} (${progressPercentage}%)`;
+    }
+
+    if (progressBar) {
+      progressBar.style.width = `${progressPercentage}%`;
+    }
+
+    // Update step indicators
+    stepIndicators.forEach((indicator, index) => {
+      const stepNumber = index + 1;
+      if (stepNumber < currentProgress) {
+        indicator.className = 'futon-quiz__step-indicator futon-quiz__step-indicator--completed';
+        indicator.textContent = '✓';
+      } else if (stepNumber === currentProgress) {
+        indicator.className = 'futon-quiz__step-indicator futon-quiz__step-indicator--current';
+        indicator.textContent = stepNumber;
+      } else {
+        indicator.className = 'futon-quiz__step-indicator futon-quiz__step-indicator--inactive';
+        indicator.textContent = stepNumber;
+      }
+    });
   }
 
   /**
@@ -671,6 +708,11 @@ class FutonQuizSingleCollection {
     this.validateWeightStep();
   }
 
+  updateHeight(person, value) {
+    const height = parseInt(value) || 0;
+    this.quizData.heights[person] = height;
+  }
+
   setSleepPosition(person, position) {
     this.quizData.sleepPositions[person] = position;
     this.showStep(this.currentStep); // Refresh to update UI
@@ -958,44 +1000,44 @@ class FutonQuizSingleCollection {
     
     recommendations.forEach((product, index) => {
       const productCard = document.createElement('div');
-      productCard.className = `quiz-card ${index === 0 ? 'quiz-best-match' : ''}`;
+      productCard.className = `futon-quiz__card ${index === 0 ? 'futon-quiz__card--best-match' : ''}`;
       productCard.style.position = 'relative';
       
       productCard.innerHTML = `
-        ${index === 0 ? '<div style="position: absolute; top: -8px; right: -8px; background: hsl(var(--quiz-primary)); color: hsl(var(--quiz-primary-foreground)); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">Bedste Match</div>' : ''}
+        ${index === 0 ? '<div class="futon-quiz__badge" style="position: absolute; top: -8px; right: -8px; background: hsl(var(--futon-quiz-primary)); color: hsl(var(--futon-quiz-primary-foreground)); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">Bedste Match</div>' : ''}
         ${product.featured_image ? `
-          <div style="aspect-ratio: 16/9; background: hsl(var(--quiz-muted));">
+          <div class="futon-quiz__card-image" style="aspect-ratio: 16/9; background: hsl(var(--futon-quiz-muted)); overflow: hidden; border-radius: 0.5rem 0.5rem 0 0;">
             <img 
               src="${product.featured_image}" 
               alt="${product.title}"
-              style="width: 100%; height: 12rem; object-fit: cover;"
+              style="width: 100%; height: 12rem; object-fit: cover; border-radius: 0.5rem 0.5rem 0 0;"
               loading="lazy"
             />
           </div>
         ` : ''}
-        <div class="quiz-card-content">
+        <div class="futon-quiz__card-content" style="padding: 1rem;">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
             <div>
-              <h3 style="font-size: 1.125rem; font-weight: 600;">${product.title}</h3>
-              ${product.vendor ? `<p style="font-size: 0.875rem; color: hsl(var(--quiz-muted-foreground));">${product.vendor}</p>` : ''}
+              <h3 class="futon-quiz__card-title" style="font-size: 1.125rem; font-weight: 600; margin: 0; color: hsl(var(--futon-quiz-foreground));">${product.title}</h3>
+              ${product.vendor ? `<p style="font-size: 0.875rem; color: hsl(var(--futon-quiz-muted-foreground)); margin: 0.25rem 0 0 0;">${product.vendor}</p>` : ''}
             </div>
           </div>
           <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-            <div style="font-size: 1.5rem; font-weight: 700; color: hsl(var(--quiz-primary));">
+            <div class="futon-quiz__card-price" style="font-size: 1.5rem; font-weight: 700; color: hsl(var(--futon-quiz-primary));">
               ${this.formatPrice(product.price)}
             </div>
             ${product.compare_at_price && product.compare_at_price > product.price ? `
-              <div style="font-size: 0.875rem; color: hsl(var(--quiz-muted-foreground)); text-decoration: line-through;">
+              <div style="font-size: 0.875rem; color: hsl(var(--futon-quiz-muted-foreground)); text-decoration: line-through;">
                 ${this.formatPrice(product.compare_at_price)}
               </div>
             ` : ''}
           </div>
-          <p style="font-size: 0.875rem; color: hsl(var(--quiz-muted-foreground)); margin-bottom: 1rem;">
+          <p class="futon-quiz__card-description" style="font-size: 0.875rem; color: hsl(var(--futon-quiz-muted-foreground)); margin-bottom: 1rem; line-height: 1.4;">
             ${product.description}
           </p>
-          <div class="quiz-space-y-2">
+          <div class="futon-quiz__space-y-2">
             <button 
-              class="quiz-btn quiz-btn-primary"
+              class="futon-quiz__btn futon-quiz__btn--primary"
               style="width: 100%; height: 2.5rem;"
               onclick="futonQuizSingleCollection.addToCart(${product.variants[0].id})"
               ${!product.variants[0].available ? 'disabled' : ''}
@@ -1006,7 +1048,7 @@ class FutonQuizSingleCollection {
               href="${product.url}" 
               target="_blank" 
               rel="noopener noreferrer"
-              class="quiz-btn quiz-btn-secondary"
+              class="futon-quiz__btn futon-quiz__btn--secondary"
               style="width: 100%; height: 2.5rem; display: flex; align-items: center; justify-content: center; text-decoration: none;"
             >
               Se detaljer
@@ -1172,6 +1214,7 @@ Comments: ${this.quizData.contactInfo.comments || 'None'}`);
     this.quizData = {
       peopleCount: 1,
       weights: { person1: 0, person2: 0 },
+      heights: { person1: 0, person2: 0 },
       sleepPositions: { person1: '', person2: '' },
       preferences: { person1: '', person2: '' },
       contactInfo: {
