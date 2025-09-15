@@ -638,6 +638,11 @@ class FutonQuizSingleCollection {
 
   nextStep() {
     if (this.currentStep < this.totalSteps - 1) {
+      // If completing contact info step (step 5), send data to Klaviyo
+      if (this.currentStep === 5) {
+        this.sendToKlaviyo();
+      }
+      
       this.currentStep++;
       this.showStep(this.currentStep);
     }
@@ -1074,6 +1079,91 @@ Comments: ${this.quizData.contactInfo.comments || 'None'}`);
     } catch (error) {
       console.error('Error submitting quiz data:', error);
       return false;
+    }
+  }
+
+  /**
+   * Send quiz data to Klaviyo for custom flow triggering
+   */
+  async sendToKlaviyo() {
+    try {
+      // Get recommendations to include in Klaviyo data
+      const recommendations = this.getRecommendations();
+      
+      // Prepare quiz data for Klaviyo
+      const klaviyoData = {
+        type: 'event',
+        data: {
+          type: 'event',
+          attributes: {
+            profile: {
+              email: this.quizData.contactInfo.email,
+              phone_number: this.quizData.contactInfo.phone,
+              first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+              last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+              properties: {
+                accepts_marketing: this.quizData.contactInfo.marketingConsent
+              }
+            },
+            metric: {
+              name: 'Futon Quiz Completed'
+            },
+            properties: {
+              // Quiz responses
+              people_count: this.quizData.peopleCount,
+              weight_person1: this.quizData.weights.person1,
+              weight_person2: this.quizData.peopleCount === 2 ? this.quizData.weights.person2 : null,
+              sleep_position_person1: this.quizData.sleepPositions.person1,
+              sleep_position_person2: this.quizData.peopleCount === 2 ? this.quizData.sleepPositions.person2 : null,
+              preference_person1: this.quizData.preferences.person1,
+              preference_person2: this.quizData.peopleCount === 2 ? this.quizData.preferences.person2 : null,
+              comments: this.quizData.contactInfo.comments || '',
+              
+              // Recommended products
+              recommended_products: recommendations.map(product => ({
+                product_id: product.id,
+                title: product.title,
+                price: product.price,
+                url: product.url,
+                image: product.featured_image,
+                score: product.score
+              })),
+              top_recommendation_id: recommendations.length > 0 ? recommendations[0].id : null,
+              top_recommendation_title: recommendations.length > 0 ? recommendations[0].title : null,
+              
+              // Quiz metadata
+              quiz_type: 'futon_finder',
+              completion_timestamp: new Date().toISOString(),
+              shop_domain: window.Shopify?.shop || window.location.hostname
+            }
+          }
+        }
+      };
+
+      // Send to Klaviyo API
+      // Note: This requires the Klaviyo public API key to be configured
+      if (window.klaviyoConfig?.publicKey) {
+        const response = await fetch(`https://a.klaviyo.com/api/events/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'revision': '2024-02-15'
+          },
+          body: JSON.stringify(klaviyoData)
+        });
+
+        if (response.ok) {
+          console.log('Quiz data successfully sent to Klaviyo');
+        } else {
+          console.error('Failed to send data to Klaviyo:', response.status, response.statusText);
+        }
+      } else {
+        console.warn('Klaviyo configuration not found. Quiz data not sent to Klaviyo.');
+        console.log('Quiz data that would be sent:', klaviyoData);
+      }
+    } catch (error) {
+      console.error('Error sending quiz data to Klaviyo:', error);
     }
   }
 

@@ -123,6 +123,14 @@
       }
     }
   };
+
+  // Klaviyo configuration
+  {% if section.settings.klaviyo_enabled and section.settings.klaviyo_public_key != blank %}
+  window.klaviyoConfig = {
+    publicKey: {{ section.settings.klaviyo_public_key | json }},
+    enabled: true
+  };
+  {% endif %}
 </script>
 <link rel="stylesheet" href="{{ 'futon-quiz-styles.css' | asset_url }}">
 <script src="{{ 'futon-quiz-single-collection.js' | asset_url }}" defer></script>
@@ -271,6 +279,24 @@
       "label": "Material Feature Tags",
       "default": "organic,natural,eco-friendly,sustainable",
       "info": "English tags for special material features"
+    },
+    {
+      "type": "header",
+      "content": "Klaviyo Integration"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_public_key",
+      "label": "Klaviyo Public API Key",
+      "info": "Your Klaviyo public API key (starts with 'pk_'). This enables sending quiz completion data to Klaviyo for custom flows.",
+      "placeholder": "pk_1234567890abcdef..."
+    },
+    {  
+      "type": "checkbox",
+      "id": "klaviyo_enabled",
+      "label": "Enable Klaviyo Integration",
+      "default": false,
+      "info": "Check to enable sending quiz completion data to Klaviyo"
     }
   ],
   "blocks": [
