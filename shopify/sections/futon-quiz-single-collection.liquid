@@ -40,47 +40,61 @@
             {%- comment -%} Tag-based attributes for easy filtering {%- endcomment -%}
             "attributes": {
               "firmness": [
+                {%- assign firmness_values = '' -%}
                 {%- for tag in product.tags -%}
                   {%- assign tag_lower = tag | downcase -%}
                   {%- if tag_lower contains 'soft' or tag_lower contains 'blød' -%}
-                    "soft"
+                    {%- if firmness_values != '' -%}{%- assign firmness_values = firmness_values | append: ',' -%}{%- endif -%}
+                    {%- assign firmness_values = firmness_values | append: '"soft"' -%}
                   {%- elsif tag_lower contains 'medium' -%}
-                    "medium"  
+                    {%- if firmness_values != '' -%}{%- assign firmness_values = firmness_values | append: ',' -%}{%- endif -%}
+                    {%- assign firmness_values = firmness_values | append: '"medium"' -%}
                   {%- elsif tag_lower contains 'hard' or tag_lower contains 'fast' -%}
-                    "hard"
+                    {%- if firmness_values != '' -%}{%- assign firmness_values = firmness_values | append: ',' -%}{%- endif -%}
+                    {%- assign firmness_values = firmness_values | append: '"hard"' -%}
                   {%- endif -%}
-                  {%- unless forloop.last -%},{%- endunless -%}
                 {%- endfor -%}
+                {{ firmness_values }}
               ],
               "suitability": [
+                {%- assign suitability_values = '' -%}
                 {%- for tag in product.tags -%}
                   {%- assign tag_lower = tag | downcase -%}
                   {%- if tag_lower contains 'couple' or tag_lower contains 'par' -%}
-                    "couples"
+                    {%- if suitability_values != '' -%}{%- assign suitability_values = suitability_values | append: ',' -%}{%- endif -%}
+                    {%- assign suitability_values = suitability_values | append: '"couples"' -%}
                   {%- elsif tag_lower contains 'single' or tag_lower contains 'enkelt' -%}
-                    "single"
+                    {%- if suitability_values != '' -%}{%- assign suitability_values = suitability_values | append: ',' -%}{%- endif -%}
+                    {%- assign suitability_values = suitability_values | append: '"single"' -%}
                   {%- elsif tag_lower contains 'side-sleeper' or tag_lower contains 'sideligger' -%}
-                    "side-sleeper"
+                    {%- if suitability_values != '' -%}{%- assign suitability_values = suitability_values | append: ',' -%}{%- endif -%}
+                    {%- assign suitability_values = suitability_values | append: '"side-sleeper"' -%}
                   {%- elsif tag_lower contains 'back-sleeper' or tag_lower contains 'rygligger' -%}
-                    "back-sleeper"
+                    {%- if suitability_values != '' -%}{%- assign suitability_values = suitability_values | append: ',' -%}{%- endif -%}
+                    {%- assign suitability_values = suitability_values | append: '"back-sleeper"' -%}
                   {%- elsif tag_lower contains 'stomach-sleeper' or tag_lower contains 'maveligger' -%}
-                    "stomach-sleeper"
+                    {%- if suitability_values != '' -%}{%- assign suitability_values = suitability_values | append: ',' -%}{%- endif -%}
+                    {%- assign suitability_values = suitability_values | append: '"stomach-sleeper"' -%}
                   {%- endif -%}
-                  {%- unless forloop.last -%},{%- endunless -%}
                 {%- endfor -%}
+                {{ suitability_values }}
               ],
               "weight_support": [
+                {%- assign weight_values = '' -%}
                 {%- for tag in product.tags -%}
                   {%- assign tag_lower = tag | downcase -%}
                   {%- if tag_lower contains 'light-weight' or tag_lower contains 'let' -%}
-                    "light"
+                    {%- if weight_values != '' -%}{%- assign weight_values = weight_values | append: ',' -%}{%- endif -%}
+                    {%- assign weight_values = weight_values | append: '"light"' -%}
                   {%- elsif tag_lower contains 'heavy-weight' or tag_lower contains 'tung' -%}
-                    "heavy"
+                    {%- if weight_values != '' -%}{%- assign weight_values = weight_values | append: ',' -%}{%- endif -%}
+                    {%- assign weight_values = weight_values | append: '"heavy"' -%}
                   {%- elsif tag_lower contains 'plus-size' or tag_lower contains 'stor-størrelse' -%}
-                    "plus-size"
+                    {%- if weight_values != '' -%}{%- assign weight_values = weight_values | append: ',' -%}{%- endif -%}
+                    {%- assign weight_values = weight_values | append: '"plus-size"' -%}
                   {%- endif -%}
-                  {%- unless forloop.last -%},{%- endunless -%}
                 {%- endfor -%}
+                {{ weight_values }}
               ]
             }
           }{%- unless forloop.last -%},{%- endunless -%}
