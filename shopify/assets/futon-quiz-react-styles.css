@@ -1,0 +1,582 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 247 49% 47%;
+    --primary-foreground: 210 40% 98%;
+    --primary-hover: 247 49% 37%;
+    --secondary: 247 12% 95%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --secondary-hover: 247 12% 90%;
+    --muted: 247 12% 95%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 247 12% 95%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 247 12% 88%;
+    --input: 247 12% 88%;
+    --ring: 247 49% 47%;
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+    --progress-bg: 247 12% 95%;
+    --step-active: 247 49% 47%;
+    --step-completed: 142 71% 45%;
+    --step-inactive: 247 12% 88%;
+    --gradient-primary: linear-gradient(135deg, hsl(247 49% 47%), hsl(247 49% 37%));
+    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(247 12% 98%));
+    --shadow-soft: 0 4px 20px -2px hsl(247 49% 47% / 0.1);
+    --shadow-card: 0 8px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius: 1.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 247 49% 57%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --primary-hover: 247 49% 67%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --secondary-hover: 217.2 32.6% 22.5%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 247 49% 57%;
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+    --progress-bg: 217.2 32.6% 17.5%;
+    --step-active: 247 49% 57%;
+    --step-completed: 142 71% 45%;
+    --step-inactive: 217.2 32.6% 17.5%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+/* Futon Quiz App Styles */
+@layer components {
+  /* App Container */
+  .futon-quiz-app {
+    width: 100%;
+  }
+
+  /* Main Quiz Container */
+  .futon-quiz {
+    min-height: 100vh;
+    padding: 1.5rem 1rem;
+    background: linear-gradient(135deg hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05));
+  }
+
+  .futon-quiz__container {
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  .futon-quiz__card {
+    background-color: hsl(var(--card));
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+  }
+
+  @media (min-width: 768px) {
+    .futon-quiz__card {
+      padding: 2.5rem;
+    }
+  }
+
+  /* Progress Indicator */
+  .fq-progress {
+    width: 100%;
+    max-width: 32rem;
+    margin: 0 auto 2rem auto;
+  }
+
+  .fq-progress__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .fq-progress__text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .fq-progress__bar {
+    width: 100%;
+    background-color: hsl(var(--progress-bg));
+    border-radius: 9999px;
+    height: 0.5rem;
+    overflow: hidden;
+  }
+
+  .fq-progress__fill {
+    height: 100%;
+    transition: all 0.5s ease-in-out;
+    background: var(--gradient-primary);
+  }
+
+  .fq-progress__steps {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+
+  .fq-progress__step {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+
+  .fq-progress__step--completed {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .fq-progress__step--current {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3);
+  }
+
+  .fq-progress__step--inactive {
+    background-color: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Step Common Styles */
+  .fq-step {
+    max-width: 32rem;
+    margin: 0 auto;
+  }
+
+  .fq-step__header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .fq-step__title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+    margin-bottom: 1rem;
+  }
+
+  .fq-step__subtitle {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .fq-step__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .fq-step__navigation {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Start Step Specific */
+  .fq-start {
+    text-align: center;
+    max-width: 32rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .fq-start__hero {
+    width: 100%;
+    height: 12rem;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+
+  .fq-start__title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  @media (min-width: 768px) {
+    .fq-start__title {
+      font-size: 2.25rem;
+    }
+  }
+
+  .fq-start__description {
+    color: hsl(var(--muted-foreground));
+    font-size: 1rem;
+    line-height: 1.625;
+  }
+
+  .fq-start__features {
+    background-color: hsl(var(--muted) / 0.3);
+    border-radius: 1rem;
+    padding: 1.25rem;
+  }
+
+  .fq-start__features-title {
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    margin-bottom: 0.75rem;
+  }
+
+  .fq-start__features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 768px) {
+    .fq-start__features-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .fq-start__feature {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .fq-start__feature {
+      justify-content: flex-start;
+    }
+  }
+
+  .fq-start__feature-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: hsl(var(--success));
+    border-radius: 50%;
+  }
+
+  .fq-start__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .fq-start__note {
+    font-size: 0.75rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Option Grid */
+  .fq-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .fq-options {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .fq-options--single {
+    grid-template-columns: 1fr;
+  }
+
+  .fq-options--triple {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .fq-options--triple {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Input Groups */
+  .fq-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .fq-input-group__label {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .fq-input-group__input {
+    height: 3rem;
+    text-align: center;
+    font-size: 1.125rem;
+    background-color: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    padding: 0 1rem;
+  }
+
+  .fq-input-group__input:focus {
+    outline: none;
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+  }
+
+  .fq-inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .fq-inputs-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Info Box */
+  .fq-info-box {
+    background-color: hsl(var(--muted) / 0.3);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .fq-info-box__content {
+    font-size: 0.875rem;
+    color: hsl(var(--muted-foreground));
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  /* Form Sections */
+  .fq-form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .fq-form-section__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .fq-form-section--spaced {
+    gap: 2rem;
+  }
+
+  /* Cards */
+  .fq-card {
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border-radius: 0.5rem;
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Buttons - Using semantic classes that reference design system */
+  .fq-btn--option {
+    min-height: 5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 0.75rem;
+    background-color: hsl(var(--card));
+    border: 2px solid hsl(var(--border));
+    color: hsl(var(--card-foreground));
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .fq-btn--option:hover {
+    border-color: hsl(var(--primary));
+    box-shadow: var(--shadow-card);
+  }
+
+  .fq-btn--option-selected {
+    min-height: 5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 0.75rem;
+    background-color: hsl(var(--primary) / 0.1);
+    border: 2px solid hsl(var(--primary));
+    color: hsl(var(--primary));
+    box-shadow: var(--shadow-card);
+  }
+
+  .fq-btn--quiz {
+    color: hsl(var(--primary-foreground));
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-soft);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .fq-btn--quiz:hover {
+    box-shadow: 0 8px 30px -5px hsl(var(--primary) / 0.3);
+    transform: scale(1.02);
+  }
+
+  .fq-btn--quiz:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .fq-btn--secondary {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .fq-btn--secondary:hover {
+    background-color: hsl(var(--secondary-hover));
+  }
+
+  /* Utility Classes */
+  .flex {
+    display: flex;
+  }
+
+  .justify-between {
+    justify-content: space-between;
+  }
+
+  .items-center {
+    align-items: center;
+  }
+
+  .gap-2 {
+    gap: 0.5rem;
+  }
+
+  .gap-4 {
+    gap: 1rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+
+  .mb-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  .mb-8 {
+    margin-bottom: 2rem;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+
+  .space-y-6 > * + * {
+    margin-top: 1.5rem;
+  }
+
+  .grid-cols-1 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .w-full {
+    width: 100%;
+  }
+
+  .h-12 {
+    height: 3rem;
+  }
+
+  .min-h-20 {
+    min-height: 5rem;
+  }
+}

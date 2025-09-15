@@ -6,25 +6,25 @@
 <section class="futon-quiz py-16">
   <div class="futon-quiz__container">
     <!-- Progress Indicator -->
-    <div id="futon-quiz__progress-indicator" class="futon-quiz__progress-container" style="display: none; margin: 0 auto 2rem auto; max-width: 32rem;">
-      <div class="futon-quiz__flex futon-quiz__justify-between futon-quiz__items-center futon-quiz__mb-4">
-        <span class="futon-quiz__progress-text" style="font-size: 0.875rem; font-weight: 500;">Trin 1 af 5</span>
-        <span class="futon-quiz__progress-text" style="font-size: 0.875rem; font-weight: 500;">20%</span>
+    <div id="fq-progress-indicator" class="fq-progress" style="display: none;">
+      <div class="fq-progress__header">
+        <span class="fq-progress__text">Trin 1 af 5</span>
+        <span class="fq-progress__text">20%</span>
       </div>
-      <div class="futon-quiz__progress-bar-container" style="width: 100%; height: 0.5rem; background: hsl(var(--futon-quiz-muted)); border-radius: 0.25rem; overflow: hidden;">
-        <div class="futon-quiz__progress-bar" style="height: 100%; background: hsl(var(--futon-quiz-primary)); transition: width 0.3s ease; width: 20%;"></div>
+      <div class="fq-progress__bar">
+        <div class="fq-progress__fill" style="width: 20%;"></div>
       </div>
-      <div class="futon-quiz__flex futon-quiz__justify-between futon-quiz__mt-4">
-        <div class="futon-quiz__step-indicator futon-quiz__step-indicator--current" style="width: 2rem; height: 2rem; border-radius: 50%; background: hsl(var(--futon-quiz-primary)); color: hsl(var(--futon-quiz-primary-foreground)); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 500;">1</div>
-        <div class="futon-quiz__step-indicator futon-quiz__step-indicator--inactive" style="width: 2rem; height: 2rem; border-radius: 50%; background: hsl(var(--futon-quiz-muted)); color: hsl(var(--futon-quiz-muted-foreground)); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 500;">2</div>
-        <div class="futon-quiz__step-indicator futon-quiz__step-indicator--inactive" style="width: 2rem; height: 2rem; border-radius: 50%; background: hsl(var(--futon-quiz-muted)); color: hsl(var(--futon-quiz-muted-foreground)); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 500;">3</div>
-        <div class="futon-quiz__step-indicator futon-quiz__step-indicator--inactive" style="width: 2rem; height: 2rem; border-radius: 50%; background: hsl(var(--futon-quiz-muted)); color: hsl(var(--futon-quiz-muted-foreground)); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 500;">4</div>
-        <div class="futon-quiz__step-indicator futon-quiz__step-indicator--inactive" style="width: 2rem; height: 2rem; border-radius: 50%; background: hsl(var(--futon-quiz-muted)); color: hsl(var(--futon-quiz-muted-foreground)); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 500;">5</div>
+      <div class="fq-progress__steps">
+        <div class="fq-progress__step fq-progress__step--current">1</div>
+        <div class="fq-progress__step fq-progress__step--inactive">2</div>
+        <div class="fq-progress__step fq-progress__step--inactive">3</div>
+        <div class="fq-progress__step fq-progress__step--inactive">4</div>
+        <div class="fq-progress__step fq-progress__step--inactive">5</div>
       </div>
     </div>
 
     <!-- Quiz Container -->
-    <div id="futon-quiz__container" class="futon-quiz__container">
+    <div id="futon-quiz-container" class="futon-quiz__container">
       <!-- Step content will be dynamically inserted here -->
     </div>
   </div>
@@ -164,8 +164,8 @@
   };
   {% endif %}
 </script>
-<link rel="stylesheet" href="{{ 'futon-quiz-styles.css' | asset_url }}">
-<script src="{{ 'futon-quiz-single-collection.js' | asset_url }}" defer></script>
+<link rel="stylesheet" href="{{ 'futon-quiz-react-styles.css' | asset_url }}">
+<script src="{{ 'futon-quiz-single-collection-updated.js' | asset_url }}" defer></script>
 
 {% schema %}
 {

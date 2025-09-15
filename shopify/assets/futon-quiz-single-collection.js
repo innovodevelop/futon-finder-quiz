@@ -43,19 +43,20 @@ class FutonQuizSingleCollection {
   }
 
   updateProgress() {
-    const progressContainer = document.getElementById('futon-quiz__progress-indicator');
+    const progressContainer = document.getElementById('fq-progress-indicator');
     if (!progressContainer || this.currentStep === 0 || this.currentStep === 6) return;
 
     const progressSteps = this.totalSteps - 2; // Exclude start and end steps
     const currentProgress = this.currentStep;
     const progressPercentage = Math.round((currentProgress / progressSteps) * 100);
 
-    const progressText = progressContainer.querySelector('.futon-quiz__progress-text');
-    const progressBar = progressContainer.querySelector('.futon-quiz__progress-bar');
-    const stepIndicators = progressContainer.querySelectorAll('.futon-quiz__step-indicator');
+    const progressText = progressContainer.querySelectorAll('.fq-progress__text');
+    const progressBar = progressContainer.querySelector('.fq-progress__fill');
+    const stepIndicators = progressContainer.querySelectorAll('.fq-progress__step');
 
-    if (progressText) {
-      progressText.textContent = `Trin ${currentProgress} af ${progressSteps} (${progressPercentage}%)`;
+    if (progressText.length >= 2) {
+      progressText[0].textContent = `Trin ${currentProgress} af ${progressSteps}`;
+      progressText[1].textContent = `${progressPercentage}%`;
     }
 
     if (progressBar) {
@@ -66,13 +67,13 @@ class FutonQuizSingleCollection {
     stepIndicators.forEach((indicator, index) => {
       const stepNumber = index + 1;
       if (stepNumber < currentProgress) {
-        indicator.className = 'futon-quiz__step-indicator futon-quiz__step-indicator--completed';
+        indicator.className = 'fq-progress__step fq-progress__step--completed';
         indicator.textContent = '✓';
       } else if (stepNumber === currentProgress) {
-        indicator.className = 'futon-quiz__step-indicator futon-quiz__step-indicator--current';
+        indicator.className = 'fq-progress__step fq-progress__step--current';
         indicator.textContent = stepNumber;
       } else {
-        indicator.className = 'futon-quiz__step-indicator futon-quiz__step-indicator--inactive';
+        indicator.className = 'fq-progress__step fq-progress__step--inactive';
         indicator.textContent = stepNumber;
       }
     });
@@ -156,53 +157,53 @@ class FutonQuizSingleCollection {
 
   buildStartStep() {
     return `
-      <div class="futon-quiz__step futon-quiz__text-center futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
-        <div class="futon-quiz__space-y-6">
-          <div class="futon-quiz__space-y-4">
+      <div class="fq-step text-center">
+        <div class="fq-step__content">
+          <div class="space-y-4">
             <img 
               src="${window.quizConfig?.heroImageUrl || ''}" 
               alt="Comfortable futon setup" 
-              class="futon-quiz__hero-image"
+              class="fq-start__hero"
               loading="eager"
               onerror="this.style.display='none'"
             />
-            <h1 class="futon-quiz__title">
+            <h1 class="fq-start__title">
               Find Din Perfekte Futon
             </h1>
-            <p class="futon-quiz__description">
+            <p class="fq-start__description">
               Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov. 
               Baseret på dine søvnpræferencer anbefaler vi det perfekte match fra vores kollektion.
             </p>
           </div>
 
-          <div class="futon-quiz__info-box">
-            <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Hvad du får:</h3>
-            <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__grid--md-cols-3 futon-quiz__gap-4">
-              <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
-                <div class="futon-quiz__bullet--success"></div>
+          <div class="fq-start__features">
+            <h3 class="fq-start__features-title">Hvad du får:</h3>
+            <div class="fq-start__features-grid">
+              <div class="fq-start__feature">
+                <div class="fq-start__feature-dot"></div>
                 <span>Personlige anbefalinger</span>
               </div>
-              <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
-                <div class="futon-quiz__bullet--success"></div>
+              <div class="fq-start__feature">
+                <div class="fq-start__feature-dot"></div>
                 <span>Ekspert vejledning</span>
               </div>
-              <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
-                <div class="futon-quiz__bullet--success"></div>
+              <div class="fq-start__feature">
+                <div class="fq-start__feature-dot"></div>
                 <span>Perfekt komfort match</span>
               </div>
             </div>
           </div>
 
-          <div class="futon-quiz__space-y-4">
+          <div class="fq-start__cta">
             <button 
-              class="futon-quiz__btn futon-quiz__btn--primary"
+              class="fq-btn--quiz text-base"
               style="height: 3rem; padding: 0 3rem; font-size: 1rem; border-radius: 0.5rem;"
               onclick="futonQuizSingleCollection.startQuiz()"
             >
               Start Test
             </button>
             
-            <p style="font-size: 0.75rem; color: hsl(var(--quiz-muted-foreground));">
+            <p class="fq-start__note">
               Tager kun 2-3 minutter at gennemføre
             </p>
           </div>
@@ -734,21 +735,21 @@ class FutonQuizSingleCollection {
   validateWeightStep() {
     const { peopleCount, weights } = this.quizData;
     const isValid = weights.person1 > 0 && (peopleCount === 1 || weights.person2 > 0);
-    const nextBtn = document.getElementById('futon-quiz__weight-next-btn');
+    const nextBtn = document.getElementById('fq-weight-next');
     if (nextBtn) nextBtn.disabled = !isValid;
   }
 
   validateSleepPositionStep() {
     const { peopleCount, sleepPositions } = this.quizData;
     const isValid = sleepPositions.person1 && (peopleCount === 1 || sleepPositions.person2);
-    const nextBtn = document.getElementById('futon-quiz__sleep-position-next-btn');
+    const nextBtn = document.getElementById('fq-sleep-next');
     if (nextBtn) nextBtn.disabled = !isValid;
   }
 
   validatePreferenceStep() {
     const { peopleCount, preferences } = this.quizData;
     const isValid = preferences.person1 && (peopleCount === 1 || preferences.person2);
-    const nextBtn = document.getElementById('futon-quiz__preference-next-btn');
+    const nextBtn = document.getElementById('fq-preference-next');
     if (nextBtn) nextBtn.disabled = !isValid;
   }
 
