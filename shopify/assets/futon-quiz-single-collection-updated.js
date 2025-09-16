@@ -136,7 +136,8 @@ class FutonQuizSingleCollection {
         stepHTML = this.buildStartStep();
     }
 
-    container.innerHTML = stepHTML;
+    // Wrap step content in futon-quiz__card to match React component structure
+    container.innerHTML = `<div class="futon-quiz__card">${stepHTML}</div>`;
 
     // Show/hide progress indicator (hidden on start and end)
     const progressIndicator = document.getElementById('fq-progress-indicator');
@@ -178,56 +179,55 @@ class FutonQuizSingleCollection {
 
   buildStartStep() {
     return `
-      <div class="fq-step text-center">
+      <div id="fq-start-step" class="fq-start">
         <div class="fq-step__content">
-          <div class="space-y-4">
-            <img 
-              src="${window.quizConfig?.heroImageUrl || ''}" 
-              alt="Comfortable futon setup" 
-              class="fq-start__hero"
-              loading="eager"
-              onerror="this.style.display='none'"
-            />
-            <h1 class="fq-start__title">
-              Find Din Perfekte Futon
-            </h1>
-            <p class="fq-start__description">
-              Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov. 
-              Baseret på dine søvnpræferencer anbefaler vi det perfekte match fra vores kollektion.
-            </p>
-          </div>
+          <img 
+            id="fq-start-hero-image"
+            src="${window.quizConfig?.heroImageUrl || ''}" 
+            alt="Comfortable futon setup" 
+            class="fq-start__hero"
+            loading="eager"
+            onerror="this.style.display='none'"
+          />
+          <h1 class="fq-start__title">
+            Find Din Perfekte Futon
+          </h1>
+          <p class="fq-start__description">
+            Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov. 
+            Baseret på dine søvnpræferencer anbefaler vi det perfekte match fra vores kollektion.
+          </p>
+        </div>
 
-          <div class="fq-start__features">
-            <h3 class="fq-start__features-title">Hvad du får:</h3>
-            <div class="fq-start__features-grid">
-              <div class="fq-start__feature">
-                <div class="fq-start__feature-dot"></div>
-                <span>Personlige anbefalinger</span>
-              </div>
-              <div class="fq-start__feature">
-                <div class="fq-start__feature-dot"></div>
-                <span>Ekspert vejledning</span>
-              </div>
-              <div class="fq-start__feature">
-                <div class="fq-start__feature-dot"></div>
-                <span>Perfekt komfort match</span>
-              </div>
+        <div class="fq-start__features">
+          <h3 class="fq-start__features-title">Hvad du får:</h3>
+          <div class="fq-start__features-grid">
+            <div class="fq-start__feature">
+              <div class="fq-start__feature-dot"></div>
+              <span>Personlige anbefalinger</span>
+            </div>
+            <div class="fq-start__feature">
+              <div class="fq-start__feature-dot"></div>
+              <span>Ekspert vejledning</span>
+            </div>
+            <div class="fq-start__feature">
+              <div class="fq-start__feature-dot"></div>
+              <span>Perfekt komfort match</span>
             </div>
           </div>
+        </div>
 
-          <div class="fq-start__cta">
-            <button 
-              class="fq-btn--quiz text-base"
-              style="height: 3rem; padding: 0 3rem; font-size: 1rem; border-radius: 0.5rem;"
-              onclick="futonQuizSingleCollection.startQuiz()"
-            >
-              Start Test
-            </button>
-            
-            <p class="fq-start__note">
-              Tager kun 2-3 minutter at gennemføre
-            </p>
-          </div>
+        <div class="fq-start__cta">
+          <button 
+            id="fq-start-button"
+            class="fq-btn--quiz text-base"
+            onclick="futonQuizSingleCollection.startQuiz()"
+          >
+            Start Test
+          </button>
+          
+          <p class="fq-start__note">
+            Tager kun 2-3 minutter at gennemføre
+          </p>
         </div>
       </div>
     `;
