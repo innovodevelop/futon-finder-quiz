@@ -160,8 +160,7 @@
   {% if section.settings.klaviyo_enabled and section.settings.klaviyo_public_key != blank %}
   window.klaviyoConfig = {
     publicKey: {{ section.settings.klaviyo_public_key | json }},
-    eventName: {{ section.settings.klaviyo_event_name | default: 'Futon Quiz Completed' | json }},
-    flowTags: {{ section.settings.klaviyo_flow_tags | split: ',' | json }},
+    listId: {{ section.settings.klaviyo_list_id | json }},
     enabled: true
   };
   {% endif %}
@@ -328,23 +327,16 @@
     {
       "type": "text",
       "id": "klaviyo_public_key",
-      "label": "Klaviyo Public API Key",
-      "info": "Your Klaviyo public API key (starts with 'pk_'). Required for sending data to Klaviyo.",
+      "label": "Klaviyo Private API Key",
+      "info": "Your Klaviyo private API key (starts with 'pk_'). Required for creating profiles and adding to lists.",
       "placeholder": "pk_1234567890abcdef..."
     },
     {
       "type": "text",
-      "id": "klaviyo_event_name",
-      "label": "Custom Event Name",
-      "default": "Futon Quiz Completed",
-      "info": "Custom event name for your Klaviyo flow trigger. Use this exact name when creating your flow in Klaviyo."
-    },
-    {
-      "type": "text", 
-      "id": "klaviyo_flow_tags",
-      "label": "Flow Tags (optional)",
-      "info": "Comma-separated tags to help target specific flows (e.g., 'futon-quiz,high-intent,lead-gen')",
-      "placeholder": "futon-quiz,high-intent"
+      "id": "klaviyo_list_id",
+      "label": "Klaviyo List ID",
+      "info": "The ID of the Klaviyo list where quiz completers should be added. Find this in your Klaviyo dashboard under Lists.",
+      "placeholder": "XyZ123"
     }
   ],
   "blocks": [

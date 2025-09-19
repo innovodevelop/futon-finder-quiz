@@ -1177,80 +1177,123 @@ class FutonQuizSingleCollection {
         return;
       }
 
-      const klaviyoData = {
-        token: window.klaviyoConfig.publicKey,
-        event: window.klaviyoConfig.eventName,
-        customer: {
-          $email: this.quizData.contactInfo.email,
-          $first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
-          $last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
-          $phone_number: this.quizData.contactInfo.phone,
-          $consent: this.quizData.contactInfo.marketingConsent ? ['email', 'sms'] : []
-        },
-        properties: {
-          // Quiz responses
-          people_count: this.quizData.peopleCount,
-          weight_person1: this.quizData.weights.person1,
-          weight_person2: this.quizData.peopleCount === 2 ? this.quizData.weights.person2 : null,
-          height_person1: this.quizData.heights.person1,
-          height_person2: this.quizData.peopleCount === 2 ? this.quizData.heights.person2 : null,
-          sleep_position_person1: this.quizData.sleepPositions.person1,
-          sleep_position_person2: this.quizData.peopleCount === 2 ? this.quizData.sleepPositions.person2 : null,
-          preference_person1: this.quizData.preferences.person1,
-          preference_person2: this.quizData.peopleCount === 2 ? this.quizData.preferences.person2 : null,
-          comments: this.quizData.contactInfo.comments || '',
-          
-          // Recommended products
-          recommended_products: recommendations.map(product => ({
-            product_id: product.id,
-            title: product.title,
-            price: product.price,
-            url: product.url,
-            image: product.featured_image,
-            score: product.score
-          })),
-          
-          // Quiz metadata
-          quiz_completion_date: new Date().toISOString(),
-          quiz_version: 'single-collection-v1.0',
-          flow_tags: window.klaviyoConfig.flowTags.filter(tag => tag.trim() !== ''),
-          quiz_source: 'shopify-futon-quiz'
+      // Prepare custom properties for the profile
+      const customProperties = {
+        // Quiz responses
+        people_count: this.quizData.peopleCount,
+        weight_person1: this.quizData.weights.person1,
+        height_person1: this.quizData.heights.person1,
+        sleep_position_person1: this.quizData.sleepPositions.person1,
+        preference_person1: this.quizData.preferences.person1,
+        comments: this.quizData.contactInfo.comments || '',
+        
+        // Quiz metadata
+        quiz_completion_date: new Date().toISOString(),
+        quiz_version: 'single-collection-v1.0',
+        quiz_source: 'shopify-futon-quiz'
+      };
+
+      // Add person 2 data if applicable
+      if (this.quizData.peopleCount === 2) {
+        customProperties.weight_person2 = this.quizData.weights.person2;
+        customProperties.height_person2 = this.quizData.heights.person2;
+        customProperties.sleep_position_person2 = this.quizData.sleepPositions.person2;
+        customProperties.preference_person2 = this.quizData.preferences.person2;
+      }
+
+      // Add recommended product properties
+      recommendations.forEach((product, index) => {
+        customProperties[`recommended_product_${index + 1}_id`] = product.id;
+        customProperties[`recommended_product_${index + 1}_title`] = product.title;
+        customProperties[`recommended_product_${index + 1}_price`] = product.price;
+        customProperties[`recommended_product_${index + 1}_url`] = product.url;
+        customProperties[`recommended_product_${index + 1}_image`] = product.featured_image;
+        customProperties[`recommended_product_${index + 1}_score`] = product.score;
+      });
+
+      const profileData = {
+        data: {
+          type: 'profile',
+          attributes: {
+            email: this.quizData.contactInfo.email,
+            first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+            last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+            phone_number: this.quizData.contactInfo.phone,
+            properties: customProperties
+          }
         }
       };
 
-      // Send to Klaviyo Track API
-      const response = await fetch('https://a.klaviyo.com/api/events/', {
+      // Create or update profile
+      const profileResponse = await fetch('https://a.klaviyo.com/api/profiles/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Authorization': `Klaviyo-API-Key ${window.klaviyoConfig.publicKey}`,
+          'revision': '2024-10-15'
         },
-        body: JSON.stringify({
+      });
+
+      if (!profileResponse.ok) {
+        console.error('Failed to create/update Klaviyo profile:', profileResponse.status, profileResponse.statusText);
+        return;
+      }
+
+      const profileResult = await profileResponse.json();
+      console.log('Profile created/updated successfully:', profileResult);
+
+      // Add profile to list if list ID is provided
+      if (window.klaviyoConfig.listId && this.quizData.contactInfo.marketingConsent) {
+        const listSubscription = {
           data: {
-            type: 'event',
+            type: 'profile-subscription-bulk-create-job',
             attributes: {
-              properties: klaviyoData.properties,
-              metric: {
-                name: klaviyoData.event
-              },
-              profile: {
-                $email: klaviyoData.customer.$email,
-                $phone_number: klaviyoData.customer.$phone_number,
-                properties: {
-                  first_name: klaviyoData.customer.$first_name,
-                  last_name: klaviyoData.customer.$last_name
+              profiles: {
+                data: [{
+                  type: 'profile',
+                  attributes: {
+                    email: this.quizData.contactInfo.email,
+                    subscriptions: {
+                      email: {
+                        marketing: {
+                          consent: 'SUBSCRIBED'
+                        }
+                      }
+                    }
+                  }
+                }]
+              }
+            },
+            relationships: {
+              list: {
+                data: {
+                  type: 'list',
+                  id: window.klaviyoConfig.listId
                 }
               }
             }
           }
-        })
-      });
+        };
 
-      if (response.ok) {
-        console.log('Quiz data successfully sent to Klaviyo');
-      } else {
-        console.error('Failed to send quiz data to Klaviyo:', response.status, response.statusText);
+        const listResponse = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Klaviyo-API-Key ${window.klaviyoConfig.publicKey}`,
+            'revision': '2024-10-15'
+          },
+          body: JSON.stringify(listSubscription)
+        });
+
+        if (listResponse.ok) {
+          console.log('Profile successfully added to Klaviyo list');
+        } else {
+          console.error('Failed to add profile to Klaviyo list:', listResponse.status, listResponse.statusText);
+        }
       }
+
     } catch (error) {
       console.error('Error sending quiz data to Klaviyo:', error);
     }

@@ -1,114 +1,112 @@
-# Klaviyo Integration for Futon Quiz
+# Klaviyo Integration Guide - Profile-Based Approach
 
-This guide explains how to set up Klaviyo integration for the futon quiz to automatically send quiz completion data and trigger custom flows.
+This guide explains how to integrate the Futon Quiz with Klaviyo using a **profile-based approach**. Instead of just triggering events, this integration creates or updates customer profiles with detailed quiz data and adds them to a specific Klaviyo list.
 
-## Setup Steps
+## Benefits of Profile-Based Integration
 
-### 1. Get Your Klaviyo Public API Key
-1. Log in to your Klaviyo account
-2. Go to **Account > Settings > API Keys**
-3. Copy your **Public API Key** (starts with `pk_`)
+- **Rich Customer Data**: All quiz responses are stored as custom properties on the customer profile
+- **List Management**: Customers are automatically added to a designated list for targeted campaigns
+- **Data Persistence**: Customer preferences are saved long-term, not just as one-time events
+- **Better Segmentation**: Use quiz data for advanced audience segmentation
 
-### 2. Configure the Integration in Shopify Theme Editor
-1. In your Shopify admin, go to **Online Store > Themes**
+## Setup Instructions
+
+### 1. Get Your Klaviyo Private API Key
+1. Log into your Klaviyo account
+2. Go to **Account** → **Settings** → **API Keys**
+3. Click **Create Private API Key**
+4. Give it a name like "Futon Quiz Integration"
+5. Ensure it has **Full Access** or at least permissions for:
+   - Profiles: Read/Write
+   - Lists: Read/Write
+6. Copy the Private API Key (starts with `pk_`)
+
+⚠️ **Important**: Use a **Private API Key**, not a Public API Key, as we need write permissions for profiles and lists.
+
+### 2. Get Your Klaviyo List ID
+1. In Klaviyo, go to **Lists & Segments**
+2. Create a new list or select an existing one (e.g., "Futon Quiz Completers")
+3. Click on the list name
+4. The List ID will be visible in the URL: `https://www.klaviyo.com/lists/XyZ123` (XyZ123 is your List ID)
+
+### 3. Configure in Shopify
+1. In your Shopify admin, go to **Online Store** → **Themes**
 2. Click **Customize** on your active theme
-3. Navigate to the page where you have the Futon Quiz section
-4. Click on the **Futon Quiz Single Collection** section
+3. Navigate to the page where you've added the Futon Quiz section
+4. Click on the **Futon Quiz** section
 5. Scroll down to the **Klaviyo Integration** settings
 6. Check the **"Enable Klaviyo Integration"** checkbox
-7. Paste your Public API Key into the **"Klaviyo Public API Key"** field
-8. **Customize Event Name** (optional): Change the event name that will trigger your flows (default: "Futon Quiz Completed")
-9. **Add Flow Tags** (optional): Add comma-separated tags to help target specific flows (e.g., "futon-quiz,high-intent")
-10. Click **Save**
+7. Paste your **Private API Key** into the **"Klaviyo Private API Key"** field
+8. Paste your **List ID** into the **"Klaviyo List ID"** field
+9. Click **Save**
 
-### 3. Create a Custom Flow in Klaviyo
-1. In Klaviyo, go to **Flows** and click **Create Flow**
-2. Choose **Create from Scratch**
-3. Set the trigger to **Metric** and select your custom event name (default: **"Futon Quiz Completed"**)
-   - If you changed the event name in Shopify, use that exact name here
-   - Use flow tags to create more targeted flows (e.g., only trigger for events with "high-intent" tag)
-4. Build your flow with the desired actions (emails, SMS, etc.)
+## Data Stored in Klaviyo Profiles
 
-## Data Sent to Klaviyo
+When a customer completes the quiz, the following custom properties are added to their Klaviyo profile:
 
-When a user completes the quiz, the following data is automatically sent to Klaviyo:
-
-### Profile Information
-- Email address
-- Phone number
-- First name
-- Last name
-- Marketing consent preference
-
-### Quiz Responses
+### Basic Quiz Data
 - `people_count`: Number of people (1 or 2)
-- `weight_person1`: Weight of first person
-- `weight_person2`: Weight of second person (if applicable)
-- `sleep_position_person1`: Sleep position preference for first person
-- `sleep_position_person2`: Sleep position preference for second person (if applicable)
-- `preference_person1`: Firmness preference for first person
-- `preference_person2`: Firmness preference for second person (if applicable)
-- `comments`: Any additional comments from the user
+- `comments`: Any additional comments from the customer
 
-### Product Recommendations
-- `recommended_products`: Array of recommended products with details
-- `top_recommendation_id`: Product ID of the best match
-- `top_recommendation_title`: Title of the best match product
+### Person 1 Data
+- `weight_person1`: Weight in kg
+- `height_person1`: Height in cm
+- `sleep_position_person1`: Sleep position preference
+- `preference_person1`: Firmness preference
+
+### Person 2 Data (if applicable)
+- `weight_person2`: Weight in kg
+- `height_person2`: Height in cm  
+- `sleep_position_person2`: Sleep position preference
+- `preference_person2`: Firmness preference
+
+### Recommended Products
+For each recommended product (up to 3):
+- `recommended_product_1_id`: Product ID
+- `recommended_product_1_title`: Product name
+- `recommended_product_1_price`: Product price
+- `recommended_product_1_url`: Product URL
+- `recommended_product_1_image`: Product image URL
+- `recommended_product_1_score`: Recommendation score
 
 ### Metadata
-- `quiz_type`: Always "futon_finder"
-- `completion_timestamp`: When the quiz was completed
-- `shop_domain`: Your shop's domain
-- `flow_tags`: Array of tags for flow targeting (if specified in Shopify)
+- `quiz_completion_date`: When the quiz was completed
+- `quiz_version`: Version of the quiz
 - `quiz_source`: Always "shopify-futon-quiz"
 
-## Custom Flow Ideas
+## Using the Data for Campaigns
 
-Here are some flow ideas you can create based on the quiz completion:
+### 1. Segmentation Examples
+Create segments based on quiz data:
+- **Soft Preference Segment**: `preference_person1 = "soft"`
+- **Couples Segment**: `people_count = 2`
+- **High-Value Prospects**: Customers who were recommended premium products
 
-### 1. **Immediate Recommendations Email**
-- Send an email with their personalized product recommendations
-- Include product images, descriptions, and direct purchase links
-- Add a discount code for first-time buyers
+### 2. Personalized Email Campaigns
+- Send follow-up emails with the specific products they were recommended
+- Create different messaging for couples vs. individuals
+- Tailor content based on firmness preferences
 
-### 2. **Follow-up Sequence**
-- Day 1: Send recommendations with testimonials
-- Day 3: Educational content about futon care and benefits
-- Day 7: Limited-time discount offer
-- Day 14: Review request or alternative product suggestions
-
-### 3. **Segmented Flows Based on Preferences**
-- Different flows for soft vs. firm preference users
-- Couples-specific messaging for 2-person quiz completions
-- Weight-specific recommendations and content
-
-### 4. **Abandoned Quiz Recovery**
-- Target users who started but didn't complete the quiz
-- Send reminder emails with incentives to finish
-
-## Testing the Integration
-
-1. Complete the quiz on your website
-2. Check your Klaviyo account under **Analytics > Events** for the "Futon Quiz Completed" event
-3. Verify that the profile was created/updated with the quiz data
-4. Test your flow triggers to ensure they're working correctly
+### 3. Abandoned Cart Flows
+- If customers don't purchase their recommended products, trigger abandoned cart emails
+- Include their quiz results in the email for personalized messaging
 
 ## Troubleshooting
 
-**Integration not working?**
-- Verify your Public API Key is correct and starts with "pk_"
-- Ensure the "Enable Klaviyo Integration" checkbox is checked
-- Check browser console for any error messages
-- Test with a valid email address
+**Profile not being created?**
+- Verify you're using a Private API Key (not Public)
+- Check that the API key has proper permissions
+- Ensure marketing consent was given in the quiz
 
-**Flow not triggering?**
-- Check that your flow trigger matches your custom event name (exact spelling)
-- If using flow tags, ensure your flow conditions include the correct tags
-- Verify the flow is live and not in draft mode
-- Allow a few minutes for events to process in Klaviyo
+**Not being added to list?**
+- Verify the List ID is correct
+- Check that the customer gave marketing consent
+- Ensure the list exists and is active in Klaviyo
 
-## Support
+**Missing custom properties?**
+- Check the browser console for any API errors
+- Verify all quiz steps were completed before submission
 
-If you need help setting up the integration or creating custom flows, please refer to:
-- [Klaviyo API Documentation](https://developers.klaviyo.com/en/docs)
-- [Klaviyo Flow Builder Guide](https://help.klaviyo.com/hc/en-us/categories/115000430711-Flows)
+## Security Note
+
+The Private API Key is processed server-side through Shopify's Liquid templating, so it's not exposed to the client browser. This approach is secure for e-commerce use cases.
