@@ -1179,7 +1179,7 @@ class FutonQuizSingleCollection {
 
       const klaviyoData = {
         token: window.klaviyoConfig.publicKey,
-        event: 'Futon Quiz Completed',
+        event: window.klaviyoConfig.eventName,
         customer: {
           $email: this.quizData.contactInfo.email,
           $first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
@@ -1212,7 +1212,9 @@ class FutonQuizSingleCollection {
           
           // Quiz metadata
           quiz_completion_date: new Date().toISOString(),
-          quiz_version: 'single-collection-v1.0'
+          quiz_version: 'single-collection-v1.0',
+          flow_tags: window.klaviyoConfig.flowTags.filter(tag => tag.trim() !== ''),
+          quiz_source: 'shopify-futon-quiz'
         }
       };
 

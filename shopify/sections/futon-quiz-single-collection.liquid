@@ -160,6 +160,8 @@
   {% if section.settings.klaviyo_enabled and section.settings.klaviyo_public_key != blank %}
   window.klaviyoConfig = {
     publicKey: {{ section.settings.klaviyo_public_key | json }},
+    eventName: {{ section.settings.klaviyo_event_name | default: 'Futon Quiz Completed' | json }},
+    flowTags: {{ section.settings.klaviyo_flow_tags | split: ',' | json }},
     enabled: true
   };
   {% endif %}
@@ -316,19 +318,33 @@
       "type": "header",
       "content": "Klaviyo Integration"
     },
-    {
-      "type": "text",
-      "id": "klaviyo_public_key",
-      "label": "Klaviyo Public API Key",
-      "info": "Your Klaviyo public API key (starts with 'pk_'). This enables sending quiz completion data to Klaviyo for custom flows.",
-      "placeholder": "pk_1234567890abcdef..."
-    },
     {  
       "type": "checkbox",
       "id": "klaviyo_enabled",
       "label": "Enable Klaviyo Integration",
       "default": false,
       "info": "Check to enable sending quiz completion data to Klaviyo"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_public_key",
+      "label": "Klaviyo Public API Key",
+      "info": "Your Klaviyo public API key (starts with 'pk_'). Required for sending data to Klaviyo.",
+      "placeholder": "pk_1234567890abcdef..."
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_event_name",
+      "label": "Custom Event Name",
+      "default": "Futon Quiz Completed",
+      "info": "Custom event name for your Klaviyo flow trigger. Use this exact name when creating your flow in Klaviyo."
+    },
+    {
+      "type": "text", 
+      "id": "klaviyo_flow_tags",
+      "label": "Flow Tags (optional)",
+      "info": "Comma-separated tags to help target specific flows (e.g., 'futon-quiz,high-intent,lead-gen')",
+      "placeholder": "futon-quiz,high-intent"
     }
   ],
   "blocks": [

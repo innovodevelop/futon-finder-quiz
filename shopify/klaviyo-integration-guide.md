@@ -17,12 +17,16 @@ This guide explains how to set up Klaviyo integration for the futon quiz to auto
 5. Scroll down to the **Klaviyo Integration** settings
 6. Check the **"Enable Klaviyo Integration"** checkbox
 7. Paste your Public API Key into the **"Klaviyo Public API Key"** field
-8. Click **Save**
+8. **Customize Event Name** (optional): Change the event name that will trigger your flows (default: "Futon Quiz Completed")
+9. **Add Flow Tags** (optional): Add comma-separated tags to help target specific flows (e.g., "futon-quiz,high-intent")
+10. Click **Save**
 
 ### 3. Create a Custom Flow in Klaviyo
 1. In Klaviyo, go to **Flows** and click **Create Flow**
 2. Choose **Create from Scratch**
-3. Set the trigger to **Metric** and select **"Futon Quiz Completed"**
+3. Set the trigger to **Metric** and select your custom event name (default: **"Futon Quiz Completed"**)
+   - If you changed the event name in Shopify, use that exact name here
+   - Use flow tags to create more targeted flows (e.g., only trigger for events with "high-intent" tag)
 4. Build your flow with the desired actions (emails, SMS, etc.)
 
 ## Data Sent to Klaviyo
@@ -55,6 +59,8 @@ When a user completes the quiz, the following data is automatically sent to Klav
 - `quiz_type`: Always "futon_finder"
 - `completion_timestamp`: When the quiz was completed
 - `shop_domain`: Your shop's domain
+- `flow_tags`: Array of tags for flow targeting (if specified in Shopify)
+- `quiz_source`: Always "shopify-futon-quiz"
 
 ## Custom Flow Ideas
 
@@ -96,7 +102,8 @@ Here are some flow ideas you can create based on the quiz completion:
 - Test with a valid email address
 
 **Flow not triggering?**
-- Check that your flow trigger is set to "Futon Quiz Completed" (exact spelling)
+- Check that your flow trigger matches your custom event name (exact spelling)
+- If using flow tags, ensure your flow conditions include the correct tags
 - Verify the flow is live and not in draft mode
 - Allow a few minutes for events to process in Klaviyo
 
