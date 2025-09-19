@@ -1168,6 +1168,9 @@ class FutonQuizSingleCollection {
    * Send quiz completion data to Klaviyo
    */
   async sendToKlaviyo() {
+    console.log('sendToKlaviyo called');
+    console.log('Klaviyo config:', window.klaviyoConfig);
+    
     try {
       const recommendations = this.generateRecommendations();
       
@@ -1224,6 +1227,8 @@ class FutonQuizSingleCollection {
         }
       };
 
+      console.log('Attempting to send profile data to Klaviyo:', profileData);
+
       // Create or update profile
       const profileResponse = await fetch('https://a.klaviyo.com/api/profiles/', {
         method: 'POST',
@@ -1233,10 +1238,13 @@ class FutonQuizSingleCollection {
           'Authorization': `Klaviyo-API-Key ${window.klaviyoConfig.publicKey}`,
           'revision': '2024-10-15'
         },
+        body: JSON.stringify(profileData)
       });
 
       if (!profileResponse.ok) {
+        const errorText = await profileResponse.text();
         console.error('Failed to create/update Klaviyo profile:', profileResponse.status, profileResponse.statusText);
+        console.error('Response body:', errorText);
         return;
       }
 
