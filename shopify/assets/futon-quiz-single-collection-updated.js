@@ -756,6 +756,17 @@ class FutonQuizSingleCollection {
 
   // Quiz navigation methods
   startQuiz() {
+    console.log('Starting quiz...');
+    this.quizStartTime = Date.now(); // Track quiz start time
+    
+    // Track quiz start in Klaviyo
+    if (window.klaviyoConfig && window.klaviyoConfig.enabled && window.klaviyo) {
+      window.klaviyo.push(['track', 'Quiz Started', {
+        'Quiz Type': 'futon_quiz',
+        'Start Time': new Date().toISOString()
+      }]);
+    }
+    
     this.currentStep = 1;
     this.showStep(this.currentStep);
   }
@@ -782,6 +793,10 @@ class FutonQuizSingleCollection {
   // Data update methods
   setPeopleCount(count) {
     this.quizData.peopleCount = count;
+    
+    // Update Klaviyo profile progressively
+    this.updateKlaviyoProfile({ peopleCount: count }, 'People Count');
+    
     this.showStep(this.currentStep); // Refresh to update UI
   }
 
@@ -802,12 +817,28 @@ class FutonQuizSingleCollection {
 
   setSleepPosition(person, position) {
     this.quizData.sleepPositions[person] = position;
+    
+    // Update Klaviyo profile progressively
+    this.updateKlaviyoProfile({ 
+      person: person, 
+      sleepPosition: position,
+      allPositions: this.quizData.sleepPositions 
+    }, 'Sleep Position');
+    
     this.showStep(this.currentStep); // Refresh to update UI
     this.validateSleepPositionStep();
   }
 
   setPreference(person, preference) {
     this.quizData.preferences[person] = preference;
+    
+    // Update Klaviyo profile progressively  
+    this.updateKlaviyoProfile({ 
+      person: person, 
+      preference: preference,
+      allPreferences: this.quizData.preferences 
+    }, 'Firmness Preference');
+    
     this.showStep(this.currentStep); // Refresh to update UI
     this.validatePreferenceStep();
   }
@@ -1165,110 +1196,192 @@ class FutonQuizSingleCollection {
   }
 
   /**
-   * Send quiz completion data to Klaviyo
+   * Modern Klaviyo integration with progressive profile building
    */
   async sendToKlaviyo() {
-    console.log('sendToKlaviyo called');
-    console.log('Klaviyo config:', window.klaviyoConfig);
+    const recommendations = this.generateRecommendations();
     
+    if (!window.klaviyoConfig || !window.klaviyoConfig.enabled || !window.klaviyo) {
+      if (window.klaviyoConfig && window.klaviyoConfig.debug) {
+        console.log('Klaviyo not configured or disabled, skipping data submission');
+      }
+      return;
+    }
+
     try {
-      const recommendations = this.generateRecommendations();
-      
-      if (!window.klaviyoConfig || !window.klaviyoConfig.enabled) {
-        console.warn('Klaviyo configuration not found or disabled. Quiz data not sent to Klaviyo.');
-        console.log('Quiz data that would be sent:', this.quizData);
-        return;
+      if (window.klaviyoConfig.debug) {
+        console.log('Sending quiz completion data to Klaviyo...');
       }
 
-      // Initialize Klaviyo if not already done
-      if (typeof window._learnq === 'undefined') {
-        console.error('Klaviyo tracking library not loaded');
-        return;
-      }
+      // Prepare standard Klaviyo profile properties
+      const profileProperties = {
+        $email: this.quizData.contactInfo.email,
+        $first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+        $last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+        $phone_number: this.quizData.contactInfo.phone || undefined
+      };
 
-      // Prepare custom properties for the profile
+      // Prepare custom properties
       const customProperties = {
-        // Quiz responses
-        people_count: this.quizData.peopleCount,
-        weight_person1: this.quizData.weights.person1,
-        height_person1: this.quizData.heights.person1,
-        sleep_position_person1: this.quizData.sleepPositions.person1,
-        preference_person1: this.quizData.preferences.person1,
-        comments: this.quizData.contactInfo.comments || '',
-        
-        // Quiz metadata
-        quiz_completion_date: new Date().toISOString(),
-        quiz_version: 'single-collection-v1.0',
-        quiz_source: 'shopify-futon-quiz'
+        'Quiz Completed': true,
+        'People Count': this.quizData.peopleCount,
+        'Weight Person 1': this.quizData.weights.person1,
+        'Height Person 1': this.quizData.heights.person1,
+        'Sleep Position Person 1': this.quizData.sleepPositions.person1,
+        'Preference Person 1': this.quizData.preferences.person1,
+        'Marketing Consent': this.quizData.contactInfo.marketingConsent,
+        'Quiz Completion Date': new Date().toISOString(),
+        'Quiz Version': 'single-collection-v2.0',
+        'Quiz Source': 'shopify-futon-quiz'
       };
 
       // Add person 2 data if applicable
       if (this.quizData.peopleCount === 2) {
-        customProperties.weight_person2 = this.quizData.weights.person2;
-        customProperties.height_person2 = this.quizData.heights.person2;
-        customProperties.sleep_position_person2 = this.quizData.sleepPositions.person2;
-        customProperties.preference_person2 = this.quizData.preferences.person2;
+        customProperties['Weight Person 2'] = this.quizData.weights.person2;
+        customProperties['Height Person 2'] = this.quizData.heights.person2;
+        customProperties['Sleep Position Person 2'] = this.quizData.sleepPositions.person2;
+        customProperties['Preference Person 2'] = this.quizData.preferences.person2;
       }
 
       // Add recommended product properties
       recommendations.forEach((product, index) => {
-        customProperties[`recommended_product_${index + 1}_id`] = product.id;
-        customProperties[`recommended_product_${index + 1}_title`] = product.title;
-        customProperties[`recommended_product_${index + 1}_price`] = product.price;
-        customProperties[`recommended_product_${index + 1}_url`] = product.url;
-        customProperties[`recommended_product_${index + 1}_image`] = product.featured_image;
-        customProperties[`recommended_product_${index + 1}_score`] = product.score;
+        const num = index + 1;
+        customProperties[`Recommended Product ${num} ID`] = product.id;
+        customProperties[`Recommended Product ${num} Title`] = product.title;
+        customProperties[`Recommended Product ${num} Price`] = product.price;
+        customProperties[`Recommended Product ${num} URL`] = product.url;
+        customProperties[`Recommended Product ${num} Score`] = product.score;
       });
 
-      // Profile data for identification
-      const profileData = {
-        $email: this.quizData.contactInfo.email,
-        $first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
-        $last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
-        $phone_number: this.quizData.contactInfo.phone
-      };
-
-      console.log('Identifying user in Klaviyo:', profileData);
-
-      // Identify the user with Klaviyo
-      window._learnq.push(['identify', profileData]);
+      // Single identify call with all data
+      const identifyData = { ...profileProperties, ...customProperties };
       
-      // Set custom properties separately
-      window._learnq.push(['identify', { $email: this.quizData.contactInfo.email, ...customProperties }]);
-
-      // Track quiz completion event
-      window._learnq.push(['track', 'Quiz Completed', {
-        quiz_type: 'futon_quiz',
-        people_count: this.quizData.peopleCount,
-        weight_person1: this.quizData.weights.person1,
-        height_person1: this.quizData.heights.person1,
-        sleep_position_person1: this.quizData.sleepPositions.person1,
-        preference_person1: this.quizData.preferences.person1,
-        weight_person2: this.quizData.peopleCount === 2 ? this.quizData.weights.person2 : null,
-        height_person2: this.quizData.peopleCount === 2 ? this.quizData.heights.person2 : null,
-        sleep_position_person2: this.quizData.peopleCount === 2 ? this.quizData.sleepPositions.person2 : null,
-        preference_person2: this.quizData.peopleCount === 2 ? this.quizData.preferences.person2 : null,
-        recommended_products: recommendations.map(p => ({
-          id: p.id,
-          title: p.title,
-          price: p.price,
-          score: p.score
-        })),
-        quiz_completion_date: new Date().toISOString()
-      }]);
-
-      // Subscribe to list if consent is given and list ID is provided
-      if (window.klaviyoConfig.listId && this.quizData.contactInfo.marketingConsent) {
-        console.log('Subscribing user to Klaviyo list:', window.klaviyoConfig.listId);
-        
-        // Subscribe to the specific list
-        window._learnq.push(['subscribe', window.klaviyoConfig.listId]);
+      if (window.klaviyoConfig.debug) {
+        console.log('Klaviyo identify data:', identifyData);
       }
 
-      console.log('Profile data sent to Klaviyo successfully via client-side tracking');
+      window.klaviyo.push(['identify', identifyData]);
+
+      // Track quiz completion event with detailed properties
+      const eventProperties = {
+        'Quiz Type': 'futon_quiz',
+        'People Count': this.quizData.peopleCount,
+        'Weight Person 1': this.quizData.weights.person1,
+        'Height Person 1': this.quizData.heights.person1,
+        'Sleep Position Person 1': this.quizData.sleepPositions.person1,
+        'Preference Person 1': this.quizData.preferences.person1,
+        'Recommended Products Count': recommendations.length,
+        'Top Recommendation': recommendations.length > 0 ? recommendations[0].title : null,
+        'Quiz Duration': this.getQuizDuration(),
+        '$value': recommendations.length > 0 ? recommendations[0].price : 0
+      };
+
+      // Add person 2 event data if applicable
+      if (this.quizData.peopleCount === 2) {
+        eventProperties['Weight Person 2'] = this.quizData.weights.person2;
+        eventProperties['Height Person 2'] = this.quizData.heights.person2;
+        eventProperties['Sleep Position Person 2'] = this.quizData.sleepPositions.person2;
+        eventProperties['Preference Person 2'] = this.quizData.preferences.person2;
+      }
+
+      window.klaviyo.push(['track', 'Quiz Completed', eventProperties]);
+
+      // Handle list subscription with proper Klaviyo form method
+      if (window.klaviyoConfig.listId && this.quizData.contactInfo.marketingConsent) {
+        this.subscribeToKlaviyoList();
+      }
+
+      if (window.klaviyoConfig.debug) {
+        console.log('Quiz completion data sent to Klaviyo successfully');
+      }
     } catch (error) {
       console.error('Error sending quiz data to Klaviyo:', error);
+      // Don't break the quiz flow on Klaviyo errors
     }
+  }
+
+  // Progressive profile building throughout the quiz
+  updateKlaviyoProfile(stepData, stepName) {
+    if (!window.klaviyoConfig || !window.klaviyoConfig.enabled || !window.klaviyo) {
+      return;
+    }
+
+    try {
+      if (window.klaviyoConfig.debug) {
+        console.log(`Updating Klaviyo profile for step: ${stepName}`, stepData);
+      }
+
+      // Track step completion
+      window.klaviyo.push(['track', `Quiz Step: ${stepName}`, {
+        'Step Name': stepName,
+        'Step Data': JSON.stringify(stepData),
+        'Current Step': this.currentStep,
+        'Total Steps': this.totalSteps
+      }]);
+
+    } catch (error) {
+      console.error(`Error updating Klaviyo profile for step ${stepName}:`, error);
+    }
+  }
+
+  // Proper list subscription using Klaviyo's recommended method
+  subscribeToKlaviyoList() {
+    if (!window.klaviyoConfig.listId) return;
+
+    try {
+      // Create a hidden form for subscription
+      const form = document.createElement('form');
+      form.style.display = 'none';
+      form.action = `https://manage.kmail-lists.com/subscriptions/subscribe`;
+      form.method = 'POST';
+
+      // Add required fields
+      const fields = {
+        'g': window.klaviyoConfig.listId,
+        'email': this.quizData.contactInfo.email,
+        'first_name': this.quizData.contactInfo.name.split(' ')[0] || '',
+        'last_name': this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || ''
+      };
+
+      Object.keys(fields).forEach(key => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = fields[key];
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      
+      // Submit form in iframe to avoid page redirect
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.name = 'klaviyo-subscription';
+      form.target = 'klaviyo-subscription';
+      
+      document.body.appendChild(iframe);
+      form.submit();
+      
+      // Clean up after submission
+      setTimeout(() => {
+        document.body.removeChild(form);
+        document.body.removeChild(iframe);
+      }, 1000);
+
+      if (window.klaviyoConfig.debug) {
+        console.log('User subscribed to Klaviyo list:', window.klaviyoConfig.listId);
+      }
+    } catch (error) {
+      console.error('Error subscribing to Klaviyo list:', error);
+    }
+  }
+
+  // Helper method to calculate quiz duration
+  getQuizDuration() {
+    if (this.quizStartTime) {
+      return Math.round((Date.now() - this.quizStartTime) / 1000); // seconds
+    }
+    return null;
   }
 
   restart() {

@@ -156,27 +156,41 @@
     }
   };
 
-  // Klaviyo configuration
+  // Modern Klaviyo configuration with debug mode
   {% if section.settings.klaviyo_enabled and section.settings.klaviyo_public_key != blank %}
   window.klaviyoConfig = {
-    publicKey: {{ section.settings.klaviyo_public_key | json }},
+    siteId: {{ section.settings.klaviyo_public_key | json }},
     listId: {{ section.settings.klaviyo_list_id | json }},
-    enabled: true
+    enabled: true,
+    debug: true // Enable debug logging
   };
 
-  // Load Klaviyo tracking script (guard against wrong key)
-  var _learnq = _learnq || [];
+  // Initialize modern Klaviyo tracking
   var siteId = {{ section.settings.klaviyo_public_key | json }};
   if (/^pk_/.test(siteId)) {
-    console.error('Klaviyo: Private API key detected in Site ID field. Use your Public API Key (Site ID) instead. Analytics disabled.');
+    console.error('Klaviyo: Private API key detected in Site ID field. Use your Site ID instead. Analytics disabled.');
+    window.klaviyoConfig.enabled = false;
+  } else if (!siteId || siteId.length < 4) {
+    console.warn('Klaviyo: Invalid Site ID format. Analytics disabled.');
     window.klaviyoConfig.enabled = false;
   } else {
-    _learnq.push(['account', siteId]);
+    // Initialize modern Klaviyo
+    window.klaviyo = window.klaviyo || [];
+    window.klaviyo.push(['account', siteId]);
+    
+    // Load modern Klaviyo script
     (function () {
-      var b = document.createElement('script'); b.type = 'text/javascript'; b.async = true;
-      b.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'a.klaviyo.com/media/js/analytics/analytics.js';
-      var a = document.getElementsByTagName('script')[0]; a.parentNode.insertBefore(b, a);
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = 'https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=' + siteId;
+      var firstScript = document.getElementsByTagName('script')[0];
+      firstScript.parentNode.insertBefore(script, firstScript);
     })();
+    
+    if (window.klaviyoConfig.debug) {
+      console.log('Klaviyo initialized with Site ID:', siteId);
+    }
   }
   {% else %}
   window.klaviyoConfig = { enabled: false };
@@ -344,9 +358,9 @@
     {
       "type": "text",
       "id": "klaviyo_public_key",
-      "label": "Klaviyo Public API Key (Site ID)",
-      "info": "Your Klaviyo Site ID (public key). Do NOT use a private key (those start with 'pk_'). Find it in Klaviyo Settings > API Keys > Site ID.",
-      "placeholder": "e.g., XyZ123"
+      "label": "Klaviyo Site ID",
+      "info": "Your Klaviyo Site ID (6-7 characters). Find it in Klaviyo Account Settings > Settings > API Keys > Site ID. DO NOT use Private API Key.",
+      "placeholder": "ABC123"
     },
     {
       "type": "text",
