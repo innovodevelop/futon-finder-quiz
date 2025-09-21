@@ -1180,6 +1180,12 @@ class FutonQuizSingleCollection {
         return;
       }
 
+      // Initialize Klaviyo if not already done
+      if (typeof window._learnq === 'undefined') {
+        console.error('Klaviyo tracking library not loaded');
+        return;
+      }
+
       // Prepare custom properties for the profile
       const customProperties = {
         // Quiz responses
@@ -1214,94 +1220,50 @@ class FutonQuizSingleCollection {
         customProperties[`recommended_product_${index + 1}_score`] = product.score;
       });
 
+      // Profile data for identification
       const profileData = {
-        data: {
-          type: 'profile',
-          attributes: {
-            email: this.quizData.contactInfo.email,
-            first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
-            last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
-            phone_number: this.quizData.contactInfo.phone,
-            properties: customProperties
-          }
-        }
+        email: this.quizData.contactInfo.email,
+        $first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+        $last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+        $phone_number: this.quizData.contactInfo.phone,
+        ...customProperties
       };
 
-      console.log('Attempting to send profile data to Klaviyo:', profileData);
+      console.log('Identifying user in Klaviyo:', profileData);
 
-      // Create or update profile
-      const profileResponse = await fetch('https://a.klaviyo.com/api/profiles/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Klaviyo-API-Key ${window.klaviyoConfig.privateKey}`,
-          'revision': '2024-10-15'
-        },
-        body: JSON.stringify(profileData)
-      });
+      // Identify the user with Klaviyo
+      window._learnq.push(['identify', profileData]);
 
-      if (!profileResponse.ok) {
-        const errorText = await profileResponse.text();
-        console.error('Failed to create/update Klaviyo profile:', profileResponse.status, profileResponse.statusText);
-        console.error('Response body:', errorText);
-        return;
-      }
+      // Track quiz completion event
+      window._learnq.push(['track', 'Quiz Completed', {
+        quiz_type: 'futon_quiz',
+        people_count: this.quizData.peopleCount,
+        weight_person1: this.quizData.weights.person1,
+        height_person1: this.quizData.heights.person1,
+        sleep_position_person1: this.quizData.sleepPositions.person1,
+        preference_person1: this.quizData.preferences.person1,
+        weight_person2: this.quizData.peopleCount === 2 ? this.quizData.weights.person2 : null,
+        height_person2: this.quizData.peopleCount === 2 ? this.quizData.heights.person2 : null,
+        sleep_position_person2: this.quizData.peopleCount === 2 ? this.quizData.sleepPositions.person2 : null,
+        preference_person2: this.quizData.peopleCount === 2 ? this.quizData.preferences.person2 : null,
+        recommended_products: recommendations.map(p => ({
+          id: p.id,
+          title: p.title,
+          price: p.price,
+          score: p.score
+        })),
+        quiz_completion_date: new Date().toISOString()
+      }]);
 
-      const profileResult = await profileResponse.json();
-      console.log('Profile created/updated successfully:', profileResult);
-
-      // Add profile to list if list ID is provided
+      // Subscribe to list if consent is given and list ID is provided
       if (window.klaviyoConfig.listId && this.quizData.contactInfo.marketingConsent) {
-        const listSubscription = {
-          data: {
-            type: 'profile-subscription-bulk-create-job',
-            attributes: {
-              profiles: {
-                data: [{
-                  type: 'profile',
-                  attributes: {
-                    email: this.quizData.contactInfo.email,
-                    subscriptions: {
-                      email: {
-                        marketing: {
-                          consent: 'SUBSCRIBED'
-                        }
-                      }
-                    }
-                  }
-                }]
-              }
-            },
-            relationships: {
-              list: {
-                data: {
-                  type: 'list',
-                  id: window.klaviyoConfig.listId
-                }
-              }
-            }
-          }
-        };
-
-        const listResponse = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Klaviyo-API-Key ${window.klaviyoConfig.privateKey}`,
-            'revision': '2024-10-15'
-          },
-          body: JSON.stringify(listSubscription)
-        });
-
-        if (listResponse.ok) {
-          console.log('Profile successfully added to Klaviyo list');
-        } else {
-          console.error('Failed to add profile to Klaviyo list:', listResponse.status, listResponse.statusText);
-        }
+        console.log('Subscribing user to Klaviyo list:', window.klaviyoConfig.listId);
+        
+        // Subscribe to the specific list
+        window._learnq.push(['subscribe', window.klaviyoConfig.listId]);
       }
 
+      console.log('Profile data sent to Klaviyo successfully via client-side tracking');
     } catch (error) {
       console.error('Error sending quiz data to Klaviyo:', error);
     }

@@ -159,10 +159,21 @@
   // Klaviyo configuration
   {% if section.settings.klaviyo_enabled and section.settings.klaviyo_public_key != blank %}
   window.klaviyoConfig = {
-    privateKey: {{ section.settings.klaviyo_public_key | json }},
+    publicKey: {{ section.settings.klaviyo_public_key | json }},
     listId: {{ section.settings.klaviyo_list_id | json }},
     enabled: true
   };
+
+  // Load Klaviyo tracking script
+  var _learnq = _learnq || [];
+  _learnq.push(['account', {{ section.settings.klaviyo_public_key | json }}]);
+  (function () {
+    var b = document.createElement('script'); b.type = 'text/javascript'; b.async = true;
+    b.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'a.klaviyo.com/media/js/analytics/analytics.js';
+    var a = document.getElementsByTagName('script')[0]; a.parentNode.insertBefore(b, a);
+  })();
+  {% else %}
+  window.klaviyoConfig = { enabled: false };
   {% endif %}
 </script>
 <link rel="stylesheet" href="{{ 'futon-quiz-react-styles.css' | asset_url }}">
