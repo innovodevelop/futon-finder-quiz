@@ -1356,6 +1356,7 @@ class FutonQuizSingleCollection {
       console.error('Error subscribing to Klaviyo list:', error);
     }
   }
+  }
 
   // Helper method to calculate quiz duration
   getQuizDuration() {
