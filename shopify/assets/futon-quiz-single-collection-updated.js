@@ -1222,17 +1222,19 @@ class FutonQuizSingleCollection {
 
       // Profile data for identification
       const profileData = {
-        email: this.quizData.contactInfo.email,
+        $email: this.quizData.contactInfo.email,
         $first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
         $last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
-        $phone_number: this.quizData.contactInfo.phone,
-        ...customProperties
+        $phone_number: this.quizData.contactInfo.phone
       };
 
       console.log('Identifying user in Klaviyo:', profileData);
 
       // Identify the user with Klaviyo
       window._learnq.push(['identify', profileData]);
+      
+      // Set custom properties separately
+      window._learnq.push(['identify', { $email: this.quizData.contactInfo.email, ...customProperties }]);
 
       // Track quiz completion event
       window._learnq.push(['track', 'Quiz Completed', {
