@@ -164,14 +164,20 @@
     enabled: true
   };
 
-  // Load Klaviyo tracking script
+  // Load Klaviyo tracking script (guard against wrong key)
   var _learnq = _learnq || [];
-  _learnq.push(['account', {{ section.settings.klaviyo_public_key | json }}]);
-  (function () {
-    var b = document.createElement('script'); b.type = 'text/javascript'; b.async = true;
-    b.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'a.klaviyo.com/media/js/analytics/analytics.js';
-    var a = document.getElementsByTagName('script')[0]; a.parentNode.insertBefore(b, a);
-  })();
+  var siteId = {{ section.settings.klaviyo_public_key | json }};
+  if (/^pk_/.test(siteId)) {
+    console.error('Klaviyo: Private API key detected in Site ID field. Use your Public API Key (Site ID) instead. Analytics disabled.');
+    window.klaviyoConfig.enabled = false;
+  } else {
+    _learnq.push(['account', siteId]);
+    (function () {
+      var b = document.createElement('script'); b.type = 'text/javascript'; b.async = true;
+      b.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'a.klaviyo.com/media/js/analytics/analytics.js';
+      var a = document.getElementsByTagName('script')[0]; a.parentNode.insertBefore(b, a);
+    })();
+  }
   {% else %}
   window.klaviyoConfig = { enabled: false };
   {% endif %}
@@ -339,8 +345,8 @@
       "type": "text",
       "id": "klaviyo_public_key",
       "label": "Klaviyo Public API Key (Site ID)",
-      "info": "Your Klaviyo public API key (starts with your Site ID). Used for client-side tracking. Find this in Klaviyo Settings > API Keys.",
-      "placeholder": "Your Site ID (e.g., pk_12345...)"
+      "info": "Your Klaviyo Site ID (public key). Do NOT use a private key (those start with 'pk_'). Find it in Klaviyo Settings > API Keys > Site ID.",
+      "placeholder": "e.g., XyZ123"
     },
     {
       "type": "text",
