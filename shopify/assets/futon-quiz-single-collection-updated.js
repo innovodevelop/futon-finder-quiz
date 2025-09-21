@@ -1365,6 +1365,7 @@ class FutonQuizSingleCollection {
     }
     return null;
   }
+  }
 
   restart() {
     this.currentStep = 0;
