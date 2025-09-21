@@ -1347,6 +1347,8 @@ class FutonQuizSingleCollection {
         '$email': this.quizData.contactInfo.email,
         '$consent': ['email'],
         '$source': 'futon-quiz'
+      }]);
+      
       if (window.klaviyoConfig.debug) {
         console.log('User subscribed to Klaviyo list:', window.klaviyoConfig.listId);
       }
