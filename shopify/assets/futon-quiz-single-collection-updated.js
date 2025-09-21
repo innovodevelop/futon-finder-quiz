@@ -1235,7 +1235,7 @@ class FutonQuizSingleCollection {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': `Klaviyo-API-Key ${window.klaviyoConfig.publicKey}`,
+            'Authorization': `Klaviyo-API-Key ${window.klaviyoConfig.privateKey}`,
           'revision': '2024-10-15'
         },
         body: JSON.stringify(profileData)

@@ -19,7 +19,7 @@ This guide explains how to integrate the Futon Quiz with Klaviyo using a **profi
 5. Ensure it has **Full Access** or at least permissions for:
    - Profiles: Read/Write
    - Lists: Read/Write
-6. Copy the Private API Key (starts with `pk_`)
+6. Copy the Private API Key (starts with `sk_`)
 
 ⚠️ **Important**: Use a **Private API Key**, not a Public API Key, as we need write permissions for profiles and lists.
 
