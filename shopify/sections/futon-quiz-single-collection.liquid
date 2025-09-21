@@ -159,7 +159,7 @@
   // Klaviyo configuration
   {% if section.settings.klaviyo_enabled and section.settings.klaviyo_public_key != blank %}
   window.klaviyoConfig = {
-    publicKey: {{ section.settings.klaviyo_public_key | json }},
+    privateKey: {{ section.settings.klaviyo_public_key | json }},
     listId: {{ section.settings.klaviyo_list_id | json }},
     enabled: true
   };
