@@ -1243,14 +1243,11 @@ class FutonQuizSingleCollection {
         customProperties['Preference Person 2'] = this.quizData.preferences.person2;
       }
 
-      // Add recommended product properties
+      // Add recommended product properties (only ID and name)
       recommendations.forEach((product, index) => {
         const num = index + 1;
         customProperties[`Recommended Product ${num} ID`] = product.id;
-        customProperties[`Recommended Product ${num} Title`] = product.title;
-        customProperties[`Recommended Product ${num} Price`] = product.price;
-        customProperties[`Recommended Product ${num} URL`] = product.url;
-        customProperties[`Recommended Product ${num} Score`] = product.score;
+        customProperties[`Recommended Product ${num} Name`] = product.title;
       });
 
       // Single identify call with all data
@@ -1324,50 +1321,32 @@ class FutonQuizSingleCollection {
     }
   }
 
-  // Proper list subscription using Klaviyo's recommended method
+  // Subscribe to Klaviyo list using modern approach
   subscribeToKlaviyoList() {
     if (!window.klaviyoConfig.listId) return;
 
     try {
-      // Create a hidden form for subscription
-      const form = document.createElement('form');
-      form.style.display = 'none';
-      form.action = `https://manage.kmail-lists.com/subscriptions/subscribe`;
-      form.method = 'POST';
+      if (window.klaviyoConfig.debug) {
+        console.log('Subscribing to Klaviyo list:', window.klaviyoConfig.listId);
+      }
 
-      // Add required fields
-      const fields = {
-        'g': window.klaviyoConfig.listId,
+      // Use Klaviyo's modern subscription method
+      const subscriptionData = {
+        'list_id': window.klaviyoConfig.listId,
+        'subscribe': true,
         'email': this.quizData.contactInfo.email,
         'first_name': this.quizData.contactInfo.name.split(' ')[0] || '',
         'last_name': this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || ''
       };
 
-      Object.keys(fields).forEach(key => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = fields[key];
-        form.appendChild(input);
-      });
-
-      document.body.appendChild(form);
+      // Use Klaviyo's subscription tracking
+      window.klaviyo.push(['track', 'Subscribe', subscriptionData]);
       
-      // Submit form in iframe to avoid page redirect
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.name = 'klaviyo-subscription';
-      form.target = 'klaviyo-subscription';
-      
-      document.body.appendChild(iframe);
-      form.submit();
-      
-      // Clean up after submission
-      setTimeout(() => {
-        document.body.removeChild(form);
-        document.body.removeChild(iframe);
-      }, 1000);
-
+      // Also use identify with subscription properties
+      window.klaviyo.push(['identify', {
+        '$email': this.quizData.contactInfo.email,
+        '$consent': ['email'],
+        '$source': 'futon-quiz'
       if (window.klaviyoConfig.debug) {
         console.log('User subscribed to Klaviyo list:', window.klaviyoConfig.listId);
       }
