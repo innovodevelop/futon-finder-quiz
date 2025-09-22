@@ -1499,10 +1499,21 @@ class FutonQuizSingleCollection {
 
       let profileId = null;
       if (profileResponse.ok) {
-        const profileData = await profileResponse.json();
-        profileId = profileData.data?.id;
-        if (window.klaviyoConfig.debug) {
-          console.log('Profile created/updated successfully. Profile ID:', profileId);
+        try {
+          const responseText = await profileResponse.text();
+          if (responseText) {
+            const profileData = JSON.parse(responseText);
+            profileId = profileData.data?.id;
+            if (window.klaviyoConfig.debug) {
+              console.log('Profile created/updated successfully. Profile ID:', profileId);
+            }
+          } else {
+            if (window.klaviyoConfig.debug) {
+              console.log('Profile creation: Empty response received (may be normal)');
+            }
+          }
+        } catch (jsonError) {
+          console.error('Error parsing profile response JSON:', jsonError);
         }
       } else {
         const errorText = await profileResponse.text();
@@ -1561,10 +1572,21 @@ class FutonQuizSingleCollection {
       }
 
       if (response.ok) {
-        const responseData = await response.json();
-        if (window.klaviyoConfig.debug) {
-          console.log('Successfully subscribed user to Klaviyo list:', window.klaviyoConfig.listId);
-          console.log('Subscription response:', responseData);
+        try {
+          const responseText = await response.text();
+          let responseData = null;
+          if (responseText) {
+            responseData = JSON.parse(responseText);
+          }
+          
+          if (window.klaviyoConfig.debug) {
+            console.log('Successfully subscribed user to Klaviyo list:', window.klaviyoConfig.listId);
+            console.log('Subscription response:', responseData || 'Empty response (success)');
+          }
+        } catch (jsonError) {
+          if (window.klaviyoConfig.debug) {
+            console.log('Subscription successful but response parsing failed:', jsonError);
+          }
         }
 
         // Track successful subscription
