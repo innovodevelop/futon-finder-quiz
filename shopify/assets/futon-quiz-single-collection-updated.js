@@ -1352,7 +1352,7 @@ class FutonQuizSingleCollection {
         }
       };
 
-      // Use Klaviyo's client-side subscription endpoint with correct payload structure
+      // Use Klaviyo's client-side subscription endpoint with correct relationship payload
       const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${window.klaviyoConfig.siteId}`, {
         method: 'POST',
         headers: {
@@ -1364,15 +1364,22 @@ class FutonQuizSingleCollection {
           data: {
             type: 'subscription',
             attributes: {
-              profile: {
-                email: this.quizData.contactInfo.email
-              }
+              custom_source: 'futon-quiz',
+              channels: ['email']
             },
             relationships: {
               list: {
                 data: {
                   type: 'list',
                   id: window.klaviyoConfig.listId
+                }
+              },
+              profile: {
+                data: {
+                  type: 'profile',
+                  attributes: {
+                    email: this.quizData.contactInfo.email
+                  }
                 }
               }
             }
