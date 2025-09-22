@@ -1520,17 +1520,22 @@ class FutonQuizSingleCollection {
         console.error('Profile creation failed:', profileResponse.status, errorText);
       }
 
-      // Step 2: Subscribe to list without requiring a profile id (use attributes.profile)
+      // Step 2: Subscribe to list without requiring a profile id (use attributes.profile with data wrapper)
       const subscriptionPayload = {
         data: {
           type: 'subscription',
           attributes: {
             custom_source: 'futon-quiz',
             profile: {
-              email: this.quizData.contactInfo.email,
-              first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
-              last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
-              phone_number: this.quizData.contactInfo.phone || null
+              data: {
+                type: 'profile',
+                attributes: {
+                  email: this.quizData.contactInfo.email,
+                  first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+                  last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+                  phone_number: this.quizData.contactInfo.phone || null
+                }
+              }
             }
           },
           relationships: {
