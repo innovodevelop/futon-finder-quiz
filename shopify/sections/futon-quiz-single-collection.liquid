@@ -161,7 +161,6 @@
   window.klaviyoConfig = {
     siteId: {{ section.settings.klaviyo_public_key | json }},
     listId: {{ section.settings.klaviyo_list_id | json }},
-    hasPrivateKey: {% if section.settings.klaviyo_private_key != blank %}true{% else %}false{% endif %},
     enabled: true,
     debug: true // Enable debug logging
   };
@@ -198,10 +197,6 @@
   {% endif %}
 </script>
 
-{% comment %} Include Klaviyo Proxy for server-side operations {% endcomment %}
-{% if section.settings.klaviyo_enabled %}
-  {% render 'klaviyo-proxy', section: section %}
-{% endif %}
 
 <link rel="stylesheet" href="{{ 'futon-quiz-react-styles.css' | asset_url }}">
 <script src="{{ 'futon-quiz-single-collection-updated.js' | asset_url }}" defer></script>
@@ -376,13 +371,6 @@
       "info": "The ID of the Klaviyo list where quiz completers should be added. Find this in your Klaviyo dashboard under Lists.",
       "placeholder": "XyZ123"
     },
-    {
-      "type": "text",
-      "id": "klaviyo_private_key",
-      "label": "Klaviyo Private API Key",
-      "info": "Your Klaviyo Private API Key (starts with pk_). Required for creating profiles with custom properties and adding users to lists. Keep this secure - it's only used server-side.",
-      "placeholder": "pk_..."
-    }
   ],
   "blocks": [
     {

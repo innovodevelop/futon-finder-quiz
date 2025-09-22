@@ -1243,8 +1243,8 @@ class FutonQuizSingleCollection {
   }
 
   /**
-   * Modern Klaviyo integration with hybrid approach
-   * Uses public API for tracking, server-side proxy for private API operations
+   * Modern Klaviyo integration using client-side APIs
+   * No server-side proxy needed - uses native Klaviyo client endpoints
    */
   async sendToKlaviyo() {
     const recommendations = this.generateRecommendations();
