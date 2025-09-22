@@ -741,6 +741,27 @@ class FutonQuiz {
     this.validateContactInfoStep();
   }
 
+  fillTestData() {
+    // Generate random 6-digit number
+    const randomNum = Math.floor(100000 + Math.random() * 900000);
+    
+    // Generate random Danish phone number (8 digits)
+    const phoneNum = Math.floor(10000000 + Math.random() * 90000000);
+    const formattedPhone = `+45 ${phoneNum.toString().substring(0,2)} ${phoneNum.toString().substring(2,4)} ${phoneNum.toString().substring(4,6)} ${phoneNum.toString().substring(6,8)}`;
+    
+    // Fill the form fields
+    this.quizData.contactInfo = {
+      name: 'Magnus',
+      email: `testdev${randomNum}@gmail.com`,
+      phone: formattedPhone,
+      comments: this.quizData.contactInfo.comments || '',
+      marketingConsent: true
+    };
+    
+    // Refresh the step to show the filled data
+    this.showStep(this.currentStep);
+  }
+
   // Validation methods
   validateWeightStep() {
     const { peopleCount, weights } = this.quizData;
