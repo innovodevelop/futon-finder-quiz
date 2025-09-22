@@ -1,0 +1,120 @@
+{%- comment -%}
+Klaviyo Proxy Snippet
+Handles server-side Klaviyo API operations requiring private key authentication
+{%- endcomment -%}
+
+{%- liquid
+  # Get the private API key from section settings
+  assign klaviyo_private_key = section.settings.klaviyo_private_key
+  assign klaviyo_list_id = section.settings.klaviyo_list_id
+  
+  # Only process if we have the required data
+  if klaviyo_private_key != blank and request.headers['content-type'] contains 'application/json'
+    # This would be called via AJAX from the frontend
+    # In a real implementation, this would be a Shopify app proxy or a separate endpoint
+    # For now, we'll create the structure for the proxy endpoint
+-%}
+
+<script>
+// Klaviyo Proxy Handler
+window.klaviyoProxy = {
+  // Configuration
+  config: {
+    shopDomain: "{{ shop.permanent_domain }}",
+    hasPrivateKey: {% if section.settings.klaviyo_private_key != blank %}true{% else %}false{% endif %},
+    listId: {{ section.settings.klaviyo_list_id | json }}
+  },
+
+  // Create or update profile with custom properties
+  async updateProfile(profileData) {
+    if (!this.config.hasPrivateKey) {
+      console.warn('Klaviyo: Private API key not configured, skipping profile update');
+      return { success: false, error: 'No private key configured' };
+    }
+
+    try {
+      // Call Shopify proxy endpoint (this would need to be implemented as a Shopify app or custom endpoint)
+      const response = await fetch('/apps/klaviyo-proxy/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Shop-Domain': this.config.shopDomain
+        },
+        body: JSON.stringify({
+          action: 'update_profile',
+          data: profileData,
+          listId: this.config.listId
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        return { success: true, data: result };
+      } else {
+        console.error('Klaviyo proxy error:', response.status, await response.text());
+        return { success: false, error: `HTTP ${response.status}` };
+      }
+    } catch (error) {
+      console.error('Klaviyo proxy network error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Add profile to list
+  async addToList(email, profileData) {
+    if (!this.config.hasPrivateKey) {
+      console.warn('Klaviyo: Private API key not configured, skipping list subscription');
+      return { success: false, error: 'No private key configured' };
+    }
+
+    try {
+      const response = await fetch('/apps/klaviyo-proxy/list-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Shop-Domain': this.config.shopDomain
+        },
+        body: JSON.stringify({
+          action: 'add_to_list',
+          email: email,
+          listId: this.config.listId,
+          profileData: profileData
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        return { success: true, data: result };
+      } else {
+        console.error('Klaviyo list subscription error:', response.status, await response.text());
+        return { success: false, error: `HTTP ${response.status}` };
+      }
+    } catch (error) {
+      console.error('Klaviyo list subscription network error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Fallback method using direct API calls (for demonstration - requires server implementation)
+  async directApiCall(endpoint, method, data) {
+    // This is a placeholder for the actual server-side implementation
+    // In practice, this would be handled by a Shopify app or server-side script
+    console.log('Direct API call would be made server-side:', {
+      endpoint,
+      method,
+      data,
+      privateKey: '{{ section.settings.klaviyo_private_key | slice: 0, 8 }}...'
+    });
+    
+    // For now, return a mock response
+    return { 
+      success: false, 
+      error: 'Server-side proxy not implemented. This needs a Shopify app or server endpoint.' 
+    };
+  }
+};
+</script>
+
+{%- liquid
+  endif
+-%}
