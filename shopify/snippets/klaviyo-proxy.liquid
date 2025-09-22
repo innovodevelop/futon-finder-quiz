@@ -3,17 +3,10 @@ Klaviyo Proxy Snippet
 Handles server-side Klaviyo API operations requiring private key authentication
 {%- endcomment -%}
 
-{%- liquid
-  # Get the private API key from section settings
-  assign klaviyo_private_key = section.settings.klaviyo_private_key
-  assign klaviyo_list_id = section.settings.klaviyo_list_id
-  
-  # Only process if we have the required data
-  if klaviyo_private_key != blank and request.headers['content-type'] contains 'application/json'
-    # This would be called via AJAX from the frontend
-    # In a real implementation, this would be a Shopify app proxy or a separate endpoint
-    # For now, we'll create the structure for the proxy endpoint
--%}
+{%- assign klaviyo_private_key = section.settings.klaviyo_private_key -%}
+{%- assign klaviyo_list_id = section.settings.klaviyo_list_id -%}
+
+{%- if klaviyo_private_key != blank -%}
 
 <script>
 // Klaviyo Proxy Handler
@@ -115,6 +108,4 @@ window.klaviyoProxy = {
 };
 </script>
 
-{%- liquid
-  endif
--%}
+{%- endif -%}
