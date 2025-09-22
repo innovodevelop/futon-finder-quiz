@@ -1301,21 +1301,14 @@ class FutonQuizSingleCollection {
 
       window.klaviyo.push(['track', 'Quiz Completed', eventProperties]);
 
-      // Step 3: Enhanced profile with custom properties + list subscription (server-side proxy)
-      if (window.klaviyoConfig.hasPrivateKey) {
+      // Step 3: Enhanced profile with custom properties + list subscription (client-side)
+      if (window.klaviyoConfig.siteId) {
         await this.sendEnhancedProfileData(recommendations);
-        
-        // Handle list subscription if consent given
-        if (window.klaviyoConfig.listId && this.quizData.contactInfo.marketingConsent) {
-          await this.addToKlaviyoList();
-        }
-      } else {
-        console.warn('Klaviyo: Private API key not configured. Custom properties and list subscription skipped.');
-        
-        // Fallback: Try client-side list subscription (limited functionality)
-        if (window.klaviyoConfig.listId && this.quizData.contactInfo.marketingConsent) {
-          this.subscribeToKlaviyoList();
-        }
+      }
+      
+      // Handle list subscription if consent given
+      if (window.klaviyoConfig.listId && this.quizData.contactInfo.marketingConsent) {
+        await this.addToKlaviyoList();
       }
 
       if (window.klaviyoConfig.debug) {
@@ -1328,11 +1321,12 @@ class FutonQuizSingleCollection {
   }
 
   /**
-   * Send enhanced profile data with custom properties via server-side proxy
+   * Send enhanced profile data with custom properties using client-side API
    */
   async sendEnhancedProfileData(recommendations) {
-    if (!window.klaviyoProxy) {
-      console.warn('Klaviyo proxy not available for enhanced profile data');
+    // Use Klaviyo's client-side profiles API instead of proxy
+    if (!window.klaviyoConfig.siteId) {
+      console.warn('Klaviyo site ID not configured for enhanced profile data');
       return;
     }
 
@@ -1376,13 +1370,34 @@ class FutonQuizSingleCollection {
     };
 
     try {
-      const result = await window.klaviyoProxy.updateProfile(profileData);
-      if (result.success) {
+      // Use Klaviyo's client-side profiles endpoint
+      const response = await fetch(`https://a.klaviyo.com/client/profiles/?company_id=${window.klaviyoConfig.siteId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'revision': '2024-10-15'
+        },
+        body: JSON.stringify({
+          data: {
+            type: 'profile',
+            attributes: {
+              email: this.quizData.contactInfo.email,
+              first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+              last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+              phone_number: this.quizData.contactInfo.phone || undefined,
+              properties: customProperties
+            }
+          }
+        })
+      });
+
+      if (response.ok) {
         if (window.klaviyoConfig.debug) {
-          console.log('Enhanced profile data sent successfully:', result.data);
+          console.log('Enhanced profile data sent successfully via client API');
         }
       } else {
-        console.error('Failed to send enhanced profile data:', result.error);
+        console.error('Failed to send enhanced profile data:', response.status, await response.text());
       }
     } catch (error) {
       console.error('Error sending enhanced profile data:', error);
@@ -1390,51 +1405,11 @@ class FutonQuizSingleCollection {
   }
 
   /**
-   * Add user to Klaviyo list via server-side proxy
+   * Add user to Klaviyo list using client-side subscription API
    */
   async addToKlaviyoList() {
-    if (!window.klaviyoProxy) {
-      console.warn('Klaviyo proxy not available for list subscription');
-      return;
-    }
-
-    try {
-      const profileData = {
-        email: this.quizData.contactInfo.email,
-        first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
-        last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
-        phone_number: this.quizData.contactInfo.phone || undefined
-      };
-
-      const result = await window.klaviyoProxy.addToList(this.quizData.contactInfo.email, profileData);
-      
-      if (result.success) {
-        if (window.klaviyoConfig.debug) {
-          console.log('Successfully added user to Klaviyo list via proxy:', window.klaviyoConfig.listId);
-        }
-
-        // Track successful subscription
-        window.klaviyo.push(['track', 'List Subscription', {
-          'List ID': window.klaviyoConfig.listId,
-          'Email': this.quizData.contactInfo.email,
-          'Source': 'futon-quiz-proxy',
-          'Success': true
-        }]);
-      } else {
-        console.error('Failed to add user to Klaviyo list via proxy:', result.error);
-        
-        // Track failed subscription
-        window.klaviyo.push(['track', 'List Subscription', {
-          'List ID': window.klaviyoConfig.listId,
-          'Email': this.quizData.contactInfo.email,
-          'Source': 'futon-quiz-proxy',
-          'Success': false,
-          'Error': result.error
-        }]);
-      }
-    } catch (error) {
-      console.error('Error adding user to Klaviyo list via proxy:', error);
-    }
+    // Use the existing client-side subscription method
+    await this.subscribeToKlaviyoList();
   }
 
   // Progressive profile building throughout the quiz

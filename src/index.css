@@ -174,7 +174,7 @@ All colors MUST be HSL.
   }
 
   .fq-step__title {
-    @apply text-3xl font-bold text-foreground mb-4;
+    @apply text-3xl md:text-4xl font-bold text-foreground mb-4;
   }
 
   .fq-step__subtitle {
@@ -195,11 +195,11 @@ All colors MUST be HSL.
   }
 
   .fq-start__hero {
-    @apply w-full h-48 object-cover rounded-2xl;
+    @apply w-full h-48 object-cover rounded-2xl shadow-lg;
   }
 
   .fq-start__title {
-    @apply text-3xl md:text-4xl font-bold text-foreground;
+    @apply text-3xl md:text-4xl font-bold text-foreground mb-4;
   }
 
   .fq-start__description {
@@ -257,7 +257,7 @@ All colors MUST be HSL.
   }
 
   .fq-input-group__input {
-    @apply h-12 text-center text-lg;
+    @apply h-12 text-center text-lg rounded-lg border-2;
   }
 
   .fq-inputs-grid {
@@ -293,18 +293,19 @@ All colors MUST be HSL.
 
   /* Buttons - Using semantic classes that reference design system */
   .fq-btn--option {
-    @apply min-h-20 px-6 py-4 rounded-lg w-full justify-center text-center flex-col gap-3;
-    @apply bg-card border-2 border-border text-card-foreground hover:border-primary hover:shadow-card transition-all duration-200;
+    @apply min-h-20 px-6 py-4 rounded-2xl w-full justify-center text-center flex-col gap-3 transition-all duration-300;
+    @apply bg-card border-2 border-border text-card-foreground hover:border-primary hover:shadow-lg hover:-translate-y-0.5;
   }
 
   .fq-btn--option-selected {
-    @apply min-h-20 px-6 py-4 rounded-lg w-full justify-center text-center flex-col gap-3;
-    @apply bg-primary/10 border-2 border-primary text-primary shadow-card;
+    @apply min-h-20 px-6 py-4 rounded-2xl w-full justify-center text-center flex-col gap-3;
+    @apply border-2 border-primary text-primary shadow-lg;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05));
   }
 
   .fq-btn--quiz {
-    @apply text-primary-foreground hover:shadow-lg hover:scale-[1.02] transform-gpu;
-    background: var(--gradient-primary);
-    box-shadow: var(--shadow-soft);
+    @apply h-11 px-8 rounded-lg text-base font-medium text-primary-foreground hover:shadow-lg hover:scale-[1.02] transform-gpu transition-all duration-300;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-hover)));
+    box-shadow: 0 4px 20px -2px hsl(var(--primary) / 0.1);
   }
 }

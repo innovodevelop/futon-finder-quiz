@@ -48,8 +48,70 @@ export const RecommendationStep = ({ quizData, onRestart }: RecommendationStepPr
         console.error('Error submitting quiz data:', error);
       });
     } else {
-      // Fallback for development - use sample data
-      setRecommendations([]);
+      // Fallback for development - use dummy data
+      const dummyProducts: ShopifyProduct[] = [
+        {
+          id: 1,
+          handle: 'premium-futon-deluxe',
+          title: 'Premium Futon Deluxe',
+          price: 12999,
+          compare_at_price: 15999,
+          featured_image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&h=400&fit=crop',
+          url: '/products/premium-futon-deluxe',
+          description: 'Perfekt til dig baseret på dine præferencer. Ultra komfortabel med memory foam og organisk bomuldscover.',
+          tags: ['premium', 'memory-foam', 'organic', 'medium-firm'],
+          vendor: 'SleepWell',
+          type: 'Futon',
+          variants: [{
+            id: 101,
+            title: 'Standard',
+            price: 12999,
+            available: true
+          }],
+          score: 95
+        },
+        {
+          id: 2,
+          handle: 'eco-comfort-futon',
+          title: 'Eco Comfort Futon',
+          price: 8999,
+          compare_at_price: 10999,
+          featured_image: 'https://images.unsplash.com/photo-1541558869434-2840d308329a?w=500&h=400&fit=crop',
+          url: '/products/eco-comfort-futon',
+          description: 'Miljøvenlig futon fremstillet af bæredygtige materialer. Ideel til dem der værdsætter både komfort og miljø.',
+          tags: ['eco-friendly', 'sustainable', 'soft', 'bamboo'],
+          vendor: 'GreenSleep',
+          type: 'Futon',
+          variants: [{
+            id: 102,
+            title: 'Standard',
+            price: 8999,
+            available: true
+          }],
+          score: 87
+        },
+        {
+          id: 3,
+          handle: 'firm-support-futon',
+          title: 'Firm Support Futon',
+          price: 10499,
+          featured_image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=400&fit=crop',
+          url: '/products/firm-support-futon',
+          description: 'Ekstra fast støtte til dem der foretrækker en hårdere soveoplevelse. Perfekt til ryg- og mavestillinger.',
+          tags: ['firm', 'support', 'orthopedic', 'back-support'],
+          vendor: 'SleepWell',
+          type: 'Futon',
+          variants: [{
+            id: 103,
+            title: 'Standard',
+            price: 10499,
+            available: true
+          }],
+          score: 82
+        }
+      ];
+      
+      setRecommendations(dummyProducts);
       setIsLoading(false);
     }
   }, [quizData]);
