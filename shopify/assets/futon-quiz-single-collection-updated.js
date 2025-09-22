@@ -599,8 +599,7 @@ class FutonQuizSingleCollection {
           <div style="margin-top: 1rem;">
             <button 
               type="button"
-              class="fq-btn--secondary"
-              style="font-size: 0.75rem; padding: 0.5rem 1rem; background: hsl(var(--muted)); color: hsl(var(--muted-foreground));"
+              style="font-size: 0.75rem; padding: 0.5rem 1rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 0.375rem; cursor: pointer;"
               onclick="futonQuizSingleCollection.fillTestData()"
             >
               🧪 Fill Test Data
