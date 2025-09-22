@@ -1520,40 +1520,28 @@ class FutonQuizSingleCollection {
         console.error('Profile creation failed:', profileResponse.status, errorText);
       }
 
-      if (!profileId) {
-        console.warn('Unable to resolve Klaviyo profile id. Skipping list subscription.');
-        // Track skipped subscription due to missing profile id
-        window.klaviyo.push(['track', 'List Subscription Skipped - No Profile ID', {
-          'List ID': window.klaviyoConfig.listId,
-          'Email': this.quizData.contactInfo.email,
-          'Source': 'futon-quiz',
-          'Success': false
-        }]);
-        return;
-      }
-
-      // Step 2: Subscribe to list using correct JSON:API structure (requires profile id)
+      // Step 2: Subscribe to list without requiring a profile id (use attributes.profile)
       const subscriptionPayload = {
         data: {
           type: 'subscription',
           attributes: {
             custom_source: 'futon-quiz',
-            channels: {
-              email: ['MARKETING']
-            }
-          },
-          relationships: {
+            channels: { email: ['MARKETING'] },
             profile: {
               data: {
                 type: 'profile',
-                id: profileId
+                attributes: {
+                  email: this.quizData.contactInfo.email,
+                  first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+                  last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+                  phone_number: this.quizData.contactInfo.phone || null
+                }
               }
-            },
+            }
+          },
+          relationships: {
             list: {
-              data: {
-                type: 'list',
-                id: window.klaviyoConfig.listId
-              }
+              data: { type: 'list', id: window.klaviyoConfig.listId }
             }
           }
         }
@@ -1566,10 +1554,9 @@ class FutonQuizSingleCollection {
       const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${window.klaviyoConfig.siteId}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-          'revision': '2024-10-15'
+          'Content-Type': 'application/vnd.api+json',
+          'Accept': 'application/vnd.api+json',
+          'revision': '2025-07-15'
         },
         body: JSON.stringify(subscriptionPayload)
       });
