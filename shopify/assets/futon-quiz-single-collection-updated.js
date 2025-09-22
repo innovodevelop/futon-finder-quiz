@@ -1360,32 +1360,41 @@ class FutonQuizSingleCollection {
           'Accept': 'application/json',
           'revision': '2024-10-15'
         },
-        body: JSON.stringify({
-          data: {
-            type: 'subscription',
-            attributes: {
-              custom_source: 'futon-quiz',
-              channels: ['email']
-            },
-            relationships: {
-              list: {
-                data: {
-                  type: 'list',
-                  id: window.klaviyoConfig.listId
+          body: JSON.stringify({
+            data: {
+              type: 'subscription',
+              attributes: {
+                custom_source: 'futon-quiz',
+                channels: ['email'],
+                profile: {
+                  data: {
+                    type: 'profile',
+                    attributes: {
+                      email: this.quizData.contactInfo.email,
+                      first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+                      last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+                      phone_number: this.quizData.contactInfo.phone || null,
+                      properties: {
+                        'Quiz Completed': true,
+                        'Quiz Source': 'futon-quiz',
+                        'Subscription Source': 'quiz-completion',
+                        'Marketing Consent': this.quizData.contactInfo.marketingConsent
+                      }
+                    }
+                  }
                 }
               },
-              profile: {
-                data: {
-                  type: 'profile',
-                  attributes: {
-                    email: this.quizData.contactInfo.email
+              relationships: {
+                list: {
+                  data: {
+                    type: 'list',
+                    id: window.klaviyoConfig.listId
                   }
                 }
               }
             }
-          }
-        })
-      });
+          })
+        });
 
       if (response.ok) {
         if (window.klaviyoConfig.debug) {
