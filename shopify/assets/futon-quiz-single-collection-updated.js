@@ -1456,6 +1456,70 @@ class FutonQuizSingleCollection {
         console.log('Marketing consent:', this.quizData.contactInfo.marketingConsent);
       }
 
+      // Create profile first, then subscribe to list
+      // Step 1: Create/update profile
+      const profilePayload = {
+        data: {
+          type: 'profile',
+          attributes: {
+            email: this.quizData.contactInfo.email,
+            first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+            last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+            phone_number: this.quizData.contactInfo.phone || null,
+            properties: {
+              'Quiz Completed': true,
+              'Quiz Source': 'futon-quiz',
+              'Subscription Source': 'quiz-completion',
+              'Marketing Consent': this.quizData.contactInfo.marketingConsent,
+              'List Subscription Attempted': true,
+              'Target List ID': window.klaviyoConfig.listId
+            }
+          }
+        }
+      };
+
+      if (window.klaviyoConfig.debug) {
+        console.log('Creating profile with payload:', JSON.stringify(profilePayload, null, 2));
+      }
+
+      const profileResponse = await fetch(`https://a.klaviyo.com/client/profiles/?company_id=${window.klaviyoConfig.siteId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'revision': '2024-10-15'
+        },
+        body: JSON.stringify(profilePayload)
+      });
+
+      if (window.klaviyoConfig.debug) {
+        console.log('Profile creation response status:', profileResponse.status);
+      }
+
+      let profileId = null;
+      if (profileResponse.ok) {
+        try {
+          const responseText = await profileResponse.text();
+          if (responseText) {
+            const profileData = JSON.parse(responseText);
+            profileId = profileData.data?.id;
+            if (window.klaviyoConfig.debug) {
+              console.log('Profile created/updated successfully. Profile ID:', profileId);
+            }
+          } else {
+            if (window.klaviyoConfig.debug) {
+              console.log('Profile creation: Empty response received (may be normal)');
+            }
+          }
+        } catch (jsonError) {
+          console.error('Error parsing profile response JSON:', jsonError);
+        }
+      } else {
+        const errorText = await profileResponse.text();
+        console.error('Profile creation failed:', profileResponse.status, errorText);
+      }
+
       if (!profileId) {
         console.warn('Unable to resolve Klaviyo profile id. Skipping list subscription.');
         // Track skipped subscription due to missing profile id
