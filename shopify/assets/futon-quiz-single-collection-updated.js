@@ -1443,13 +1443,22 @@ class FutonQuizSingleCollection {
       return;
     }
 
+    if (!window.klaviyoConfig.siteId) {
+      console.warn('Klaviyo site ID not configured');
+      return;
+    }
+
     try {
       if (window.klaviyoConfig.debug) {
         console.log('Subscribing to Klaviyo list:', window.klaviyoConfig.listId);
+        console.log('Using site ID:', window.klaviyoConfig.siteId);
+        console.log('User email:', this.quizData.contactInfo.email);
+        console.log('Marketing consent:', this.quizData.contactInfo.marketingConsent);
       }
 
-      // Prepare subscription data for Klaviyo API
-      const subscriptionPayload = {
+      // Create profile first, then subscribe to list
+      // Step 1: Create/update profile
+      const profilePayload = {
         data: {
           type: 'profile',
           attributes: {
@@ -1461,78 +1470,127 @@ class FutonQuizSingleCollection {
               'Quiz Completed': true,
               'Quiz Source': 'futon-quiz',
               'Subscription Source': 'quiz-completion',
-              'Marketing Consent': this.quizData.contactInfo.marketingConsent
+              'Marketing Consent': this.quizData.contactInfo.marketingConsent,
+              'List Subscription Attempted': true,
+              'Target List ID': window.klaviyoConfig.listId
             }
           }
         }
       };
 
-      // Use Klaviyo's client-side subscription endpoint with correct relationship payload
+      if (window.klaviyoConfig.debug) {
+        console.log('Creating profile with payload:', JSON.stringify(profilePayload, null, 2));
+      }
+
+      const profileResponse = await fetch(`https://a.klaviyo.com/client/profiles/?company_id=${window.klaviyoConfig.siteId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'revision': '2024-10-15'
+        },
+        body: JSON.stringify(profilePayload)
+      });
+
+      if (window.klaviyoConfig.debug) {
+        console.log('Profile creation response status:', profileResponse.status);
+      }
+
+      let profileId = null;
+      if (profileResponse.ok) {
+        const profileData = await profileResponse.json();
+        profileId = profileData.data?.id;
+        if (window.klaviyoConfig.debug) {
+          console.log('Profile created/updated successfully. Profile ID:', profileId);
+        }
+      } else {
+        const errorText = await profileResponse.text();
+        console.error('Profile creation failed:', profileResponse.status, errorText);
+      }
+
+      // Step 2: Subscribe to list using correct JSON:API structure
+      const subscriptionPayload = {
+        data: {
+          type: 'subscription',
+          attributes: {
+            custom_source: 'futon-quiz',
+            channels: {
+              email: ['MARKETING']
+            }
+          },
+          relationships: {
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: {
+                  email: this.quizData.contactInfo.email,
+                  first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+                  last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+                  phone_number: this.quizData.contactInfo.phone || null
+                }
+              }
+            },
+            list: {
+              data: {
+                type: 'list',
+                id: window.klaviyoConfig.listId
+              }
+            }
+          }
+        }
+      };
+
+      if (window.klaviyoConfig.debug) {
+        console.log('Subscribing with payload:', JSON.stringify(subscriptionPayload, null, 2));
+      }
+
       const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${window.klaviyoConfig.siteId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
           'revision': '2024-10-15'
         },
-          body: JSON.stringify({
-            data: {
-              type: 'subscription',
-              attributes: {
-                custom_source: 'futon-quiz',
-                profile: {
-                  data: {
-                    type: 'profile',
-                    attributes: {
-                      email: this.quizData.contactInfo.email,
-                      first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
-                      last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
-                      phone_number: this.quizData.contactInfo.phone || null,
-                      properties: {
-                        'Quiz Completed': true,
-                        'Quiz Source': 'futon-quiz',
-                        'Subscription Source': 'quiz-completion',
-                        'Marketing Consent': this.quizData.contactInfo.marketingConsent
-                      }
-                    }
-                  }
-                }
-              },
-              relationships: {
-                list: {
-                  data: {
-                    type: 'list',
-                    id: window.klaviyoConfig.listId
-                  }
-                }
-              }
-            }
-          })
-        });
+        body: JSON.stringify(subscriptionPayload)
+      });
+
+      if (window.klaviyoConfig.debug) {
+        console.log('Subscription response status:', response.status);
+      }
 
       if (response.ok) {
+        const responseData = await response.json();
         if (window.klaviyoConfig.debug) {
           console.log('Successfully subscribed user to Klaviyo list:', window.klaviyoConfig.listId);
+          console.log('Subscription response:', responseData);
         }
 
         // Track successful subscription
-        window.klaviyo.push(['track', 'List Subscription', {
+        window.klaviyo.push(['track', 'List Subscription Success', {
           'List ID': window.klaviyoConfig.listId,
           'Email': this.quizData.contactInfo.email,
           'Source': 'futon-quiz',
-          'Success': true
+          'Success': true,
+          'Profile ID': profileId || 'unknown'
         }]);
       } else {
         const errorData = await response.text();
         console.error('Failed to subscribe to Klaviyo list:', response.status, errorData);
         
+        if (window.klaviyoConfig.debug) {
+          console.log('Full error response:', errorData);
+        }
+        
         // Track failed subscription
-        window.klaviyo.push(['track', 'List Subscription', {
+        window.klaviyo.push(['track', 'List Subscription Failed', {
           'List ID': window.klaviyoConfig.listId,
           'Email': this.quizData.contactInfo.email,
           'Source': 'futon-quiz',
           'Success': false,
-          'Error': response.status
+          'Error Status': response.status,
+          'Error Message': errorData.substring(0, 200) // Limit error message length
         }]);
       }
 
@@ -1542,20 +1600,27 @@ class FutonQuizSingleCollection {
         '$first_name': this.quizData.contactInfo.name.split(' ')[0] || '',
         '$last_name': this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
         '$phone_number': this.quizData.contactInfo.phone || undefined,
-        '$consent': ['email'],
-        '$source': 'futon-quiz'
+        '$consent': this.quizData.contactInfo.marketingConsent ? ['email'] : [],
+        '$source': 'futon-quiz',
+        '$list_subscription_attempted': true,
+        '$target_list': window.klaviyoConfig.listId
       }]);
       
     } catch (error) {
       console.error('Error subscribing to Klaviyo list:', error);
       
+      if (window.klaviyoConfig.debug) {
+        console.log('Full error details:', error);
+      }
+      
       // Track failed subscription due to error
-      window.klaviyo.push(['track', 'List Subscription', {
+      window.klaviyo.push(['track', 'List Subscription Error', {
         'List ID': window.klaviyoConfig.listId,
         'Email': this.quizData.contactInfo.email,
         'Source': 'futon-quiz',
         'Success': false,
-        'Error': error.message
+        'Error Type': 'Exception',
+        'Error Message': error.message
       }]);
     }
   }
