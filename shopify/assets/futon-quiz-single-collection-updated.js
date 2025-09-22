@@ -1693,25 +1693,6 @@ class FutonQuizSingleCollection {
       }]);
     }
   }
-        data: {
-          type: 'profile',
-          attributes: {
-            email: this.quizData.contactInfo.email,
-            first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
-            last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
-            phone_number: this.quizData.contactInfo.phone || null,
-            properties: {
-              'Quiz Completed': true,
-              'Quiz Source': 'futon-quiz',
-              'Subscription Source': 'quiz-completion',
-              'Marketing Consent': this.quizData.contactInfo.marketingConsent,
-              'List Subscription Attempted': true,
-              'Target List ID': window.klaviyoConfig.listId
-            }
-          }
-        }
-      };
-
       if (window.klaviyoConfig.debug) {
         console.log('Creating profile with payload:', JSON.stringify(profilePayload, null, 2));
       }
