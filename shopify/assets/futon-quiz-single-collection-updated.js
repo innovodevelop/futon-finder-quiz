@@ -1365,7 +1365,6 @@ class FutonQuizSingleCollection {
               type: 'subscription',
               attributes: {
                 custom_source: 'futon-quiz',
-                channels: ['email'],
                 profile: {
                   data: {
                     type: 'profile',
