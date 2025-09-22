@@ -594,6 +594,18 @@ class FutonQuizSingleCollection {
           <p class="fq-step__subtitle">
             Indtast dine kontaktoplysninger, så vi kan sende dig dine personlige anbefalinger.
           </p>
+          
+          <!-- Development helper button -->
+          <div style="margin-top: 1rem;">
+            <button 
+              type="button"
+              class="fq-btn--secondary"
+              style="font-size: 0.75rem; padding: 0.5rem 1rem; background: hsl(var(--muted)); color: hsl(var(--muted-foreground));"
+              onclick="futonQuizSingleCollection.fillTestData()"
+            >
+              🧪 Fill Test Data
+            </button>
+          </div>
         </div>
 
         <div class="fq-form-section">
@@ -845,6 +857,42 @@ class FutonQuizSingleCollection {
 
   updateContactInfo(field, value) {
     this.quizData.contactInfo[field] = value;
+    this.validateContactInfoStep();
+  }
+
+  // Development helper - fills contact form with test data
+  fillTestData() {
+    // Generate random 6-digit number for email
+    const randomNumber = Math.floor(100000 + Math.random() * 900000);
+    
+    // Generate fake Danish phone number (8 digits, realistic format)
+    const areaCode = Math.floor(20 + Math.random() * 80); // 20-99
+    const number = Math.floor(100000 + Math.random() * 900000); // 6 digits
+    const phoneNumber = `+45 ${areaCode} ${number.toString().substring(0,2)} ${number.toString().substring(2,4)} ${number.toString().substring(4,6)}`;
+    
+    // Update the quiz data
+    this.quizData.contactInfo = {
+      name: 'Magnus',
+      email: `testdev${randomNumber}@gmail.com`,
+      phone: phoneNumber,
+      comments: 'Test data for development',
+      marketingConsent: true
+    };
+    
+    // Update the form inputs directly
+    const nameInput = document.querySelector('input[oninput*="name"]');
+    const emailInput = document.querySelector('input[oninput*="email"]');
+    const phoneInput = document.querySelector('input[oninput*="phone"]');
+    const commentsInput = document.querySelector('textarea[oninput*="comments"]');
+    const consentCheckbox = document.querySelector('input[onchange*="marketingConsent"]');
+    
+    if (nameInput) nameInput.value = 'Magnus';
+    if (emailInput) emailInput.value = `testdev${randomNumber}@gmail.com`;
+    if (phoneInput) phoneInput.value = phoneNumber;
+    if (commentsInput) commentsInput.value = 'Test data for development';
+    if (consentCheckbox) consentCheckbox.checked = true;
+    
+    // Trigger validation to enable the next button
     this.validateContactInfoStep();
   }
 
