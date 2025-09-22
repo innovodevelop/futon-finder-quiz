@@ -1526,17 +1526,11 @@ class FutonQuizSingleCollection {
           type: 'subscription',
           attributes: {
             custom_source: 'futon-quiz',
-            channels: { email: ['MARKETING'] },
             profile: {
-              data: {
-                type: 'profile',
-                attributes: {
-                  email: this.quizData.contactInfo.email,
-                  first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
-                  last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
-                  phone_number: this.quizData.contactInfo.phone || null
-                }
-              }
+              email: this.quizData.contactInfo.email,
+              first_name: this.quizData.contactInfo.name.split(' ')[0] || '',
+              last_name: this.quizData.contactInfo.name.split(' ').slice(1).join(' ') || '',
+              phone_number: this.quizData.contactInfo.phone || null
             }
           },
           relationships: {
@@ -1554,9 +1548,9 @@ class FutonQuizSingleCollection {
       const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${window.klaviyoConfig.siteId}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/vnd.api+json',
-          'Accept': 'application/vnd.api+json',
-          'revision': '2025-07-15'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'revision': '2024-10-15'
         },
         body: JSON.stringify(subscriptionPayload)
       });
