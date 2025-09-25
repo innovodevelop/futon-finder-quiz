@@ -346,12 +346,35 @@ All colors MUST be HSL.
     }
   }
 
-  .fq-start__feature-dot {
+  /* Feature dots - aggressive overrides to prevent Shopify theme hiding */
+  .futon-quiz .fq-start__feature-dot,
+  .fq-start__feature-dot,
+  .futon-quiz__container .fq-start__feature-dot {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     width: 0.5rem !important;
     height: 0.5rem !important;
     background-color: hsl(var(--success)) !important;
     border-radius: 50% !important;
     flex-shrink: 0 !important;
+    position: relative !important;
+    content: '' !important;
+  }
+
+  /* Fallback using pseudo-element if div is still hidden */
+  .futon-quiz .fq-start__feature::before,
+  .fq-start__feature::before {
+    content: '' !important;
+    display: inline-block !important;
+    width: 0.5rem !important;
+    height: 0.5rem !important;
+    background-color: hsl(var(--success)) !important;
+    border-radius: 50% !important;
+    margin-right: 0.5rem !important;
+    flex-shrink: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   .fq-start__cta {
@@ -495,13 +518,22 @@ All colors MUST be HSL.
     gap: 2rem;
   }
 
-  /* Cards */
-  .fq-card {
-    background-color: hsl(var(--card));
-    color: hsl(var(--card-foreground));
-    border-radius: 0.5rem;
-    border: 1px solid hsl(var(--border));
-    box-shadow: var(--shadow-card);
+  /* Cards - Increased padding for better space usage */
+  .fq-card,
+  .futon-quiz__card {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    border-radius: 0.5rem !important;
+    border: 1px solid hsl(var(--border)) !important;
+    box-shadow: var(--shadow-card) !important;
+    padding: 2rem !important; /* Increased from 1.5rem */
+  }
+
+  @media (min-width: 768px) {
+    .fq-card,
+    .futon-quiz__card {
+      padding: 3rem !important; /* Increased from 2.5rem */
+    }
   }
 
   /* Button System - EXACT match with React */
