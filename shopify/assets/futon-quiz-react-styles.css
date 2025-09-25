@@ -1,3 +1,10 @@
+/* Futon Quiz React Styles - Unified with Main Implementation
+ * Google Fonts Integration + Complete Shopify Theme Override Protection
+ */
+
+/* Google Fonts - Inter for consistent typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -109,233 +116,244 @@ All colors MUST be HSL.
     width: 100%;
   }
 
-  /* Main Quiz Container */
+  /* Main Quiz Container - EXACT match with React */
   .futon-quiz {
-    min-height: 100vh;
-    padding: 1.5rem 1rem;
-    background: linear-gradient(135deg hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05));
+    min-height: 100vh !important;
+    padding: 1.5rem 1rem !important;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05)) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   }
 
+  /* Container - UNIFIED width matching React max-w-3xl */
+  .fq-container,
   .futon-quiz__container {
-    max-width: 56rem;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    max-width: 48rem !important; /* max-w-3xl = 48rem */
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+    padding: 0 1rem !important;
   }
 
+  /* Card Styling - EXACT match with React */
+  .fq-card,
   .futon-quiz__card {
-    background-color: hsl(var(--card));
-    border-radius: 1.5rem;
-    padding: 1.5rem;
-    box-shadow: var(--shadow-card);
+    background-color: hsl(var(--card)) !important;
+    border-radius: 1.5rem !important;
+    padding: 1.5rem !important;
+    box-shadow: var(--shadow-card) !important;
   }
 
   @media (min-width: 768px) {
+    .fq-card,
     .futon-quiz__card {
-      padding: 2.5rem;
+      padding: 2.5rem !important;
     }
   }
 
-  /* Progress Indicator */
+  /* Progress Indicator - EXACT match with React */
   .fq-progress {
-    width: 100%;
-    max-width: 32rem;
-    margin: 0 auto 2rem auto;
+    width: 100% !important;
+    max-width: 32rem !important; /* max-w-2xl */
+    margin: 0 auto 2rem auto !important;
   }
 
   .fq-progress__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 0.5rem !important;
   }
 
   .fq-progress__text {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: hsl(var(--muted-foreground));
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: hsl(var(--muted-foreground)) !important;
   }
 
   .fq-progress__bar {
-    width: 100%;
-    background-color: hsl(var(--progress-bg));
-    border-radius: 9999px;
-    height: 0.5rem;
-    overflow: hidden;
+    width: 100% !important;
+    background-color: hsl(var(--progress-bg)) !important;
+    border-radius: 9999px !important;
+    height: 0.5rem !important;
+    overflow: hidden !important;
   }
 
   .fq-progress__fill {
-    height: 100%;
-    transition: all 0.5s ease-in-out;
-    background: var(--gradient-primary);
+    height: 100% !important;
+    transition: all 0.5s ease-in-out !important;
+    background: var(--gradient-primary) !important;
   }
 
   .fq-progress__steps {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 1rem !important;
   }
 
   .fq-progress__step {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 500;
-    transition: all 0.3s;
+    width: 2rem !important;
+    height: 2rem !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    transition: all 0.3s !important;
   }
 
   .fq-progress__step--completed {
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
+    background-color: hsl(var(--step-completed)) !important;
+    color: hsl(var(--success-foreground)) !important;
   }
 
   .fq-progress__step--current {
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3);
+    background-color: hsl(var(--step-active)) !important;
+    color: hsl(var(--primary-foreground)) !important;
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3) !important;
   }
 
   .fq-progress__step--inactive {
-    background-color: hsl(var(--muted));
-    color: hsl(var(--muted-foreground));
+    background-color: hsl(var(--step-inactive)) !important;
+    color: hsl(var(--muted-foreground)) !important;
   }
 
-  /* Step Common Styles */
+  /* Step Common Styles - EXACT match with React */
   .fq-step {
-    max-width: 48rem;
-    margin: 0 auto;
+    max-width: 32rem !important; /* max-w-2xl instead of 48rem */
+    margin: 0 auto !important;
   }
 
   .fq-step__header {
-    text-align: center;
-    margin-bottom: 2rem;
+    text-align: center !important;
+    margin-bottom: 2rem !important;
   }
 
   .fq-step__title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: hsl(var(--foreground));
-    margin-bottom: 1rem;
+    font-size: 1.875rem !important; /* text-3xl */
+    font-weight: 700 !important;
+    color: hsl(var(--foreground)) !important;
+    margin-bottom: 1rem !important;
   }
 
   @media (min-width: 768px) {
     .fq-step__title {
-      font-size: 2.5rem;
+      font-size: 2.25rem !important; /* md:text-4xl */
     }
   }
 
   .fq-step__subtitle {
-    color: hsl(var(--muted-foreground));
-    font-size: 1.125rem;
-    line-height: 1.6;
+    color: hsl(var(--muted-foreground)) !important;
+    font-size: 1rem !important; /* Reduced from 1.125rem */
+    line-height: 1.6 !important;
   }
 
   .fq-step__content {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
   }
 
   .fq-step__navigation {
-    display: flex;
-    justify-content: space-between;
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 2rem !important;
   }
 
-  /* Start Step Specific */
+  /* Start Step - EXACT match with React */
   .fq-start {
-    text-align: center;
-    max-width: 48rem;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    text-align: center !important;
+    max-width: 32rem !important; /* Matches React max-w-2xl */
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important; /* Reduced from 2rem */
   }
 
   .fq-start__hero {
-    width: 100%;
-    height: 16rem;
-    object-fit: cover;
-    border-radius: 1rem;
+    width: 100% !important;
+    height: 12rem !important; /* Matches React h-48 */
+    object-fit: cover !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.1) !important;
   }
 
   .fq-start__title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: hsl(var(--foreground));
+    font-size: 1.875rem !important; /* text-3xl */
+    font-weight: 700 !important;
+    color: hsl(var(--foreground)) !important;
+    margin-bottom: 1rem !important;
   }
 
   @media (min-width: 768px) {
     .fq-start__title {
-      font-size: 3rem;
+      font-size: 2.25rem !important; /* md:text-4xl */
     }
   }
 
   .fq-start__description {
-    color: hsl(var(--muted-foreground));
-    font-size: 1.25rem;
-    line-height: 1.625;
+    color: hsl(var(--muted-foreground)) !important;
+    font-size: 1rem !important; /* Reduced from 1.25rem */
+    line-height: 1.6 !important; /* Reduced from 1.625 */
   }
 
   .fq-start__features {
-    background-color: hsl(var(--muted) / 0.3);
-    border-radius: 1rem;
-    padding: 1.25rem;
+    background: linear-gradient(135deg, hsl(var(--muted) / 0.3), hsl(var(--muted) / 0.1)) !important;
+    border-radius: 1rem !important;
+    padding: 1.25rem !important;
   }
 
   .fq-start__features-title {
-    font-weight: 600;
-    color: hsl(var(--foreground));
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
+    font-weight: 600 !important;
+    color: hsl(var(--foreground)) !important;
+    margin-bottom: 0.75rem !important; /* Reduced from 1rem */
+    font-size: 1rem !important; /* Reduced from 1.25rem */
   }
 
   .fq-start__features-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    font-size: 1rem;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important; /* Reduced from 1rem */
+    font-size: 0.875rem !important; /* Reduced from 1rem */
   }
 
   @media (min-width: 768px) {
     .fq-start__features-grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, 1fr) !important;
     }
   }
 
   .fq-start__feature {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    justify-content: center;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    justify-content: center !important;
   }
 
   @media (min-width: 768px) {
     .fq-start__feature {
-      justify-content: flex-start;
+      justify-content: flex-start !important;
     }
   }
 
   .fq-start__feature-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    background-color: hsl(var(--success));
-    border-radius: 50%;
+    width: 0.5rem !important;
+    height: 0.5rem !important;
+    background-color: hsl(var(--success)) !important;
+    border-radius: 50% !important;
+    flex-shrink: 0 !important;
   }
 
   .fq-start__cta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
   }
 
   .fq-start__note {
-    font-size: 1rem;
-    color: hsl(var(--muted-foreground));
+    font-size: 0.75rem !important; /* Reduced from 1rem */
+    color: hsl(var(--muted-foreground)) !important;
   }
 
   /* Option Grid */
@@ -450,84 +468,93 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-card);
   }
 
-  /* Buttons - Using semantic classes that reference design system */
+  /* Button System - EXACT match with React */
   .fq-btn--option {
-    min-height: 6rem;
-    padding: 1.5rem 2rem;
-    border-radius: 0.75rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
-    gap: 1rem;
-    background-color: hsl(var(--card));
-    border: 2px solid hsl(var(--border));
-    color: hsl(var(--card-foreground));
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 1rem;
+    min-height: 5rem !important; /* min-h-20 = 5rem */
+    padding: 1rem 1.5rem !important; /* Adjusted padding */
+    border-radius: 1rem !important; /* Matches React rounded-2xl */
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important; /* gap-3 = 0.75rem */
+    background-color: hsl(var(--card)) !important;
+    border: 2px solid hsl(var(--border)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-size: 1rem !important;
   }
 
   .fq-btn--option:hover {
-    border-color: hsl(var(--primary));
-    box-shadow: var(--shadow-card);
+    border-color: hsl(var(--primary)) !important;
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.15) !important;
+    transform: translateY(-2px) !important;
   }
 
   .fq-btn--option-selected {
-    min-height: 6rem;
-    padding: 1.5rem 2rem;
-    border-radius: 0.75rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
-    gap: 1rem;
-    background-color: hsl(var(--primary) / 0.1);
-    border: 2px solid hsl(var(--primary));
-    color: hsl(var(--primary));
-    box-shadow: var(--shadow-card);
-    font-size: 1rem;
+    min-height: 5rem !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: 1rem !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05)) !important;
+    border: 2px solid hsl(var(--primary)) !important;
+    color: hsl(var(--primary)) !important;
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.15) !important;
+    font-size: 1rem !important;
   }
 
   .fq-btn--quiz {
-    color: hsl(var(--primary-foreground));
-    background: var(--gradient-primary);
-    box-shadow: var(--shadow-soft);
-    border-radius: 0.5rem;
-    padding: 1rem 2rem;
-    border: none;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 1.125rem;
-    transition: all 0.2s;
+    height: 2.75rem !important; /* h-11 = 2.75rem */
+    padding: 0 2rem !important; /* px-8 = 2rem */
+    color: hsl(var(--primary-foreground)) !important;
+    background: var(--gradient-primary) !important;
+    box-shadow: var(--shadow-soft) !important;
+    border-radius: 0.5rem !important;
+    border: none !important;
+    cursor: pointer !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
-  .fq-btn--quiz:hover {
-    box-shadow: 0 8px 30px -5px hsl(var(--primary) / 0.3);
-    transform: scale(1.02);
+  .fq-btn--quiz:hover:not(:disabled) {
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.2) !important;
+    transform: scale(1.02) !important;
   }
 
   .fq-btn--quiz:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
   }
 
   .fq-btn--secondary {
-    background-color: hsl(var(--secondary));
-    color: hsl(var(--secondary-foreground));
-    border: 1px solid hsl(var(--border));
-    border-radius: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
+    height: 2.75rem !important;
+    background-color: hsl(var(--secondary)) !important;
+    color: hsl(var(--secondary-foreground)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    border-radius: 0.5rem !important;
+    padding: 0 1.5rem !important;
+    cursor: pointer !important;
+    font-weight: 500 !important;
+    transition: all 0.2s !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .fq-btn--secondary:hover {
-    background-color: hsl(var(--secondary-hover));
+    background-color: hsl(var(--secondary-hover)) !important;
   }
 
   /* Utility Classes */
@@ -594,4 +621,72 @@ All colors MUST be HSL.
   .min-h-20 {
     min-height: 5rem;
   }
+}
+
+/* Animations - EXACT match with React */
+.fq-fade-in {
+  animation: fqFadeIn 0.3s ease-out !important;
+}
+
+.fq-scale-in {
+  animation: fqScaleIn 0.2s ease-out !important;
+}
+
+@keyframes fqFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fqScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* High specificity reset to override Shopify theme conflicts */
+.shopify-section .futon-quiz,
+.shopify-section .futon-quiz *,
+.shopify-section .futon-quiz *:before,
+.shopify-section .futon-quiz *:after,
+.futon-quiz,
+.futon-quiz *,
+.futon-quiz *:before,
+.futon-quiz *:after {
+  box-sizing: border-box !important;
+}
+
+/* Ensure quiz styles always take precedence over Shopify themes */
+.shopify-section .futon-quiz .fq-btn--quiz,
+.shopify-section .futon-quiz .fq-btn--option,
+.shopify-section .futon-quiz .fq-input-group__input,
+.shopify-section .futon-quiz .fq-card,
+.shopify-section .futon-quiz .fq-container,
+.futon-quiz .fq-btn--quiz,
+.futon-quiz .fq-btn--option,
+.futon-quiz .fq-input-group__input,
+.futon-quiz .fq-card,
+.futon-quiz .fq-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  line-height: 1.5 !important;
+}
+
+/* Critical container override for theme protection */
+.shopify-section .futon-quiz .fq-container,
+.shopify-section .futon-quiz .futon-quiz__container,
+.futon-quiz .fq-container,
+.futon-quiz .futon-quiz__container {
+  max-width: 48rem !important; /* max-w-3xl = 48rem */
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
 }
