@@ -133,7 +133,7 @@
     shopUrl: "{{ shop.permanent_domain }}",
     totalSteps: {{ section.blocks.size }},
     {% assign start_block = section.blocks | where: 'type', 'start_step' | first %}
-    heroImageUrl: "{% if start_block.settings.hero_image != blank %}{{ start_block.settings.hero_image | image_url: width: 1200 }}{% elsif section.settings.hero_image != blank %}{{ section.settings.hero_image | image_url: width: 1200 }}{% else %}{{ 'futon-hero.jpg' | asset_url }}{% endif %}",
+    heroImageUrl: "{% if start_block.settings.hero_image != blank %}{{ start_block.settings.hero_image | image_url: width: 1200 }}{% elsif section.settings.hero_image != blank %}{{ section.settings.hero_image | image_url: width: 1200 }}{% else %}https://via.placeholder.com/800x400/f3f4f6/6b7280?text=Futon+Hero+Image{% endif %}",
     
     // Tag mapping configuration
     tagMappings: {

@@ -39,6 +39,7 @@ class FutonQuizSingleCollection {
 
   setup() {
     console.log('Futon Quiz (Single Collection) config:', window.quizConfig);
+    console.log('Quiz container found:', !!document.getElementById('fq-quiz-container'));
     this.loadProductData();
     this.showStep(0);
   }
@@ -178,17 +179,24 @@ class FutonQuizSingleCollection {
   }
 
   buildStartStep() {
+    console.log('Building start step with hero image:', window.quizConfig?.heroImageUrl);
+    
+    const heroImageUrl = window.quizConfig?.heroImageUrl || '';
+    const imageHtml = heroImageUrl ? 
+      `<img 
+        id="fq-start-hero-image"
+        src="${heroImageUrl}" 
+        alt="Comfortable futon setup" 
+        class="fq-start__hero"
+        loading="eager"
+        onerror="console.warn('Hero image failed to load:', this.src); this.style.display='none';"
+      />` : 
+      `<!-- No hero image configured -->`;
+    
     return `
       <div id="fq-start-step" class="fq-start">
         <div class="fq-step__content">
-          <img 
-            id="fq-start-hero-image"
-            src="${window.quizConfig?.heroImageUrl || ''}" 
-            alt="Comfortable futon setup" 
-            class="fq-start__hero"
-            loading="eager"
-            onerror="this.style.display='none'"
-          />
+          ${imageHtml}
           <h1 class="fq-start__title">
             Find Din Perfekte Futon
           </h1>
@@ -1673,10 +1681,16 @@ let futonQuizSingleCollection;
 
 function initQuiz() {
   console.log('Initializing Futon Quiz (Single Collection)...');
+  console.log('DOM ready state:', document.readyState);
+  console.log('Quiz config available:', !!window.quizConfig);
+  console.log('Quiz container element:', !!document.getElementById('fq-quiz-container'));
+  
   futonQuizSingleCollection = new FutonQuizSingleCollection();
   
   // Make it globally available for onclick handlers
   window.futonQuizSingleCollection = futonQuizSingleCollection;
+  
+  console.log('Quiz initialized successfully');
 }
 
 // Initialize immediately if DOM is ready, otherwise wait
