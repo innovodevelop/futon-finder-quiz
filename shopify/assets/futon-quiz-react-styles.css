@@ -360,30 +360,55 @@ All colors MUST be HSL.
 
   /* Option Grid */
   .fq-options {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    margin-bottom: 2rem !important;
   }
 
   @media (min-width: 768px) {
     .fq-options {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr) !important;
     }
   }
 
   .fq-options--single {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   .fq-options--triple {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  @media (min-width: 640px) {
+    .fq-options--triple {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
   }
 
   @media (min-width: 768px) {
     .fq-options--triple {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 1rem !important;
     }
+  }
+
+  /* Option button icons */
+  .fq-btn--option .icon,
+  .fq-btn--option-selected .icon {
+    width: 2rem !important; /* w-8 = 2rem */
+    height: 2rem !important; /* h-8 = 2rem */
+    flex-shrink: 0 !important;
+  }
+
+  /* Option button text */
+  .fq-btn--option .option-text,
+  .fq-btn--option-selected .option-text {
+    font-size: 0.875rem !important; /* text-sm = 0.875rem */
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+    text-align: center !important;
   }
 
   /* Input Groups */
@@ -399,13 +424,14 @@ All colors MUST be HSL.
   }
 
   .fq-input-group__input {
-    height: 3.5rem;
-    text-align: center;
-    font-size: 1.25rem;
-    background-color: hsl(var(--background));
-    border: 1px solid hsl(var(--border));
-    border-radius: 0.5rem;
-    padding: 0 1rem;
+    height: 3rem !important; /* h-12 = 3rem to match React */
+    text-align: center !important;
+    font-size: 1rem !important; /* Match React text-base */
+    background-color: hsl(var(--background)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    border-radius: 0.5rem !important; /* Match React rounded-lg */
+    padding: 0 1rem !important;
+    font-weight: 500 !important;
   }
 
   .fq-input-group__input:focus {
@@ -452,9 +478,10 @@ All colors MUST be HSL.
   }
 
   .fq-form-section__title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
+    font-size: 1.25rem !important; /* text-xl = 1.25rem to match React */
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+    color: hsl(var(--foreground)) !important;
   }
 
   .fq-form-section--spaced {
@@ -472,12 +499,13 @@ All colors MUST be HSL.
 
   /* Button System - EXACT match with React */
   .fq-btn--option {
-    min-height: 5rem !important; /* min-h-20 = 5rem */
+    min-height: 5rem !important; /* Default for people count - min-h-20 = 5rem */
     padding: 1rem 1.5rem !important;
-    border-radius: 0.75rem !important; /* Match React rounded-lg */
+    border-radius: 1rem !important; /* Match React rounded-xl */
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
+    align-items: center !important;
     text-align: center !important;
     flex-direction: column !important;
     gap: 0.75rem !important;
@@ -487,7 +515,17 @@ All colors MUST be HSL.
     cursor: pointer !important;
     transition: all 0.3s ease !important;
     font-size: 1rem !important;
+    font-weight: 500 !important;
     letter-spacing: normal !important;
+  }
+
+  /* Sleep position and preference step option buttons need more height */
+  .fq-sleep-position .fq-btn--option,
+  .fq-preference .fq-btn--option,
+  .fq-sleep-position .fq-btn--option-selected,
+  .fq-preference .fq-btn--option-selected {
+    min-height: 10rem !important; /* min-h-40 = 10rem for sleep/preference */
+    padding: 1.5rem !important;
   }
 
   .fq-btn--option:hover {
@@ -497,12 +535,13 @@ All colors MUST be HSL.
   }
 
   .fq-btn--option-selected {
-    min-height: 5rem !important;
+    min-height: 5rem !important; /* Default for people count */
     padding: 1rem 1.5rem !important;
-    border-radius: 0.75rem !important; /* Match React rounded-lg */
+    border-radius: 1rem !important; /* Match React rounded-xl */
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
+    align-items: center !important;
     text-align: center !important;
     flex-direction: column !important;
     gap: 0.75rem !important;
@@ -511,6 +550,7 @@ All colors MUST be HSL.
     color: hsl(var(--primary)) !important;
     box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.15) !important;
     font-size: 1rem !important;
+    font-weight: 500 !important;
     letter-spacing: normal !important;
   }
 
