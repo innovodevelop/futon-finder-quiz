@@ -1,0 +1,305 @@
+{% comment %}
+  Futon Quiz Universal Section
+  Supports both V1 (JavaScript) and V2 (React) versions with merchant selection
+{% endcomment %}
+
+<section class="futon-quiz-section-universal" 
+         data-section-id="{{ section.id }}" 
+         data-section-type="futon-quiz-universal"
+         data-quiz-version="{{ section.settings.quiz_version }}">
+  
+  {% if section.settings.quiz_version == 'v2' %}
+    <!-- V2 React Implementation -->
+    {{ 'futon-quiz-react-v2.css' | asset_url | stylesheet_tag }}
+    
+    <div class="futon-quiz__container">
+      <!-- Progress indicator placeholder -->
+      <div id="fq-progress-indicator" class="fq-progress-indicator" style="display: none;">
+        <div class="fq-progress">
+          <div class="fq-progress__bar">
+            <div class="fq-progress__fill" style="width: 0%;"></div>
+          </div>
+          <div class="fq-progress__text">
+            <span class="fq-progress__current">1</span>
+            <span class="fq-progress__separator"> / </span>
+            <span class="fq-progress__total">7</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- React container -->
+      <div id="futon-quiz-container-v2" class="futon-quiz-react-container">
+        <!-- Loading state -->
+        <div class="fq-loading" id="quiz-loading">
+          <div class="fq-loading__spinner"></div>
+          <p class="fq-loading__text">{{ section.settings.loading_text | default: 'Indlæser quiz...' }}</p>
+        </div>
+        
+        <!-- Fallback content if React fails -->
+        <div class="fq-fallback" id="quiz-fallback" style="display: none;">
+          <h2>{{ section.settings.title | default: 'Find Din Perfekte Futon' }}</h2>
+          <p>{{ section.settings.subtitle | default: 'Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov.' }}</p>
+          <p><em>Loading alternative version...</em></p>
+        </div>
+      </div>
+    </div>
+    
+  {% else %}
+    <!-- V1 JavaScript Implementation -->
+    {{ 'futon-quiz-styles.css' | asset_url | stylesheet_tag }}
+    
+    <div class="futon-quiz__container">
+      <!-- Progress indicator -->
+      <div id="fq-progress-indicator" class="fq-progress-indicator" style="display: none;">
+        <div class="fq-progress">
+          <div class="fq-progress__bar">
+            <div class="fq-progress__fill" style="width: 0%;"></div>
+          </div>
+          <div class="fq-progress__text">
+            <span class="fq-progress__current">1</span>
+            <span class="fq-progress__separator"> / </span>
+            <span class="fq-progress__total">7</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz content will be loaded here -->
+      <div id="futon-quiz-content" class="futon-quiz__content">
+        <div class="fq-loading">
+          <div class="fq-loading__spinner"></div>
+          <p class="fq-loading__text">{{ section.settings.loading_text | default: 'Indlæser quiz...' }}</p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+</section>
+
+<!-- Product data (shared by both versions) -->
+<script>
+  (function() {
+    // Collect products from configured collections
+    var products = [];
+    
+    {% comment %} Helper function to add products {% endcomment %}
+    {% assign all_collections = 'soft_collection,medium_collection,hard_collection,couples_collection' | split: ',' %}
+    {% assign firmness_types = 'soft,medium,hard,couples' | split: ',' %}
+    
+    {% for collection_setting in all_collections %}
+      {% assign collection_index = forloop.index0 %}
+      {% assign firmness = firmness_types[collection_index] %}
+      
+      {% if section.settings[collection_setting] != blank %}
+        {% assign current_collection = collections[section.settings[collection_setting]] %}
+        {% for product in current_collection.products limit: 10 %}
+          products.push({
+            id: {{ product.id }},
+            title: {{ product.title | json }},
+            handle: {{ product.handle | json }},
+            description: {{ product.description | json }},
+            price: {{ product.price }},
+            compare_at_price: {{ product.compare_at_price }},
+            images: [
+              {% for image in product.images limit: 3 %}
+                {
+                  src: {{ image.src | img_url: 'master' | json }},
+                  alt: {{ image.alt | json }},
+                  width: {{ image.width }},
+                  height: {{ image.height }}
+                }{% unless forloop.last %},{% endunless %}
+              {% endfor %}
+            ],
+            variants: [
+              {% for variant in product.variants %}
+                {
+                  id: {{ variant.id }},
+                  title: {{ variant.title | json }},
+                  price: {{ variant.price }},
+                  available: {{ variant.available }},
+                  sku: {{ variant.sku | json }},
+                  options: {{ variant.options | json }}
+                }{% unless forloop.last %},{% endunless %}
+              {% endfor %}
+            ],
+            tags: {{ product.tags | json }},
+            collections: [
+              {% for collection in product.collections %}
+                {{ collection.handle | json }}{% unless forloop.last %},{% endunless %}
+              {% endfor %}
+            ],
+            firmness: {{ firmness | json }}
+          });
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+
+    // Global configuration for both versions
+    window.quizConfig = {
+      title: {{ section.settings.title | default: 'Find Din Perfekte Futon' | json }},
+      subtitle: {{ section.settings.subtitle | default: 'Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov.' | json }},
+      collections: {
+        soft: {{ section.settings.soft_collection | json }},
+        medium: {{ section.settings.medium_collection | json }},
+        hard: {{ section.settings.hard_collection | json }},
+        couples: {{ section.settings.couples_collection | json }}
+      },
+      products: products,
+      shop: {
+        domain: {{ shop.domain | json }},
+        currency: {{ cart.currency.iso_code | json }}
+      },
+      {% if section.settings.klaviyo_public_key != blank %}
+      klaviyo: {
+        publicKey: {{ section.settings.klaviyo_public_key | json }}
+      },
+      {% endif %}
+      reactMode: {{ section.settings.quiz_version == 'v2' }},
+      themeEditorMode: {{ request.design_mode }},
+      version: {{ section.settings.quiz_version | json }},
+      fallbackEnabled: {{ section.settings.enable_fallback | default: true }},
+      loadingText: {{ section.settings.loading_text | default: 'Indlæser quiz...' | json }}
+    };
+  })();
+</script>
+
+<!-- Load appropriate scripts based on version -->
+{% if section.settings.quiz_version == 'v2' %}
+  {{ 'futon-quiz-react-v2.js' | asset_url | script_tag }}
+  
+  <script>
+    // Enhanced error handling and fallback for V2
+    window.addEventListener('error', function(e) {
+      if (e.filename && e.filename.includes('futon-quiz-react-v2.js')) {
+        console.error('Futon Quiz V2: React bundle failed to load');
+        if (window.quizConfig && window.quizConfig.fallbackEnabled) {
+          loadV1Fallback();
+        }
+      }
+    });
+
+    function loadV1Fallback() {
+      console.log('Loading V1 fallback...');
+      document.getElementById('quiz-loading').style.display = 'none';
+      document.getElementById('quiz-fallback').style.display = 'block';
+      
+      // Update configuration for V1
+      window.quizConfig.version = 'v1';
+      window.quizConfig.reactMode = false;
+      
+      // Load V1 assets
+      var v1Script = document.createElement('script');
+      v1Script.src = '{{ "futon-quiz.js" | asset_url }}';
+      v1Script.onload = function() {
+        document.getElementById('quiz-fallback').style.display = 'none';
+        console.log('V1 fallback loaded successfully');
+      };
+      document.head.appendChild(v1Script);
+      
+      var v1Styles = document.createElement('link');
+      v1Styles.rel = 'stylesheet';
+      v1Styles.href = '{{ "futon-quiz-styles.css" | asset_url }}';
+      document.head.appendChild(v1Styles);
+    }
+  </script>
+  
+{% else %}
+  {{ 'futon-quiz.js' | asset_url | script_tag }}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Futon Quiz (Universal)",
+  "tag": "section",
+  "class": "futon-quiz-section-universal",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Version Selection"
+    },
+    {
+      "type": "select",
+      "id": "quiz_version",
+      "label": "Quiz Version",
+      "options": [
+        {"value": "v1", "label": "V1 - Stable JavaScript"},
+        {"value": "v2", "label": "V2 - React Integration (Beta)"}
+      ],
+      "default": "v1",
+      "info": "Choose between stable JavaScript (V1) or new React version (V2)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_fallback",
+      "label": "Enable automatic fallback",
+      "default": true,
+      "info": "Automatically fallback to V1 if V2 fails to load"
+    },
+    {
+      "type": "header",
+      "content": "Quiz Configuration"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Quiz Title",
+      "default": "Find Din Perfekte Futon"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle", 
+      "label": "Quiz Subtitle",
+      "default": "Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov."
+    },
+    {
+      "type": "header",
+      "content": "Product Collections"
+    },
+    {
+      "type": "collection",
+      "id": "soft_collection",
+      "label": "Soft Futons Collection"
+    },
+    {
+      "type": "collection",
+      "id": "medium_collection", 
+      "label": "Medium Futons Collection"
+    },
+    {
+      "type": "collection",
+      "id": "hard_collection",
+      "label": "Hard Futons Collection"
+    },
+    {
+      "type": "collection",
+      "id": "couples_collection",
+      "label": "Couples Futons Collection"
+    },
+    {
+      "type": "header",
+      "content": "Integration Settings"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_public_key",
+      "label": "Klaviyo Public Key",
+      "info": "Optional: Add Klaviyo public key for email capture"
+    },
+    {
+      "type": "header",
+      "content": "UI Settings"
+    },
+    {
+      "type": "text",
+      "id": "loading_text",
+      "label": "Loading Text",
+      "default": "Indlæser quiz..."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Futon Quiz (Universal)",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

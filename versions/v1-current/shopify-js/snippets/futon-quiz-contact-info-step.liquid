@@ -1,0 +1,114 @@
+<div id="futon-quiz__contact-info-step" class="futon-quiz__step" style="display: none;">
+  <div class="futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+    <div class="futon-quiz__text-center futon-quiz__mb-8">
+      <h2 class="futon-quiz__title" style="font-size: 1.875rem; margin-bottom: 1rem;">
+        Kontakt Information
+      </h2>
+      <p class="futon-quiz__description">
+        Indtast dine oplysninger for at modtage personlige anbefalinger og tilbud.
+      </p>
+    </div>
+
+    <div class="futon-quiz__space-y-4 futon-quiz__mb-6">
+      <div>
+        <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">
+          Navn *
+        </label>
+        <input
+          type="text"
+          class="futon-quiz__input"
+          placeholder="Dit fulde navn"
+          oninput="futonQuiz.updateContactInfo('name', this.value)"
+        />
+      </div>
+
+      <div>
+        <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">
+          E-mail *
+        </label>
+        <input
+          type="email"
+          class="futon-quiz__input"
+          placeholder="din.email@eksempel.dk"
+          oninput="futonQuiz.updateContactInfo('email', this.value)"
+        />
+      </div>
+
+      <div>
+        <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">
+          Telefon *
+        </label>
+        <input
+          type="tel"
+          class="futon-quiz__input"
+          placeholder="+45 12 34 56 78"
+          oninput="futonQuiz.updateContactInfo('phone', this.value)"
+        />
+      </div>
+
+      <div>
+        <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">
+          Kommentarer (valgfri)
+        </label>
+        <textarea
+          class="futon-quiz__input futon-quiz__textarea"
+          placeholder="Har du særlige ønsker eller spørgsmål til din futon?"
+          oninput="futonQuiz.updateContactInfo('comments', this.value)"
+        ></textarea>
+      </div>
+
+      <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+        <input
+          type="checkbox"
+          id="futon-quiz__marketing-consent"
+          onchange="futonQuiz.updateContactInfo('marketingConsent', this.checked)"
+        />
+        <label for="futon-quiz__marketing-consent" class="futon-quiz__option-description">
+          Ja, jeg vil gerne modtage tilbud og nyheder om futoner via e-mail. *
+        </label>
+      </div>
+    </div>
+
+    <div class="futon-quiz__info-box futon-quiz__mb-6">
+      <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Næste skridt:</h3>
+      <div class="futon-quiz__space-y-2">
+        <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+          <div class="futon-quiz__bullet--success"></div>
+          <span class="futon-quiz__option-description">Du modtager personlige anbefalinger med det samme</span>
+        </div>
+        <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+          <div class="futon-quiz__bullet--success"></div>
+          <span class="futon-quiz__option-description">Vi kontakter dig inden for 24 timer med yderligere vejledning</span>
+        </div>
+        <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+          <div class="futon-quiz__bullet--success"></div>
+          <span class="futon-quiz__option-description">Få ekspertrådgivning og svar på dine spørgsmål</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <button 
+        type="button"
+        style="font-size: 0.75rem; padding: 0.5rem 1rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 0.375rem; cursor: pointer;"
+        onclick="futonQuiz.fillTestData()"
+      >
+        🧪 Fill Test Data
+      </button>
+    </div>
+
+    <div class="futon-quiz__flex futon-quiz__justify-between">
+      <button class="futon-quiz__btn futon-quiz__btn--secondary" onclick="futonQuiz.prevStep()">
+        Tilbage
+      </button>
+      <button 
+        id="futon-quiz__contact-next-btn" 
+        class="futon-quiz__btn futon-quiz__btn--primary" 
+        onclick="futonQuiz.nextStep()"
+        disabled
+      >
+        Få Anbefalinger
+      </button>
+    </div>
+  </div>
+</div>

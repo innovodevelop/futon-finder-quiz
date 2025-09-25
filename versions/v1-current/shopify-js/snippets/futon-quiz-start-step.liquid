@@ -1,0 +1,51 @@
+<div id="futon-quiz__start-step" class="futon-quiz__step">
+  <div class="futon-quiz__text-center max-w-2xl mx-auto futon-quiz__space-y-6">
+    <div class="futon-quiz__space-y-4">
+      <img 
+        src="{{ 'futon-hero.jpg' | asset_url }}" 
+        alt="Comfortable futon setup" 
+        class="futon-quiz__hero-image"
+        loading="eager"
+      />
+      <h1 class="futon-quiz__title">
+        Find Din Perfekte Futon
+      </h1>
+      <p class="futon-quiz__description">
+        Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov. 
+        Baseret på dine søvnpræferencer anbefaler vi det perfekte match fra vores kollektion.
+      </p>
+    </div>
+
+    <div class="futon-quiz__info-box">
+      <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Hvad du får:</h3>
+      <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__grid--md-cols-3 futon-quiz__gap-4">
+        <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
+          <div class="futon-quiz__bullet--success"></div>
+          <span>Personlige anbefalinger</span>
+        </div>
+        <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
+          <div class="futon-quiz__bullet--success"></div>
+          <span>Ekspert vejledning</span>
+        </div>
+        <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2 futon-quiz__justify-center">
+          <div class="futon-quiz__bullet--success"></div>
+          <span>Perfekt komfort match</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="futon-quiz__space-y-4">
+      <button 
+        class="futon-quiz__btn futon-quiz__btn--primary"
+        style="height: 3rem; padding: 0 3rem; font-size: 1rem;"
+        onclick="futonQuiz.startQuiz()"
+      >
+        Start Test
+      </button>
+      
+      <p class="text-xs text-muted-foreground">
+        Tager kun 2-3 minutter at gennemføre
+      </p>
+    </div>
+  </div>
+</div>

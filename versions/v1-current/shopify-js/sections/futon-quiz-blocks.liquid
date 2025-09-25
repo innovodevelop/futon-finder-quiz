@@ -1,0 +1,1592 @@
+{%- comment -%}
+Futon Quiz Section with Blocks - Unified with React Implementation
+{%- endcomment -%}
+
+<!-- Google Fonts Preconnect for Performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<style>
+  /* Import the unified quiz styles with theme override protection */
+  @import url('./futon-quiz-styles.css');
+</style>
+
+<section class="futon-quiz" data-section-id="{{ section.id }}">
+  <div class="fq-container">
+    <!-- Progress Indicator - FQ Classes -->
+    <div id="fq-progress-indicator" class="fq-progress" style="display: none;">
+      <div class="fq-progress__header">
+        <span class="fq-progress__text" id="fq-step-text">Trin 1 af {{ section.blocks.size | minus: 2 }}</span>
+        <span class="fq-progress__text" id="fq-progress-percent">14%</span>
+      </div>
+      <div class="fq-progress__bar">
+        <div id="fq-progress-bar" class="fq-progress__fill" style="width: 14%;"></div>
+      </div>
+      <div id="fq-step-indicators" class="fq-progress__steps"></div>
+    </div>
+
+    <!-- Quiz Container -->
+    <div id="fq-quiz-container">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'start_step' %}
+            <div id="fq-start-step" class="fq-start fq-fade-in" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div class="fq-start" style="max-width: 32rem; margin: 0 auto;">
+                <div class="fq-start__content" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                  {% if block.settings.hero_image %}
+                    <img 
+                      src="{{ block.settings.hero_image | image_url: width: 800 }}" 
+                      alt="{{ block.settings.hero_image.alt | default: 'Quiz hero image' }}" 
+                      class="fq-start__hero"
+                      style="width: 100%; height: 12rem; object-fit: cover; border-radius: 1rem; box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.1);"
+                      width="800"
+                      height="192"
+                      loading="eager"
+                    />
+                  {% endif %}
+                  <h1 class="fq-start__title">
+                    {{ block.settings.title | default: 'Find Din Perfekte Futon' }}
+                  </h1>
+                  <p class="fq-start__description">
+                    {{ block.settings.description | default: 'Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov.' }}
+                  </p>
+                </div>
+
+                {% if block.settings.show_benefits %}
+                <div class="fq-start__features">
+                  <h3 class="fq-start__features-title">{{ block.settings.benefits_title | default: 'Hvad du får:' }}</h3>
+                  <div class="fq-start__features-grid">
+                    {% for i in (1..3) %}
+                      {% assign benefit_key = 'benefit_' | append: i %}
+                      {% if block.settings[benefit_key] != blank %}
+                      <div class="fq-start__feature">
+                        <div class="fq-start__feature-dot"></div>
+                        <span>{{ block.settings[benefit_key] }}</span>
+                      </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+                {% endif %}
+
+                <div class="fq-start__cta">
+                  <button 
+                    class="fq-btn fq-btn--quiz"
+                    onclick="futonQuiz.nextStep()"
+                  >
+                    {{ block.settings.start_button_text | default: 'Start Test' }}
+                  </button>
+                  
+                  {% if block.settings.show_duration %}
+                  <p class="fq-start__note">
+                    {{ block.settings.duration_text | default: 'Tager kun 2-3 minutter at gennemføre' }}
+                  </p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+          {% when 'people_count_step' %}
+            <div id="fq-people-count-step" class="fq-step fq-fade-in" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div class="fq-step" style="max-width: 32rem; margin: 0 auto;">
+                <div class="fq-step__header">
+                  <h2 class="fq-step__title">
+                    {{ block.settings.title | default: 'Hvor mange personer skal bruge denne futon?' }}
+                  </h2>
+                  <p class="fq-step__subtitle">
+                    {{ block.settings.description | default: 'Dette hjælper os med at anbefale den rigtige størrelse og fasthed til dine behov.' }}
+                  </p>
+                </div>
+
+                <div class="fq-options fq-options--double">
+                  <button
+                    class="fq-btn fq-btn--option"
+                    data-value="1"
+                    onclick="futonQuiz.setPeopleCount(1)"
+                  >
+                    <div class="fq-option__emoji">{{ block.settings.single_emoji | default: '👤' }}</div>
+                    <div>
+                      <div class="fq-option__title">{{ block.settings.single_title | default: 'Kun Mig' }}</div>
+                      <div class="fq-option__description">{{ block.settings.single_description | default: 'Enkeltperson brug' }}</div>
+                    </div>
+                  </button>
+
+                  <button
+                    class="fq-btn fq-btn--option"
+                    data-value="2"
+                    onclick="futonQuiz.setPeopleCount(2)"
+                  >
+                    <div class="fq-option__emoji">{{ block.settings.couple_emoji | default: '👥' }}</div>
+                    <div>
+                      <div class="fq-option__title">{{ block.settings.couple_title | default: 'To Personer' }}</div>
+                      <div class="fq-option__description">{{ block.settings.couple_description | default: 'Par eller delt brug' }}</div>
+                    </div>
+                  </button>
+                </div>
+
+                <div class="fq-step__navigation">
+                  <button class="fq-btn fq-btn--secondary" onclick="futonQuiz.prevStep()">
+                    {{ block.settings.back_button_text | default: 'Tilbage' }}
+                  </button>
+                  <button class="fq-btn fq-btn--quiz" onclick="futonQuiz.nextStep()">
+                    {{ block.settings.continue_button_text | default: 'Fortsæt' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          {% when 'weight_step' %}
+            <div id="weight-step" class="quiz-step" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div class="max-w-2xl mx-auto">
+                 <div class="text-center mb-8">
+                   <h2 id="weight-title" class="text-3xl font-bold text-foreground mb-4" 
+                       data-single-title="{{ block.settings.single_title }}"
+                       data-couple-title="{{ block.settings.couple_title }}">
+                     {{ block.settings.single_title }}
+                   </h2>
+                   <p class="text-muted-foreground">
+                     {{ block.settings.description }}
+                   </p>
+                 </div>
+
+                <div id="weight-inputs" class="mb-6 space-y-4">
+                  <div class="space-y-2">
+                     <label id="weight1-label" for="weight1" class="text-base font-medium block"
+                            data-single-label="{{ block.settings.single_label }}"
+                            data-person1-label="{{ block.settings.person1_label }}">
+                       {{ block.settings.single_label }}
+                     </label>
+                    <input
+                      id="weight1"
+                      type="number"
+                      min="35"
+                      max="180"
+                      placeholder="{{ block.settings.weight_placeholder | default: 'f.eks. 70' }}"
+                      class="quiz-input"
+                      oninput="futonQuiz.updateWeight('person1', this.value)"
+                    />
+                  </div>
+
+                  <div id="weight2-container" class="space-y-2" style="display: none;">
+                    <label for="weight2" class="text-base font-medium block">
+                      {{ block.settings.couple_label | default: 'Person 2 vægt (kg)' }}
+                    </label>
+                    <input
+                      id="weight2"
+                      type="number"
+                      min="35"
+                      max="180"
+                      placeholder="{{ block.settings.weight_placeholder | default: 'f.eks. 65' }}"
+                      class="quiz-input"
+                      oninput="futonQuiz.updateWeight('person2', this.value)"
+                    />
+                  </div>
+                </div>
+
+                {% if block.settings.show_info %}
+                <div class="bg-muted/30 rounded-lg p-4 mb-6">
+                  <p class="text-sm text-muted-foreground">
+                    {{ block.settings.info_text | default: '💡 Vægtinformation hjælper os med at anbefale den rigtige fasthed og support til optimal komfort og holdbarhed.' }}
+                  </p>
+                </div>
+                {% endif %}
+
+                <div class="flex justify-between">
+                  <button class="quiz-btn quiz-btn-secondary h-10 px-4" onclick="futonQuiz.prevStep()">
+                    {{ block.settings.back_button_text | default: 'Tilbage' }}
+                  </button>
+                  <button 
+                    id="weight-next-btn"
+                    class="quiz-btn quiz-btn-primary h-10 px-4" 
+                    onclick="futonQuiz.nextStep()"
+                    disabled
+                  >
+                    {{ block.settings.continue_button_text | default: 'Fortsæt' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          {% when 'sleep_position_step' %}
+            <div id="sleep-position-step" class="quiz-step" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div class="max-w-2xl mx-auto">
+                 <div class="text-center mb-8">
+                   <h2 id="sleep-position-title" class="text-3xl font-bold text-foreground mb-4"
+                       data-single-title="{{ block.settings.single_title }}"
+                       data-couple-title="{{ block.settings.couple_title }}">
+                     {{ block.settings.single_title }}
+                   </h2>
+                   <p class="text-muted-foreground">
+                     {{ block.settings.description }}
+                   </p>
+                 </div>
+
+                <!-- Single Person Positions -->
+                <div id="single-person-positions" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                  <button 
+                    class="quiz-btn quiz-btn-option flex-col gap-3" 
+                    data-position="back"
+                    onclick="futonQuiz.setSleepPosition('person1', 'back')"
+                  >
+                    <div class="text-4xl">{{ block.settings.back_emoji | default: '🛌' }}</div>
+                    <div>
+                      <div class="font-semibold">{{ block.settings.back_title | default: 'På Ryggen' }}</div>
+                      <div class="text-sm text-muted-foreground">{{ block.settings.back_description | default: 'Klassisk rygsover' }}</div>
+                    </div>
+                  </button>
+
+                  <button 
+                    class="quiz-btn quiz-btn-option flex-col gap-3" 
+                    data-position="side"
+                    onclick="futonQuiz.setSleepPosition('person1', 'side')"
+                  >
+                    <div class="text-4xl">{{ block.settings.side_emoji | default: '🤱' }}</div>
+                    <div>
+                      <div class="font-semibold">{{ block.settings.side_title | default: 'På Siden' }}</div>
+                      <div class="text-sm text-muted-foreground">{{ block.settings.side_description | default: 'Sidesover position' }}</div>
+                    </div>
+                  </button>
+
+                  <button 
+                    class="quiz-btn quiz-btn-option flex-col gap-3" 
+                    data-position="stomach"
+                    onclick="futonQuiz.setSleepPosition('person1', 'stomach')"
+                  >
+                    <div class="text-4xl">{{ block.settings.stomach_emoji | default: '😴' }}</div>
+                    <div>
+                      <div class="font-semibold">{{ block.settings.stomach_title | default: 'På Maven' }}</div>
+                      <div class="text-sm text-muted-foreground">{{ block.settings.stomach_description | default: 'Mavesover position' }}</div>
+                    </div>
+                  </button>
+                </div>
+
+                <!-- Two Person Positions -->
+                <div id="two-person-positions" style="display: none;">
+                  <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Person 1 sovposition</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-position="back"
+                        data-person="person1"
+                        onclick="futonQuiz.setSleepPosition('person1', 'back')"
+                      >
+                        <div class="text-4xl">{{ block.settings.back_emoji | default: '🛌' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.back_title | default: 'På Ryggen' }}</div>
+                        </div>
+                      </button>
+
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-position="side"
+                        data-person="person1"
+                        onclick="futonQuiz.setSleepPosition('person1', 'side')"
+                      >
+                        <div class="text-4xl">{{ block.settings.side_emoji | default: '🤱' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.side_title | default: 'På Siden' }}</div>
+                        </div>
+                      </button>
+
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-position="stomach"
+                        data-person="person1"
+                        onclick="futonQuiz.setSleepPosition('person1', 'stomach')"
+                      >
+                        <div class="text-4xl">{{ block.settings.stomach_emoji | default: '😴' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.stomach_title | default: 'På Maven' }}</div>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Person 2 sovposition</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-position="back"
+                        data-person="person2"
+                        onclick="futonQuiz.setSleepPosition('person2', 'back')"
+                      >
+                        <div class="text-4xl">{{ block.settings.back_emoji | default: '🛌' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.back_title | default: 'På Ryggen' }}</div>
+                        </div>
+                      </button>
+
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-position="side"
+                        data-person="person2"
+                        onclick="futonQuiz.setSleepPosition('person2', 'side')"
+                      >
+                        <div class="text-4xl">{{ block.settings.side_emoji | default: '🤱' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.side_title | default: 'På Siden' }}</div>
+                        </div>
+                      </button>
+
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-position="stomach"
+                        data-person="person2"
+                        onclick="futonQuiz.setSleepPosition('person2', 'stomach')"
+                      >
+                        <div class="text-4xl">{{ block.settings.stomach_emoji | default: '😴' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.stomach_title | default: 'På Maven' }}</div>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex justify-between">
+                  <button class="quiz-btn quiz-btn-secondary h-10 px-4" onclick="futonQuiz.prevStep()">
+                    {{ block.settings.back_button_text | default: 'Tilbage' }}
+                  </button>
+                  <button 
+                    id="sleep-position-next-btn"
+                    class="quiz-btn quiz-btn-primary h-10 px-4" 
+                    onclick="futonQuiz.nextStep()"
+                    disabled
+                  >
+                    {{ block.settings.continue_button_text | default: 'Fortsæt' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          {% when 'preference_step' %}
+            <div id="preference-step" class="quiz-step" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div class="max-w-2xl mx-auto">
+                 <div class="text-center mb-8">
+                   <h2 id="preference-title" class="text-3xl font-bold text-foreground mb-4"
+                       data-single-title="{{ block.settings.single_title }}"
+                       data-couple-title="{{ block.settings.couple_title }}">
+                     {{ block.settings.single_title }}
+                   </h2>
+                   <p class="text-muted-foreground">
+                     {{ block.settings.description }}
+                   </p>
+                 </div>
+
+                <!-- Single Person Preferences -->
+                <div id="single-person-preferences" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                  <button 
+                    class="quiz-btn quiz-btn-option flex-col gap-3" 
+                    data-preference="soft"
+                    onclick="futonQuiz.setPreference('person1', 'soft')"
+                  >
+                    <div class="text-4xl">{{ block.settings.soft_emoji | default: '☁️' }}</div>
+                    <div>
+                      <div class="font-semibold">{{ block.settings.soft_title | default: 'Blød' }}</div>
+                      <div class="text-sm text-muted-foreground">{{ block.settings.soft_description | default: 'Blødt og omfavnende' }}</div>
+                    </div>
+                  </button>
+
+                  <button 
+                    class="quiz-btn quiz-btn-option flex-col gap-3" 
+                    data-preference="medium"
+                    onclick="futonQuiz.setPreference('person1', 'medium')"
+                  >
+                    <div class="text-4xl">{{ block.settings.medium_emoji | default: '👍' }}</div>
+                    <div>
+                      <div class="font-semibold">{{ block.settings.medium_title | default: 'Medium' }}</div>
+                      <div class="text-sm text-muted-foreground">{{ block.settings.medium_description | default: 'Afbalanceret komfort' }}</div>
+                    </div>
+                  </button>
+
+                  <button 
+                    class="quiz-btn quiz-btn-option flex-col gap-3" 
+                    data-preference="hard"
+                    onclick="futonQuiz.setPreference('person1', 'hard')"
+                  >
+                    <div class="text-4xl">{{ block.settings.hard_emoji | default: '💪' }}</div>
+                    <div>
+                      <div class="font-semibold">{{ block.settings.hard_title | default: 'Hård' }}</div>
+                      <div class="text-sm text-muted-foreground">{{ block.settings.hard_description | default: 'Fast og støttende' }}</div>
+                    </div>
+                  </button>
+                </div>
+
+                <!-- Two Person Preferences -->
+                <div id="two-person-preferences" style="display: none;">
+                  <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Person 1 præference</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-preference="soft"
+                        data-person="person1"
+                        onclick="futonQuiz.setPreference('person1', 'soft')"
+                      >
+                        <div class="text-4xl">{{ block.settings.soft_emoji | default: '☁️' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.soft_title | default: 'Blød' }}</div>
+                        </div>
+                      </button>
+
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-preference="medium"
+                        data-person="person1"
+                        onclick="futonQuiz.setPreference('person1', 'medium')"
+                      >
+                        <div class="text-4xl">{{ block.settings.medium_emoji | default: '👍' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.medium_title | default: 'Medium' }}</div>
+                        </div>
+                      </button>
+
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-preference="hard"
+                        data-person="person1"
+                        onclick="futonQuiz.setPreference('person1', 'hard')"
+                      >
+                        <div class="text-4xl">{{ block.settings.hard_emoji | default: '💪' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.hard_title | default: 'Hård' }}</div>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Person 2 præference</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-preference="soft"
+                        data-person="person2"
+                        onclick="futonQuiz.setPreference('person2', 'soft')"
+                      >
+                        <div class="text-4xl">{{ block.settings.soft_emoji | default: '☁️' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.soft_title | default: 'Blød' }}</div>
+                        </div>
+                      </button>
+
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-preference="medium"
+                        data-person="person2"
+                        onclick="futonQuiz.setPreference('person2', 'medium')"
+                      >
+                        <div class="text-4xl">{{ block.settings.medium_emoji | default: '👍' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.medium_title | default: 'Medium' }}</div>
+                        </div>
+                      </button>
+
+                      <button 
+                        class="quiz-btn quiz-btn-option flex-col gap-3" 
+                        data-preference="hard"
+                        data-person="person2"
+                        onclick="futonQuiz.setPreference('person2', 'hard')"
+                      >
+                        <div class="text-4xl">{{ block.settings.hard_emoji | default: '💪' }}</div>
+                        <div>
+                          <div class="font-semibold">{{ block.settings.hard_title | default: 'Hård' }}</div>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex justify-between">
+                  <button class="quiz-btn quiz-btn-secondary h-10 px-4" onclick="futonQuiz.prevStep()">
+                    {{ block.settings.back_button_text | default: 'Tilbage' }}
+                  </button>
+                  <button 
+                    id="preference-next-btn"
+                    class="quiz-btn quiz-btn-primary h-10 px-4" 
+                    onclick="futonQuiz.nextStep()"
+                    disabled
+                  >
+                    {{ block.settings.continue_button_text | default: 'Fortsæt' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          {% when 'contact_info_step' %}
+            <div id="contact-info-step" class="quiz-step" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                  <h2 class="text-3xl font-bold text-foreground mb-4">
+                    {{ block.settings.title | default: 'Næsten færdig! 🎉' }}
+                  </h2>
+                  <p class="text-muted-foreground">
+                    {{ block.settings.description | default: 'Indtast dine kontaktoplysninger, så vi kan sende dig dine personlige anbefalinger og følge op med ekspertrådgivning.' }}
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div class="space-y-2">
+                    <label for="contact-name" class="text-base font-medium block">
+                      {{ block.settings.name_label | default: 'Navn' }} *
+                    </label>
+                    <input
+                      id="contact-name"
+                      type="text"
+                      placeholder="{{ block.settings.name_placeholder | default: 'Dit fulde navn' }}"
+                      class="quiz-input"
+                      oninput="futonQuiz.updateContactInfo('name', this.value)"
+                    />
+                  </div>
+
+                  <div class="space-y-2">
+                    <label for="contact-email" class="text-base font-medium block">
+                      {{ block.settings.email_label | default: 'Email' }} *
+                    </label>
+                    <input
+                      id="contact-email"
+                      type="email"
+                      placeholder="{{ block.settings.email_placeholder | default: 'din@email.dk' }}"
+                      class="quiz-input"
+                      oninput="futonQuiz.updateContactInfo('email', this.value)"
+                    />
+                  </div>
+
+                  <div class="space-y-2">
+                    <label for="contact-phone" class="text-base font-medium block">
+                      {{ block.settings.phone_label | default: 'Telefon' }} *
+                    </label>
+                    <input
+                      id="contact-phone"
+                      type="tel"
+                      placeholder="{{ block.settings.phone_placeholder | default: '+45 12 34 56 78' }}"
+                      class="quiz-input"
+                      oninput="futonQuiz.updateContactInfo('phone', this.value)"
+                    />
+                  </div>
+
+                  <div class="space-y-2">
+                    <label for="contact-comments" class="text-base font-medium block">
+                      {{ block.settings.comments_label | default: 'Kommentarer (valgfrit)' }}
+                    </label>
+                    <textarea
+                      id="contact-comments"
+                      placeholder="{{ block.settings.comments_placeholder | default: 'Eventuelle specielle ønsker eller spørgsmål...' }}"
+                      rows="3"
+                      class="quiz-input min-h-[80px] resize-y"
+                      oninput="futonQuiz.updateContactInfo('comments', this.value)"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="bg-muted/30 rounded-2xl p-4 mb-6">
+                  <div class="flex items-start gap-3">
+                    <input
+                      id="marketing-consent"
+                      type="checkbox"
+                      class="mt-1"
+                      onchange="futonQuiz.updateContactInfo('marketingConsent', this.checked)"
+                    />
+                    <label for="marketing-consent" class="text-sm text-muted-foreground">
+                      {{ block.settings.consent_text | default: 'Jeg accepterer at modtage anbefalinger og tilbud om søvnprodukter via email og telefon. Du kan altid framelde dig igen.' }} *
+                    </label>
+                  </div>
+                </div>
+
+                {% if block.settings.show_next_steps %}
+                <div class="bg-success/10 border border-success/20 rounded-lg p-4 mb-6">
+                  <h3 class="font-semibold text-success-foreground mb-2">
+                    {{ block.settings.next_steps_title | default: '✨ Hvad sker der nu?' }}
+                  </h3>
+                  <ul class="text-sm text-success-foreground/80 space-y-1">
+                    {% for i in (1..4) %}
+                      {% assign step_key = 'next_step_' | append: i %}
+                      {% if block.settings[step_key] != blank %}
+                      <li>• {{ block.settings[step_key] }}</li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                </div>
+                {% endif %}
+
+                <div class="flex justify-between">
+                  <button class="quiz-btn quiz-btn-secondary h-10 px-4" onclick="futonQuiz.prevStep()">
+                    {{ block.settings.back_button_text | default: 'Tilbage' }}
+                  </button>
+                  <button 
+                    id="contact-next-btn"
+                    class="quiz-btn quiz-btn-primary h-10 px-6" 
+                    onclick="futonQuiz.nextStep()"
+                    disabled
+                  >
+                    {{ block.settings.submit_button_text | default: 'Få Anbefalinger' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          {% when 'recommendation_step' %}
+            <div id="recommendation-step" class="quiz-step" style="display: none;" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div class="max-w-4xl mx-auto">
+                <!-- Loading State -->
+                <div id="recommendations-loading" class="text-center py-12">
+                  <div class="text-6xl mb-4">{{ block.settings.loading_emoji | default: '⏳' }}</div>
+                  <h3 class="text-xl font-semibold mb-2">{{ block.settings.loading_title | default: 'Finder Dine Perfekte Matches...' }}</h3>
+                  <p class="text-muted-foreground">
+                    {{ block.settings.loading_description | default: 'Vi analyserer dine præferencer og finder de bedste produkter til dig.' }}
+                  </p>
+                </div>
+
+                <!-- Results -->
+                <div id="recommendations-results" style="display: none;">
+                  <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-foreground mb-4">
+                      {{ block.settings.results_title | default: '🎉 Dine Perfekte Futon Matches!' }}
+                    </h2>
+                     <p class="text-muted-foreground" id="recommendations-greeting"
+                        data-personalized-greeting="{{ block.settings.personalized_greeting }}">
+                       {{ block.settings.results_description }}
+                     </p>
+                  </div>
+
+                  <!-- Products Grid -->
+                  <div id="recommendations-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Products will be inserted here by JavaScript -->
+                  </div>
+
+                  {% if block.settings.show_next_steps %}
+                  <!-- Next Steps -->
+                  <div class="bg-success/10 border border-success/20 rounded-lg p-6 mb-8">
+                    <h3 class="font-semibold text-success-foreground mb-2">
+                      {{ block.settings.next_steps_title | default: '✨ Hvad sker der nu?' }}
+                    </h3>
+                    <ul class="text-sm text-success-foreground/80 space-y-1">
+                      {% for i in (1..4) %}
+                        {% assign step_key = 'next_step_' | append: i %}
+                        {% if block.settings[step_key] != blank %}
+                        <li>• {{ block.settings[step_key] }}</li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  {% endif %}
+
+                  <div class="text-center space-y-4">
+                    {% if block.settings.show_contact_button %}
+                    <button class="quiz-btn quiz-btn-primary h-12 px-8 text-base">
+                      {{ block.settings.contact_button_text | default: 'Kontakt Vores Eksperter' }}
+                    </button>
+                    {% endif %}
+                    <div>
+                      <button class="text-primary hover:underline" onclick="futonQuiz.restart()">
+                        {{ block.settings.restart_button_text | default: 'Tag Test Igen' }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- No Results -->
+                <div id="recommendations-empty" style="display: none;">
+                  <div class="text-center py-12">
+                    <div class="text-6xl mb-4">{{ block.settings.empty_emoji | default: '😅' }}</div>
+                    <h3 class="text-xl font-semibold mb-2">{{ block.settings.empty_title | default: 'Ingen Perfekte Matches Fundet' }}</h3>
+                    <p class="text-muted-foreground mb-6">
+                      {{ block.settings.empty_description | default: 'Dine specifikke krav er ret unikke! Vores søvneksperter vil gennemgå dine præferencer og kontakte dig med tilpassede anbefalinger.' }}
+                    </p>
+                    <button class="quiz-btn quiz-btn-primary h-10 px-6" onclick="futonQuiz.restart()">
+                      {{ block.settings.restart_button_text | default: 'Tag Test Igen' }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+
+  {%- comment -%} Hidden product data for JavaScript access {%- endcomment -%}
+  <script type="application/json" id="fq-products-data">
+    {
+      "soft_products": [
+        {%- for product in collections[section.settings.soft_collection].products limit: 20 -%}
+          {
+            "id": {{ product.id | json }},
+            "handle": {{ product.handle | json }},
+            "title": {{ product.title | json }},
+            "price": {{ product.price | json }},
+            "compare_at_price": {{ product.compare_at_price | json }},
+            "featured_image": {{ product.featured_image | image_url: width: 400 | json }},
+            "url": {{ product.url | json }},
+            "description": {{ product.description | truncate: 200 | json }},
+            "tags": {{ product.tags | json }},
+            "vendor": {{ product.vendor | json }},
+            "type": {{ product.type | json }},
+            "variants": [
+              {%- for variant in product.variants -%}
+                {
+                  "id": {{ variant.id | json }},
+                  "title": {{ variant.title | json }},
+                  "price": {{ variant.price | json }},
+                  "available": {{ variant.available | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "medium_products": [
+        {%- for product in collections[section.settings.medium_collection].products limit: 20 -%}
+          {
+            "id": {{ product.id | json }},
+            "handle": {{ product.handle | json }},
+            "title": {{ product.title | json }},
+            "price": {{ product.price | json }},
+            "compare_at_price": {{ product.compare_at_price | json }},
+            "featured_image": {{ product.featured_image | image_url: width: 400 | json }},
+            "url": {{ product.url | json }},
+            "description": {{ product.description | truncate: 200 | json }},
+            "tags": {{ product.tags | json }},
+            "vendor": {{ product.vendor | json }},
+            "type": {{ product.type | json }},
+            "variants": [
+              {%- for variant in product.variants -%}
+                {
+                  "id": {{ variant.id | json }},
+                  "title": {{ variant.title | json }},
+                  "price": {{ variant.price | json }},
+                  "available": {{ variant.available | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "hard_products": [
+        {%- for product in collections[section.settings.hard_collection].products limit: 20 -%}
+          {
+            "id": {{ product.id | json }},
+            "handle": {{ product.handle | json }},
+            "title": {{ product.title | json }},
+            "price": {{ product.price | json }},
+            "compare_at_price": {{ product.compare_at_price | json }},
+            "featured_image": {{ product.featured_image | image_url: width: 400 | json }},
+            "url": {{ product.url | json }},
+            "description": {{ product.description | truncate: 200 | json }},
+            "tags": {{ product.tags | json }},
+            "vendor": {{ product.vendor | json }},
+            "type": {{ product.type | json }},
+            "variants": [
+              {%- for variant in product.variants -%}
+                {
+                  "id": {{ variant.id | json }},
+                  "title": {{ variant.title | json }},
+                  "price": {{ variant.price | json }},
+                  "available": {{ variant.available | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "couples_products": [
+        {%- for product in collections[section.settings.couples_collection].products limit: 20 -%}
+          {
+            "id": {{ product.id | json }},
+            "handle": {{ product.handle | json }},
+            "title": {{ product.title | json }},
+            "price": {{ product.price | json }},
+            "compare_at_price": {{ product.compare_at_price | json }},
+            "featured_image": {{ product.featured_image | image_url: width: 400 | json }},
+            "url": {{ product.url | json }},
+            "description": {{ product.description | truncate: 200 | json }},
+            "tags": {{ product.tags | json }},
+            "vendor": {{ product.vendor | json }},
+            "type": {{ product.type | json }},
+            "variants": [
+              {%- for variant in product.variants -%}
+                {
+                  "id": {{ variant.id | json }},
+                  "title": {{ variant.title | json }},
+                  "price": {{ variant.price | json }},
+                  "available": {{ variant.available | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+</section>
+
+{%- comment -%} Load the Quiz JavaScript {%- endcomment -%}
+<script>
+  window.quizConfig = {
+    softCollection: "{{ section.settings.soft_collection.id | default: '' }}",
+    mediumCollection: "{{ section.settings.medium_collection.id | default: '' }}",
+    hardCollection: "{{ section.settings.hard_collection.id | default: '' }}",
+    couplesCollection: "{{ section.settings.couples_collection.id | default: '' }}",
+    shopUrl: "{{ shop.permanent_domain }}",
+    totalSteps: {{ section.blocks.size }},
+    heroImageUrl: "{{ 'futon-hero.jpg' | asset_url }}"
+  };
+</script>
+<script src="{{ 'futon-quiz-blocks.js' | asset_url }}" async></script>
+
+{% schema %}
+{
+  "name": "Futon Quiz (Blocks)",
+  "tag": "section",
+  "class": "futon-quiz-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Produkt Kollektioner"
+    },
+    {
+      "type": "collection",
+      "id": "soft_collection",
+      "label": "Blød Futon Kollektion",
+      "info": "Produkter til kunder der foretrækker bløde futoner"
+    },
+    {
+      "type": "collection", 
+      "id": "medium_collection",
+      "label": "Medium Futon Kollektion",
+      "info": "Produkter til kunder der foretrækker medium-faste futoner"
+    },
+    {
+      "type": "collection",
+      "id": "hard_collection", 
+      "label": "Hård Futon Kollektion",
+      "info": "Produkter til kunder der foretrækker hårde futoner"
+    },
+    {
+      "type": "collection",
+      "id": "couples_collection",
+      "label": "Par Futon Kollektion", 
+      "info": "Specielle produkter designet til par"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "start_step",
+      "name": "Start Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Find Din Perfekte Futon"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov."
+        },
+        {
+          "type": "image_picker",
+          "id": "hero_image",
+          "label": "Hovedbillede"
+        },
+        {
+          "type": "text",
+          "id": "start_button_text",
+          "label": "Start Knap Tekst",
+          "default": "Start Test"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_duration",
+          "label": "Vis varighed",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "duration_text",
+          "label": "Varighed tekst",
+          "default": "Tager kun 2-3 minutter at gennemføre"
+        },
+        {
+          "type": "header",
+          "content": "Fordele Sektion"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_benefits",
+          "label": "Vis fordele",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "benefits_title",
+          "label": "Fordele titel",
+          "default": "Hvad du får:"
+        },
+        {
+          "type": "text",
+          "id": "benefit_1",
+          "label": "Fordel 1",
+          "default": "Personlige anbefalinger"
+        },
+        {
+          "type": "text",
+          "id": "benefit_2",
+          "label": "Fordel 2",
+          "default": "Ekspert vejledning"
+        },
+        {
+          "type": "text",
+          "id": "benefit_3",
+          "label": "Fordel 3",
+          "default": "Perfekt komfort match"
+        }
+      ]
+    },
+    {
+      "type": "people_count_step",
+      "name": "Antal Personer Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Hvor mange personer skal bruge denne futon?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Dette hjælper os med at anbefale den rigtige størrelse og fasthed til dine behov."
+        },
+        {
+          "type": "header",
+          "content": "Enkeltperson Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "single_emoji",
+          "label": "Enkeltperson Emoji",
+          "default": "👤"
+        },
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Enkeltperson Titel",
+          "default": "Kun Mig"
+        },
+        {
+          "type": "text",
+          "id": "single_description",
+          "label": "Enkeltperson Beskrivelse",
+          "default": "Enkeltperson brug"
+        },
+        {
+          "type": "header",
+          "content": "Par Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "couple_emoji",
+          "label": "Par Emoji",
+          "default": "👥"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Par Titel",
+          "default": "To Personer"
+        },
+        {
+          "type": "text",
+          "id": "couple_description",
+          "label": "Par Beskrivelse",
+          "default": "Par eller delt brug"
+        },
+        {
+          "type": "header",
+          "content": "Navigation"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "weight_step",
+      "name": "Vægt Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Titel (enkeltperson)",
+          "default": "Hvad er din vægt?"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Titel (par)",
+          "default": "Hvad er jeres vægt?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Vægt hjælper os med at vælge den rigtige fasthed og support til optimal komfort."
+        },
+        {
+          "type": "text",
+          "id": "single_label",
+          "label": "Enkeltperson Label",
+          "default": "Din vægt (kg)"
+        },
+        {
+          "type": "text",
+          "id": "couple_label",
+          "label": "Person 2 Label",
+          "default": "Person 2 vægt (kg)"
+        },
+        {
+          "type": "text",
+          "id": "weight_placeholder",
+          "label": "Vægt Placeholder",
+          "default": "f.eks. 70"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_info",
+          "label": "Vis info boks",
+          "default": true
+        },
+        {
+          "type": "textarea",
+          "id": "info_text",
+          "label": "Info tekst",
+          "default": "💡 Vægtinformation hjælper os med at anbefale den rigtige fasthed og support til optimal komfort og holdbarhed."
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "sleep_position_step",
+      "name": "Sovposition Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Titel (enkeltperson)",
+          "default": "Hvilken sovposition foretrækker du?"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Titel (par)",
+          "default": "Hvilke sovpositioner foretrækker I?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Din sovposition påvirker, hvilken type støtte og fasthed der er bedst for dig."
+        },
+        {
+          "type": "header",
+          "content": "På Ryggen Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "back_emoji",
+          "label": "På ryggen Emoji",
+          "default": "🛌"
+        },
+        {
+          "type": "text",
+          "id": "back_title",
+          "label": "På ryggen Titel",
+          "default": "På Ryggen"
+        },
+        {
+          "type": "text",
+          "id": "back_description",
+          "label": "På ryggen Beskrivelse",
+          "default": "Klassisk rygsover"
+        },
+        {
+          "type": "header",
+          "content": "På Siden Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "side_emoji",
+          "label": "På siden Emoji",
+          "default": "🤱"
+        },
+        {
+          "type": "text",
+          "id": "side_title",
+          "label": "På siden Titel",
+          "default": "På Siden"
+        },
+        {
+          "type": "text",
+          "id": "side_description",
+          "label": "På siden Beskrivelse",
+          "default": "Sidesover position"
+        },
+        {
+          "type": "header",
+          "content": "På Maven Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "stomach_emoji",
+          "label": "På maven Emoji",
+          "default": "😴"
+        },
+        {
+          "type": "text",
+          "id": "stomach_title",
+          "label": "På maven Titel",
+          "default": "På Maven"
+        },
+        {
+          "type": "text",
+          "id": "stomach_description",
+          "label": "På maven Beskrivelse",
+          "default": "Mavesover position"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "preference_step",
+      "name": "Præference Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Titel (enkeltperson)",
+          "default": "Hvilken matras fasthed foretrækker du?"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Titel (par)",
+          "default": "Hvilken matras fasthed foretrækker I?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Vælg den fasthed der føles mest komfortabel for dig."
+        },
+        {
+          "type": "header",
+          "content": "Blød Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "soft_emoji",
+          "label": "Blød Emoji",
+          "default": "☁️"
+        },
+        {
+          "type": "text",
+          "id": "soft_title",
+          "label": "Blød Titel",
+          "default": "Blød"
+        },
+        {
+          "type": "text",
+          "id": "soft_description",
+          "label": "Blød Beskrivelse",
+          "default": "Blødt og omfavnende"
+        },
+        {
+          "type": "header",
+          "content": "Medium Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "medium_emoji",
+          "label": "Medium Emoji",
+          "default": "👍"
+        },
+        {
+          "type": "text",
+          "id": "medium_title",
+          "label": "Medium Titel",
+          "default": "Medium"
+        },
+        {
+          "type": "text",
+          "id": "medium_description",
+          "label": "Medium Beskrivelse",
+          "default": "Afbalanceret komfort"
+        },
+        {
+          "type": "header",
+          "content": "Hård Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "hard_emoji",
+          "label": "Hård Emoji",
+          "default": "💪"
+        },
+        {
+          "type": "text",
+          "id": "hard_title",
+          "label": "Hård Titel",
+          "default": "Hård"
+        },
+        {
+          "type": "text",
+          "id": "hard_description",
+          "label": "Hård Beskrivelse",
+          "default": "Fast og støttende"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "contact_info_step",
+      "name": "Kontakt Info Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Næsten færdig! 🎉"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Indtast dine kontaktoplysninger, så vi kan sende dig dine personlige anbefalinger og følge op med ekspertrådgivning."
+        },
+        {
+          "type": "header",
+          "content": "Form Labels"
+        },
+        {
+          "type": "text",
+          "id": "name_label",
+          "label": "Navn Label",
+          "default": "Navn"
+        },
+        {
+          "type": "text",
+          "id": "name_placeholder",
+          "label": "Navn Placeholder",
+          "default": "Dit fulde navn"
+        },
+        {
+          "type": "text",
+          "id": "email_label",
+          "label": "Email Label",
+          "default": "Email"
+        },
+        {
+          "type": "text",
+          "id": "email_placeholder",
+          "label": "Email Placeholder",
+          "default": "din@email.dk"
+        },
+        {
+          "type": "text",
+          "id": "phone_label",
+          "label": "Telefon Label",
+          "default": "Telefon"
+        },
+        {
+          "type": "text",
+          "id": "phone_placeholder",
+          "label": "Telefon Placeholder",
+          "default": "+45 12 34 56 78"
+        },
+        {
+          "type": "text",
+          "id": "comments_label",
+          "label": "Kommentarer Label",
+          "default": "Kommentarer (valgfrit)"
+        },
+        {
+          "type": "text",
+          "id": "comments_placeholder",
+          "label": "Kommentarer Placeholder",
+          "default": "Eventuelle specielle ønsker eller spørgsmål..."
+        },
+        {
+          "type": "textarea",
+          "id": "consent_text",
+          "label": "Samtykke Tekst",
+          "default": "Jeg accepterer at modtage anbefalinger og tilbud om søvnprodukter via email og telefon. Du kan altid framelde dig igen."
+        },
+        {
+          "type": "header",
+          "content": "Næste Trin Info"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_next_steps",
+          "label": "Vis næste trin",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "next_steps_title",
+          "label": "Næste trin titel",
+          "default": "✨ Hvad sker der nu?"
+        },
+        {
+          "type": "text",
+          "id": "next_step_1",
+          "label": "Næste trin 1",
+          "default": "Du modtager dine personlige anbefalinger med det samme"
+        },
+        {
+          "type": "text",
+          "id": "next_step_2",
+          "label": "Næste trin 2",
+          "default": "Vores søvneksperter kontakter dig inden for 24 timer"
+        },
+        {
+          "type": "text",
+          "id": "next_step_3",
+          "label": "Næste trin 3",
+          "default": "Vi planlægger en konsultation for at besvare eventuelle spørgsmål"
+        },
+        {
+          "type": "text",
+          "id": "next_step_4",
+          "label": "Næste trin 4",
+          "default": "Gratis hjemmeprøvning tilgængelig på alle anbefalede produkter"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "submit_button_text",
+          "label": "Submit Knap",
+          "default": "Få Anbefalinger"
+        }
+      ]
+    },
+    {
+      "type": "recommendation_step",
+      "name": "Anbefaling Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Loading State"
+        },
+        {
+          "type": "text",
+          "id": "loading_emoji",
+          "label": "Loading Emoji",
+          "default": "⏳"
+        },
+        {
+          "type": "text",
+          "id": "loading_title",
+          "label": "Loading Titel",
+          "default": "Finder Dine Perfekte Matches..."
+        },
+        {
+          "type": "textarea",
+          "id": "loading_description",
+          "label": "Loading Beskrivelse",
+          "default": "Vi analyserer dine præferencer og finder de bedste produkter til dig."
+        },
+        {
+          "type": "header",
+          "content": "Results State"
+        },
+        {
+          "type": "text",
+          "id": "results_title",
+          "label": "Resultater Titel",
+          "default": "🎉 Dine Perfekte Futon Matches!"
+        },
+        {
+          "type": "textarea",
+          "id": "results_description",
+          "label": "Resultater Beskrivelse",
+          "default": "Baseret på dine præferencer, her er vores top anbefalinger:"
+        },
+        {
+          "type": "header",
+          "content": "Next Steps"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_next_steps",
+          "label": "Vis næste trin",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "next_steps_title",
+          "label": "Næste trin titel",
+          "default": "✨ Hvad sker der nu?"
+        },
+        {
+          "type": "text",
+          "id": "next_step_1",
+          "label": "Næste trin 1",
+          "default": "Vores søvneksperter kontakter dig inden for 24 timer"
+        },
+        {
+          "type": "text",
+          "id": "next_step_2",
+          "label": "Næste trin 2",
+          "default": "Du modtager detaljerede produktoplysninger og priser"
+        },
+        {
+          "type": "text",
+          "id": "next_step_3",
+          "label": "Næste trin 3",
+          "default": "Vi planlægger en konsultation for at besvare eventuelle spørgsmål"
+        },
+        {
+          "type": "text",
+          "id": "next_step_4",
+          "label": "Næste trin 4",
+          "default": "Gratis hjemmeprøvning tilgængelig på alle anbefalede futoner"
+        },
+        {
+          "type": "header",
+          "content": "Actions"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_contact_button",
+          "label": "Vis kontakt knap",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "contact_button_text",
+          "label": "Kontakt Knap Tekst",
+          "default": "Kontakt Vores Eksperter"
+        },
+        {
+          "type": "text",
+          "id": "restart_button_text",
+          "label": "Genstart Knap Tekst",
+          "default": "Tag Test Igen"
+        },
+        {
+          "type": "header",
+          "content": "Empty State"
+        },
+        {
+          "type": "text",
+          "id": "empty_emoji",
+          "label": "Tom Emoji",
+          "default": "😅"
+        },
+        {
+          "type": "text",
+          "id": "empty_title",
+          "label": "Tom Titel",
+          "default": "Ingen Perfekte Matches Fundet"
+        },
+        {
+          "type": "textarea",
+          "id": "empty_description",
+          "label": "Tom Beskrivelse",
+          "default": "Dine specifikke krav er ret unikke! Vores søvneksperter vil gennemgå dine præferencer og kontakte dig med tilpassede anbefalinger."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Futon Quiz (Blocks)",
+      "blocks": [
+        {
+          "type": "start_step"
+        },
+        {
+          "type": "people_count_step"
+        },
+        {
+          "type": "weight_step"
+        },
+        {
+          "type": "sleep_position_step"
+        },
+        {
+          "type": "preference_step"
+        },
+        {
+          "type": "contact_info_step"
+        },
+        {
+          "type": "recommendation_step"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

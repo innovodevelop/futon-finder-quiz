@@ -1,0 +1,77 @@
+<div id="futon-quiz__weight-step" class="futon-quiz__step" style="display: none;">
+  <div class="futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+    <div class="futon-quiz__text-center futon-quiz__mb-8">
+      <h2 id="futon-quiz__weight-title" 
+          class="futon-quiz__title" 
+          style="font-size: 1.875rem; margin-bottom: 1rem;"
+          data-single-title="Hvad er din vægt?"
+          data-couple-title="Hvad er jeres vægt?">
+        Hvad er din vægt?
+      </h2>
+      <p class="futon-quiz__description">
+        Dette hjælper os med at anbefale den rigtige fasthed og støtte til dine behov.
+      </p>
+    </div>
+
+    <div id="futon-quiz__weight-inputs" class="futon-quiz__mb-6 futon-quiz__space-y-4">
+      <div>
+        <label id="futon-quiz__weight1-label" 
+               class="futon-quiz__option-title futon-quiz__mb-4" 
+               style="display: block;"
+               data-single-label="Din vægt (kg)"
+               data-person1-label="Person 1 vægt (kg)">
+          Din vægt (kg)
+        </label>
+        <input
+          type="number"
+          class="futon-quiz__input"
+          placeholder="Indtast vægt i kg"
+          oninput="futonQuiz.updateWeight('person1', this.value)"
+          min="30"
+          max="200"
+        />
+      </div>
+      
+      <div id="futon-quiz__weight2-container" style="display: none;">
+        <label class="futon-quiz__option-title futon-quiz__mb-4" style="display: block;">
+          Person 2 vægt (kg)
+        </label>
+        <input
+          type="number"
+          class="futon-quiz__input"
+          placeholder="Indtast vægt i kg"
+          oninput="futonQuiz.updateWeight('person2', this.value)"
+          min="30"
+          max="200"
+        />
+      </div>
+    </div>
+
+    <div class="futon-quiz__info-box futon-quiz__mb-6">
+      <div class="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4"/>
+          <path d="M12 8h.01"/>
+        </svg>
+        <span class="futon-quiz__option-description">
+          Vægt hjælper os med at anbefale den rigtige fasthed for optimal komfort og støtte.
+        </span>
+      </div>
+    </div>
+
+    <div class="futon-quiz__flex futon-quiz__justify-between">
+      <button class="futon-quiz__btn futon-quiz__btn--secondary" onclick="futonQuiz.prevStep()">
+        Tilbage
+      </button>
+      <button 
+        id="futon-quiz__weight-next-btn" 
+        class="futon-quiz__btn futon-quiz__btn--primary" 
+        onclick="futonQuiz.nextStep()"
+        disabled
+      >
+        Fortsæt
+      </button>
+    </div>
+  </div>
+</div>

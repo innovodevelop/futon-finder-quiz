@@ -1,0 +1,797 @@
+/* Futon Quiz React Styles - Unified with Main Implementation
+ * Google Fonts Integration + Complete Shopify Theme Override Protection
+ */
+
+/* Google Fonts - Inter for consistent typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 247 49% 47%;
+    --primary-foreground: 210 40% 98%;
+    --primary-hover: 247 49% 37%;
+    --secondary: 247 12% 95%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --secondary-hover: 247 12% 90%;
+    --muted: 247 12% 95%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 247 12% 95%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 247 12% 88%;
+    --input: 247 12% 88%;
+    --ring: 247 49% 47%;
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+    --progress-bg: 247 12% 95%;
+    --step-active: 247 49% 47%;
+    --step-completed: 142 71% 45%;
+    --step-inactive: 247 12% 88%;
+    --gradient-primary: linear-gradient(135deg, hsl(247 49% 47%), hsl(247 49% 37%));
+    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(247 12% 98%));
+    --shadow-soft: 0 4px 20px -2px hsl(247 49% 47% / 0.1);
+    --shadow-card: 0 8px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius: 1.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 247 49% 57%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --primary-hover: 247 49% 67%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --secondary-hover: 217.2 32.6% 22.5%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 247 49% 57%;
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+    --progress-bg: 217.2 32.6% 17.5%;
+    --step-active: 247 49% 57%;
+    --step-completed: 142 71% 45%;
+    --step-inactive: 217.2 32.6% 17.5%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+/* Futon Quiz App Styles */
+@layer components {
+  /* App Container */
+  .futon-quiz-app {
+    width: 100%;
+  }
+
+  /* Main Quiz Container - EXACT match with React */
+  .futon-quiz {
+    min-height: 100vh !important;
+    padding: 1.5rem 1rem !important;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05)) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  }
+
+  /* Container - UNIFIED width matching React max-w-3xl */
+  .fq-container,
+  .futon-quiz__container {
+    max-width: 48rem !important; /* max-w-3xl = 48rem to match React main container */
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+    padding: 0 1rem !important;
+  }
+
+  /* Progress and individual steps keep max-w-2xl */
+  .fq-progress,
+  .fq-step {
+    max-width: 32rem !important; /* max-w-2xl = 32rem */
+    margin: 0 auto !important;
+  }
+
+  /* Card Styling - EXACT match with React */
+  .fq-card,
+  .futon-quiz__card {
+    background-color: hsl(var(--card)) !important;
+    border-radius: 1.5rem !important;
+    padding: 1.5rem !important;
+    box-shadow: var(--shadow-card) !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-card,
+    .futon-quiz__card {
+      padding: 2.5rem !important;
+    }
+  }
+
+  /* Progress Indicator - EXACT match with React */
+  .fq-progress {
+    width: 100% !important;
+    max-width: 32rem !important; /* max-w-2xl */
+    margin: 0 auto 2rem auto !important;
+  }
+
+  .fq-progress__header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .fq-progress__text {
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .fq-progress__bar {
+    width: 100% !important;
+    background-color: hsl(var(--progress-bg)) !important;
+    border-radius: 9999px !important;
+    height: 0.5rem !important;
+    overflow: hidden !important;
+  }
+
+  .fq-progress__fill {
+    height: 100% !important;
+    transition: all 0.5s ease-in-out !important;
+    background: var(--gradient-primary) !important;
+  }
+
+  .fq-progress__steps {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 1rem !important;
+  }
+
+  .fq-progress__step {
+    width: 2rem !important;
+    height: 2rem !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    transition: all 0.3s !important;
+  }
+
+  .fq-progress__step--completed {
+    background-color: hsl(var(--step-completed)) !important;
+    color: hsl(var(--success-foreground)) !important;
+  }
+
+  .fq-progress__step--current {
+    background-color: hsl(var(--step-active)) !important;
+    color: hsl(var(--primary-foreground)) !important;
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3) !important;
+  }
+
+  .fq-progress__step--inactive {
+    background-color: hsl(var(--step-inactive)) !important;
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  /* Step Common Styles - EXACT match with React */
+  .fq-step {
+    max-width: 32rem !important; /* max-w-2xl instead of 48rem */
+    margin: 0 auto !important;
+  }
+
+  .fq-step__header {
+    text-align: center !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .fq-step__title {
+    font-size: 1.875rem !important; /* text-3xl */
+    font-weight: 700 !important;
+    color: hsl(var(--foreground)) !important;
+    margin-bottom: 1rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-step__title {
+      font-size: 2.25rem !important; /* md:text-4xl */
+    }
+  }
+
+  .fq-step__subtitle {
+    color: hsl(var(--muted-foreground)) !important;
+    font-size: 1rem !important; /* Reduced from 1.125rem */
+    line-height: 1.6 !important;
+  }
+
+  .fq-step__content {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  .fq-step__navigation {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 2rem !important;
+  }
+
+  /* Start Step - EXACT match with React */
+  .fq-start {
+    text-align: center !important;
+    max-width: 32rem !important; /* Matches React max-w-2xl */
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important; /* Reduced from 2rem */
+  }
+
+  .fq-start__hero {
+    width: 100% !important;
+    height: 12rem !important; /* Matches React h-48 */
+    object-fit: cover !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.1) !important;
+  }
+
+  .fq-start__title {
+    font-size: 1.875rem !important; /* text-3xl */
+    font-weight: 700 !important;
+    color: hsl(var(--foreground)) !important;
+    margin-bottom: 1rem !important;
+    letter-spacing: normal !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-start__title {
+      font-size: 2.25rem !important; /* md:text-4xl */
+    }
+  }
+
+  .fq-start__description {
+    color: hsl(var(--muted-foreground)) !important;
+    font-size: 1rem !important; /* Match React text-base */
+    line-height: 1.6 !important;
+    letter-spacing: normal !important;
+  }
+
+  .fq-start__features {
+    background: linear-gradient(135deg, hsl(var(--muted) / 0.3), hsl(var(--muted) / 0.1)) !important;
+    border-radius: 1rem !important;
+    padding: 1.25rem !important;
+  }
+
+  .fq-start__features-title {
+    font-weight: 600 !important;
+    color: hsl(var(--foreground)) !important;
+    margin-bottom: 0.75rem !important;
+    letter-spacing: normal !important;
+  }
+
+  .fq-start__features-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important; /* Reduced from 1rem */
+    font-size: 0.875rem !important; /* Reduced from 1rem */
+  }
+
+  @media (min-width: 768px) {
+    .fq-start__features-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+  }
+
+  .fq-start__feature {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    justify-content: center !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-start__feature {
+      justify-content: flex-start !important;
+    }
+  }
+
+  /* Feature dots - aggressive overrides to prevent Shopify theme hiding */
+  .futon-quiz .fq-start__feature-dot,
+  .fq-start__feature-dot,
+  .futon-quiz__container .fq-start__feature-dot {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 0.5rem !important;
+    height: 0.5rem !important;
+    background-color: hsl(var(--success)) !important;
+    border-radius: 50% !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    content: '' !important;
+  }
+
+  /* Fallback using pseudo-element if div is still hidden */
+  .futon-quiz .fq-start__feature::before,
+  .fq-start__feature::before {
+    content: '' !important;
+    display: inline-block !important;
+    width: 0.5rem !important;
+    height: 0.5rem !important;
+    background-color: hsl(var(--success)) !important;
+    border-radius: 50% !important;
+    margin-right: 0.5rem !important;
+    flex-shrink: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .fq-start__cta {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .fq-start__note {
+    font-size: 0.75rem !important; /* Reduced from 1rem */
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  /* Option Grid */
+  .fq-options {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-options {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+
+  .fq-options--single {
+    grid-template-columns: 1fr !important;
+  }
+
+  .fq-options--triple {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  @media (min-width: 640px) {
+    .fq-options--triple {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .fq-options--triple {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 1rem !important;
+    }
+  }
+
+  /* Option button icons */
+  .fq-btn--option .icon,
+  .fq-btn--option-selected .icon {
+    width: 2rem !important; /* w-8 = 2rem */
+    height: 2rem !important; /* h-8 = 2rem */
+    flex-shrink: 0 !important;
+  }
+
+  /* Option button text */
+  .fq-btn--option .option-text,
+  .fq-btn--option-selected .option-text {
+    font-size: 0.875rem !important; /* text-sm = 0.875rem */
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+    text-align: center !important;
+  }
+
+  /* Input Groups */
+  .fq-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .fq-input-group__label {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+
+  .fq-input-group__input {
+    height: 3rem !important; /* h-12 = 3rem to match React */
+    text-align: center !important;
+    font-size: 1rem !important; /* Match React text-base */
+    background-color: hsl(var(--background)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    border-radius: 0.5rem !important; /* Match React rounded-lg */
+    padding: 0 1rem !important;
+    font-weight: 500 !important;
+  }
+
+  .fq-input-group__input:focus {
+    outline: none;
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+  }
+
+  .fq-inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .fq-inputs-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Info Box */
+  .fq-info-box {
+    background-color: hsl(var(--muted) / 0.3);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .fq-info-box__content {
+    font-size: 1rem;
+    color: hsl(var(--muted-foreground));
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  /* Form Sections */
+  .fq-form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .fq-form-section__title {
+    font-size: 1.25rem !important; /* text-xl = 1.25rem to match React */
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .fq-form-section--spaced {
+    gap: 2rem;
+  }
+
+  /* Cards - Increased padding for better space usage */
+  .fq-card,
+  .futon-quiz__card {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    border-radius: 0.5rem !important;
+    border: 1px solid hsl(var(--border)) !important;
+    box-shadow: var(--shadow-card) !important;
+    padding: 2rem !important; /* Increased from 1.5rem */
+  }
+
+  @media (min-width: 768px) {
+    .fq-card,
+    .futon-quiz__card {
+      padding: 3rem !important; /* Increased from 2.5rem */
+    }
+  }
+
+  /* Button System - EXACT match with React */
+  .fq-btn--option {
+    min-height: 5rem !important; /* Default for people count - min-h-20 = 5rem */
+    padding: 1rem 1.5rem !important;
+    border-radius: 1rem !important; /* Match React rounded-xl */
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    background-color: hsl(var(--card)) !important;
+    border: 2px solid hsl(var(--border)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    letter-spacing: normal !important;
+  }
+
+  /* Sleep position and preference step option buttons need more height */
+  .fq-sleep-position .fq-btn--option,
+  .fq-preference .fq-btn--option,
+  .fq-sleep-position .fq-btn--option-selected,
+  .fq-preference .fq-btn--option-selected {
+    min-height: 10rem !important; /* min-h-40 = 10rem for sleep/preference */
+    padding: 1.5rem !important;
+  }
+
+  .fq-btn--option:hover {
+    border-color: hsl(var(--primary)) !important;
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.15) !important;
+    transform: translateY(-2px) !important;
+  }
+
+  .fq-btn--option-selected {
+    min-height: 5rem !important; /* Default for people count */
+    padding: 1rem 1.5rem !important;
+    border-radius: 1rem !important; /* Match React rounded-xl */
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05)) !important;
+    border: 2px solid hsl(var(--primary)) !important;
+    color: hsl(var(--primary)) !important;
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.15) !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    letter-spacing: normal !important;
+  }
+
+  .fq-btn--quiz {
+    height: 2.75rem !important; /* h-11 = 2.75rem to match React */
+    padding: 0 2rem !important; /* px-8 = 2rem to match React size="lg" */
+    color: hsl(var(--primary-foreground)) !important;
+    background: var(--gradient-primary) !important;
+    box-shadow: var(--shadow-soft) !important;
+    border-radius: 0.5rem !important; /* Match React rounded-lg */
+    border: none !important;
+    cursor: pointer !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    letter-spacing: normal !important;
+  }
+
+  .fq-btn--quiz:hover:not(:disabled) {
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.2) !important;
+    transform: scale(1.02) !important;
+  }
+
+  .fq-btn--quiz:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+  }
+
+  .fq-btn--secondary {
+    height: 2.75rem !important;
+    background-color: hsl(var(--secondary)) !important;
+    color: hsl(var(--secondary-foreground)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    border-radius: 0.5rem !important;
+    padding: 0 1.5rem !important;
+    cursor: pointer !important;
+    font-weight: 500 !important;
+    transition: all 0.2s !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .fq-btn--secondary:hover {
+    background-color: hsl(var(--secondary-hover)) !important;
+  }
+
+  /* Utility Classes */
+  .flex {
+    display: flex;
+  }
+
+  .justify-between {
+    justify-content: space-between;
+  }
+
+  .items-center {
+    align-items: center;
+  }
+
+  .gap-2 {
+    gap: 0.5rem;
+  }
+
+  .gap-4 {
+    gap: 1rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+
+  .mb-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  .mb-8 {
+    margin-bottom: 2rem;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+
+  .space-y-6 > * + * {
+    margin-top: 1.5rem;
+  }
+
+  .grid-cols-1 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .w-full {
+    width: 100%;
+  }
+
+  .h-12 {
+    height: 3rem;
+  }
+
+  .min-h-20 {
+    min-height: 5rem;
+  }
+}
+
+/* Animations - EXACT match with React */
+.fq-fade-in {
+  animation: fqFadeIn 0.3s ease-out !important;
+}
+
+.fq-scale-in {
+  animation: fqScaleIn 0.2s ease-out !important;
+}
+
+@keyframes fqFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fqScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* High specificity reset to override Shopify theme conflicts */
+.shopify-section .futon-quiz,
+.shopify-section .futon-quiz *,
+.shopify-section .futon-quiz *:before,
+.shopify-section .futon-quiz *:after,
+.futon-quiz,
+.futon-quiz *,
+.futon-quiz *:before,
+.futon-quiz *:after {
+  box-sizing: border-box !important;
+}
+
+/* Ensure quiz styles always take precedence over Shopify themes */
+.shopify-section .futon-quiz .fq-btn--quiz,
+.shopify-section .futon-quiz .fq-btn--option,
+.shopify-section .futon-quiz .fq-input-group__input,
+.shopify-section .futon-quiz .fq-card,
+.shopify-section .futon-quiz .fq-container,
+.futon-quiz .fq-btn--quiz,
+.futon-quiz .fq-btn--option,
+.futon-quiz .fq-input-group__input,
+.futon-quiz .fq-card,
+.futon-quiz .fq-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  line-height: 1.5 !important;
+}
+
+/* Critical container override for theme protection */
+.shopify-section .futon-quiz .fq-container,
+.shopify-section .futon-quiz .futon-quiz__container,
+.futon-quiz .fq-container,
+.futon-quiz .futon-quiz__container {
+  max-width: 32rem !important; /* max-w-2xl = 32rem to match React */
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+/* Override any theme letter-spacing and ensure proper typography */
+.shopify-section .futon-quiz,
+.shopify-section .futon-quiz *,
+.futon-quiz,
+.futon-quiz * {
+  letter-spacing: normal !important;
+}
+
+/* Ensure consistent card padding */
+.shopify-section .futon-quiz .fq-card,
+.futon-quiz .fq-card {
+  padding: 1.5rem !important;
+}
+
+@media (min-width: 768px) {
+  .shopify-section .futon-quiz .fq-card,
+  .futon-quiz .fq-card {
+    padding: 2.5rem !important;
+  }
+}

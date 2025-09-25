@@ -1,0 +1,181 @@
+<div id="futon-quiz__sleep-position-step" class="futon-quiz__step" style="display: none;">
+  <div class="futon-quiz__container" style="max-width: 32rem; margin: 0 auto;">
+    <div class="futon-quiz__text-center futon-quiz__mb-8">
+      <h2 id="futon-quiz__sleep-position-title" 
+          class="futon-quiz__title" 
+          style="font-size: 1.875rem; margin-bottom: 1rem;"
+          data-single-title="Hvilken sovposition foretrækker du?"
+          data-couple-title="Hvilke sovpositioner foretrækker I?">
+        Hvilken sovposition foretrækker du?
+      </h2>
+      <p class="futon-quiz__description">
+        Din sovposition påvirker, hvilken type støtte og fasthed der er bedst for dig.
+      </p>
+    </div>
+
+    <div id="futon-quiz__single-person-positions" class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__gap-4 futon-quiz__mb-8">
+      <button
+        class="futon-quiz__btn futon-quiz__btn--option"
+        style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;"
+        data-position="back"
+        onclick="futonQuiz.setSleepPosition('person1', 'back')"
+      >
+        <div style="flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="10" rx="2"/>
+            <circle cx="12" cy="5" r="2"/>
+            <path d="m19 7-1.5 1.5M5 7l1.5 1.5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="futon-quiz__option-title">Ryg</div>
+          <div class="futon-quiz__option-description">Jeg sover på ryggen</div>
+        </div>
+      </button>
+
+      <button
+        class="futon-quiz__btn futon-quiz__btn--option"
+        style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;"
+        data-position="side"
+        onclick="futonQuiz.setSleepPosition('person1', 'side')"
+      >
+        <div style="flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 18h20"/>
+            <path d="M6 14h12"/>
+            <path d="M8 10h8"/>
+            <circle cx="12" cy="6" r="2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="futon-quiz__option-title">Side</div>
+          <div class="futon-quiz__option-description">Jeg sover på siden</div>
+        </div>
+      </button>
+
+      <button
+        class="futon-quiz__btn futon-quiz__btn--option"
+        style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;"
+        data-position="stomach"
+        onclick="futonQuiz.setSleepPosition('person1', 'stomach')"
+      >
+        <div style="flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <ellipse cx="12" cy="11" rx="8" ry="6"/>
+            <circle cx="12" cy="5" r="2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="futon-quiz__option-title">Mave</div>
+          <div class="futon-quiz__option-description">Jeg sover på maven</div>
+        </div>
+      </button>
+    </div>
+
+    <div id="futon-quiz__two-person-positions" class="futon-quiz__space-y-6 futon-quiz__mb-8" style="display: none;">
+      <div>
+        <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Person 1</h3>
+        <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__gap-3">
+          <button class="futon-quiz__btn futon-quiz__btn--option" style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;" data-position="back" data-person="person1" onclick="futonQuiz.setSleepPosition('person1', 'back')">
+            <div style="flex-shrink: 0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="10" rx="2"/>
+                <circle cx="12" cy="5" r="2"/>
+                <path d="m19 7-1.5 1.5M5 7l1.5 1.5"/>
+              </svg>
+            </div>
+            <div>
+              <div class="futon-quiz__option-title">Ryg</div>
+              <div class="futon-quiz__option-description">Jeg sover på ryggen</div>
+            </div>
+          </button>
+          <button class="futon-quiz__btn futon-quiz__btn--option" style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;" data-position="side" data-person="person1" onclick="futonQuiz.setSleepPosition('person1', 'side')">
+            <div style="flex-shrink: 0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 18h20"/>
+                <path d="M6 14h12"/>
+                <path d="M8 10h8"/>
+                <circle cx="12" cy="6" r="2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="futon-quiz__option-title">Side</div>
+              <div class="futon-quiz__option-description">Jeg sover på siden</div>
+            </div>
+          </button>
+          <button class="futon-quiz__btn futon-quiz__btn--option" style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;" data-position="stomach" data-person="person1" onclick="futonQuiz.setSleepPosition('person1', 'stomach')">
+            <div style="flex-shrink: 0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <ellipse cx="12" cy="11" rx="8" ry="6"/>
+                <circle cx="12" cy="5" r="2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="futon-quiz__option-title">Mave</div>
+              <div class="futon-quiz__option-description">Jeg sover på maven</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      
+      <div>
+        <h3 class="futon-quiz__subtitle futon-quiz__mb-4">Person 2</h3>
+        <div class="futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__gap-3">
+          <button class="futon-quiz__btn futon-quiz__btn--option" style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;" data-position="back" data-person="person2" onclick="futonQuiz.setSleepPosition('person2', 'back')">
+            <div style="flex-shrink: 0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="10" rx="2"/>
+                <circle cx="12" cy="5" r="2"/>
+                <path d="m19 7-1.5 1.5M5 7l1.5 1.5"/>
+              </svg>
+            </div>
+            <div>
+              <div class="futon-quiz__option-title">Ryg</div>
+              <div class="futon-quiz__option-description">Jeg sover på ryggen</div>
+            </div>
+          </button>
+          <button class="futon-quiz__btn futon-quiz__btn--option" style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;" data-position="side" data-person="person2" onclick="futonQuiz.setSleepPosition('person2', 'side')">
+            <div style="flex-shrink: 0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 18h20"/>
+                <path d="M6 14h12"/>
+                <path d="M8 10h8"/>
+                <circle cx="12" cy="6" r="2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="futon-quiz__option-title">Side</div>
+              <div class="futon-quiz__option-description">Jeg sover på siden</div>
+            </div>
+          </button>
+          <button class="futon-quiz__btn futon-quiz__btn--option" style="flex-direction: row; gap: 1rem; text-align: left; justify-content: flex-start;" data-position="stomach" data-person="person2" onclick="futonQuiz.setSleepPosition('person2', 'stomach')">
+            <div style="flex-shrink: 0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <ellipse cx="12" cy="11" rx="8" ry="6"/>
+                <circle cx="12" cy="5" r="2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="futon-quiz__option-title">Mave</div>
+              <div class="futon-quiz__option-description">Jeg sover på maven</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="futon-quiz__flex futon-quiz__justify-between">
+      <button class="futon-quiz__btn futon-quiz__btn--secondary" onclick="futonQuiz.prevStep()">
+        Tilbage
+      </button>
+      <button 
+        id="futon-quiz__sleep-position-next-btn" 
+        class="futon-quiz__btn futon-quiz__btn--primary" 
+        onclick="futonQuiz.nextStep()"
+        disabled
+      >
+        Fortsæt
+      </button>
+    </div>
+  </div>
+</div>

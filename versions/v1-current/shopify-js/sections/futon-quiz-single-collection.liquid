@@ -1,0 +1,1148 @@
+{% comment %}
+  Futon Quiz - Single Collection with Tag-Based Product Selection
+  Uses product tags to categorize products instead of multiple collections
+{% endcomment %}
+
+<!-- Google Fonts Preconnect for Performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<section class="futon-quiz py-16">
+  <div class="fq-container">
+    <!-- Progress Indicator -->
+    <div id="fq-progress-indicator" class="fq-progress" style="display: none;">
+      <div class="fq-progress__header">
+        <span class="fq-progress__text">Trin 1 af 5</span>
+        <span class="fq-progress__text">20%</span>
+      </div>
+      <div class="fq-progress__bar">
+        <div class="fq-progress__fill" style="width: 20%;"></div>
+      </div>
+      <div class="fq-progress__steps">
+        <div class="fq-progress__step fq-progress__step--current">1</div>
+        <div class="fq-progress__step fq-progress__step--inactive">2</div>
+        <div class="fq-progress__step fq-progress__step--inactive">3</div>
+        <div class="fq-progress__step fq-progress__step--inactive">4</div>
+        <div class="fq-progress__step fq-progress__step--inactive">5</div>
+      </div>
+    </div>
+
+    <!-- Quiz Container -->
+    <div id="fq-quiz-container">
+      <!-- Step content will be dynamically inserted here -->
+    </div>
+  </div>
+
+  {%- comment -%} Single Collection Product Data with Tag-Based Categorization {%- endcomment -%}
+  <script type="application/json" id="fq-products-data">
+    {
+      "products": [
+        {%- for product in collections[section.settings.product_collection].products limit: 50 -%}
+          {
+            "id": {{ product.id | json }},
+            "handle": {{ product.handle | json }},
+            "title": {{ product.title | json }},
+            "price": {{ product.price | json }},
+            "compare_at_price": {{ product.compare_at_price | json }},
+            "featured_image": {{ product.featured_image | image_url: width: 400 | json }},
+            "url": {{ product.url | json }},
+            "description": {{ product.description | truncate: 200 | json }},
+            "tags": {{ product.tags | json }},
+            "vendor": {{ product.vendor | json }},
+            "variants": [
+              {%- for variant in product.variants limit: 5 -%}
+                {
+                  "id": {{ variant.id | json }},
+                  "title": {{ variant.title | json }},
+                  "price": {{ variant.price | json }},
+                  "available": {{ variant.available | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ],
+            {%- comment -%} Tag-based attributes for easy filtering {%- endcomment -%}
+            "attributes": {
+              "firmness": [
+                {%- assign firmness_values = '' -%}
+                {%- for tag in product.tags -%}
+                  {%- assign tag_lower = tag | downcase -%}
+                  {%- if tag_lower contains 'soft' or tag_lower contains 'blød' -%}
+                    {%- if firmness_values != '' -%}{%- assign firmness_values = firmness_values | append: ',' -%}{%- endif -%}
+                    {%- assign firmness_values = firmness_values | append: '"soft"' -%}
+                  {%- elsif tag_lower contains 'medium' -%}
+                    {%- if firmness_values != '' -%}{%- assign firmness_values = firmness_values | append: ',' -%}{%- endif -%}
+                    {%- assign firmness_values = firmness_values | append: '"medium"' -%}
+                  {%- elsif tag_lower contains 'hard' or tag_lower contains 'fast' -%}
+                    {%- if firmness_values != '' -%}{%- assign firmness_values = firmness_values | append: ',' -%}{%- endif -%}
+                    {%- assign firmness_values = firmness_values | append: '"hard"' -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                {{ firmness_values }}
+              ],
+              "suitability": [
+                {%- assign suitability_values = '' -%}
+                {%- for tag in product.tags -%}
+                  {%- assign tag_lower = tag | downcase -%}
+                  {%- if tag_lower contains 'couple' or tag_lower contains 'par' -%}
+                    {%- if suitability_values != '' -%}{%- assign suitability_values = suitability_values | append: ',' -%}{%- endif -%}
+                    {%- assign suitability_values = suitability_values | append: '"couples"' -%}
+                  {%- elsif tag_lower contains 'single' or tag_lower contains 'enkelt' -%}
+                    {%- if suitability_values != '' -%}{%- assign suitability_values = suitability_values | append: ',' -%}{%- endif -%}
+                    {%- assign suitability_values = suitability_values | append: '"single"' -%}
+                  {%- elsif tag_lower contains 'side-sleeper' or tag_lower contains 'sideligger' -%}
+                    {%- if suitability_values != '' -%}{%- assign suitability_values = suitability_values | append: ',' -%}{%- endif -%}
+                    {%- assign suitability_values = suitability_values | append: '"side-sleeper"' -%}
+                  {%- elsif tag_lower contains 'back-sleeper' or tag_lower contains 'rygligger' -%}
+                    {%- if suitability_values != '' -%}{%- assign suitability_values = suitability_values | append: ',' -%}{%- endif -%}
+                    {%- assign suitability_values = suitability_values | append: '"back-sleeper"' -%}
+                  {%- elsif tag_lower contains 'stomach-sleeper' or tag_lower contains 'maveligger' -%}
+                    {%- if suitability_values != '' -%}{%- assign suitability_values = suitability_values | append: ',' -%}{%- endif -%}
+                    {%- assign suitability_values = suitability_values | append: '"stomach-sleeper"' -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                {{ suitability_values }}
+              ],
+              "weight_support": [
+                {%- assign weight_values = '' -%}
+                {%- for tag in product.tags -%}
+                  {%- assign tag_lower = tag | downcase -%}
+                  {%- if tag_lower contains 'light-weight' or tag_lower contains 'let' -%}
+                    {%- if weight_values != '' -%}{%- assign weight_values = weight_values | append: ',' -%}{%- endif -%}
+                    {%- assign weight_values = weight_values | append: '"light"' -%}
+                  {%- elsif tag_lower contains 'heavy-weight' or tag_lower contains 'tung' -%}
+                    {%- if weight_values != '' -%}{%- assign weight_values = weight_values | append: ',' -%}{%- endif -%}
+                    {%- assign weight_values = weight_values | append: '"heavy"' -%}
+                  {%- elsif tag_lower contains 'plus-size' or tag_lower contains 'stor-størrelse' -%}
+                    {%- if weight_values != '' -%}{%- assign weight_values = weight_values | append: ',' -%}{%- endif -%}
+                    {%- assign weight_values = weight_values | append: '"plus-size"' -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                {{ weight_values }}
+              ]
+            }
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+</section>
+
+{%- comment -%} Quiz Configuration {%- endcomment -%}
+<script>
+  window.quizConfig = {
+    productCollection: "{{ section.settings.product_collection.id | default: '' }}",
+    shopUrl: "{{ shop.permanent_domain }}",
+    totalSteps: {{ section.blocks.size }},
+    {% assign start_block = section.blocks | where: 'type', 'start_step' | first %}
+    heroImageUrl: "{% if start_block.settings.hero_image != blank %}{{ start_block.settings.hero_image | image_url: width: 1200 }}{% elsif section.settings.hero_image != blank %}{{ section.settings.hero_image | image_url: width: 1200 }}{% else %}https://via.placeholder.com/800x400/f3f4f6/6b7280?text=Futon+Hero+Image{% endif %}",
+    
+    // Tag mapping configuration
+    tagMappings: {
+      firmness: {
+        soft: {{ section.settings.soft_tags | split: ',' | json }},
+        medium: {{ section.settings.medium_tags | split: ',' | json }},
+        hard: {{ section.settings.hard_tags | split: ',' | json }}
+      },
+      sleepPosition: {
+        side: {{ section.settings.side_sleeper_tags | split: ',' | json }},
+        back: {{ section.settings.back_sleeper_tags | split: ',' | json }},
+        stomach: {{ section.settings.stomach_sleeper_tags | split: ',' | json }}
+      },
+      couples: {{ section.settings.couples_tags | split: ',' | json }},
+      single: {{ section.settings.single_tags | split: ',' | json }},
+      weightSupport: {
+        light: {{ section.settings.light_weight_tags | split: ',' | json }},
+        heavy: {{ section.settings.heavy_weight_tags | split: ',' | json }}
+      },
+      quality: {
+        premium: {{ section.settings.premium_tags | split: ',' | json }},
+        comfort: {{ section.settings.comfort_tags | split: ',' | json }},
+        material: {{ section.settings.material_tags | split: ',' | json }}
+      }
+    }
+  };
+
+  // Modern Klaviyo configuration with debug mode
+  {% if section.settings.klaviyo_enabled and section.settings.klaviyo_public_key != blank %}
+  window.klaviyoConfig = {
+    siteId: {{ section.settings.klaviyo_public_key | json }},
+    listId: {{ section.settings.klaviyo_list_id | json }},
+    enabled: true,
+    debug: true // Enable debug logging
+  };
+
+  // Initialize modern Klaviyo tracking
+  var siteId = {{ section.settings.klaviyo_public_key | json }};
+  if (/^pk_/.test(siteId)) {
+    console.error('Klaviyo: Private API key detected in Site ID field. Use your Site ID instead. Analytics disabled.');
+    window.klaviyoConfig.enabled = false;
+  } else if (!siteId || siteId.length < 4) {
+    console.warn('Klaviyo: Invalid Site ID format. Analytics disabled.');
+    window.klaviyoConfig.enabled = false;
+  } else {
+    // Initialize modern Klaviyo
+    window.klaviyo = window.klaviyo || [];
+    window.klaviyo.push(['account', siteId]);
+    
+    // Load modern Klaviyo script
+    (function () {
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = 'https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=' + siteId;
+      var firstScript = document.getElementsByTagName('script')[0];
+      firstScript.parentNode.insertBefore(script, firstScript);
+    })();
+    
+    if (window.klaviyoConfig.debug) {
+      console.log('Klaviyo initialized with Site ID:', siteId);
+    }
+  }
+  {% else %}
+  window.klaviyoConfig = { enabled: false };
+  {% endif %}
+</script>
+
+
+<!-- Unified Styling System with Theme Override Protection -->
+<style>
+/* High specificity reset to override Shopify theme conflicts */
+.shopify-section .futon-quiz,
+.shopify-section .futon-quiz *,
+.shopify-section .futon-quiz *:before,
+.shopify-section .futon-quiz *:after,
+.futon-quiz,
+.futon-quiz *,
+.futon-quiz *:before,
+.futon-quiz *:after {
+  box-sizing: border-box !important;
+}
+
+/* Ensure quiz styles always take precedence over Shopify themes */
+.shopify-section .futon-quiz .fq-btn--quiz,
+.shopify-section .futon-quiz .fq-btn--option,
+.shopify-section .futon-quiz .fq-input-group__input,
+.shopify-section .futon-quiz .fq-card,
+.shopify-section .futon-quiz .fq-container,
+.futon-quiz .fq-btn--quiz,
+.futon-quiz .fq-btn--option,
+.futon-quiz .fq-input-group__input,
+.futon-quiz .fq-card,
+.futon-quiz .fq-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  line-height: 1.5 !important;
+}
+
+/* Critical container override for theme protection */
+.shopify-section .futon-quiz .fq-container,
+.shopify-section .futon-quiz .futon-quiz__container,
+.futon-quiz .fq-container,
+.futon-quiz .futon-quiz__container {
+  max-width: 48rem !important; /* max-w-3xl = 48rem */
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+/* Main Quiz Container Styling */
+.shopify-section .futon-quiz,
+.futon-quiz {
+  background: linear-gradient(135deg, hsl(247 49% 47% / 0.1), hsl(247 49% 47% / 0.05)) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+</style>
+
+<link rel="stylesheet" href="{{ 'futon-quiz-react-styles.css' | asset_url }}">
+<script src="{{ 'futon-quiz-single-collection-updated.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Futon Quiz (Single Collection)",
+  "tag": "section",
+  "class": "futon-quiz-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Quiz Configuration"
+    },
+    {
+      "type": "text",
+      "id": "quiz_title",
+      "label": "Quiz Titel",
+      "default": "Find Din Perfekte Futon"
+    },
+    {
+      "type": "textarea",
+      "id": "quiz_subtitle", 
+      "label": "Quiz Undertitel",
+      "default": "Tag vores personlige test og få anbefalinger tilpasset dine behov"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image",
+      "info": "Optional. If set, this image will appear on the start step."
+    },
+    {
+      "type": "header",
+      "content": "Product Collection"
+    },
+    {
+      "type": "collection",
+      "id": "product_collection",
+      "label": "Futon Products Collection",
+      "info": "Main collection containing all futon products to recommend"
+    },
+    {
+      "type": "header",
+      "content": "Tag Mappings - Firmness"
+    },
+    {
+      "type": "text",
+      "id": "soft_tags",
+      "label": "Soft Firmness Tags",
+      "default": "soft,plush,cloud-like,gentle",
+      "info": "English tags for soft/plush products"
+    },
+    {
+      "type": "text", 
+      "id": "medium_tags",
+      "label": "Medium Firmness Tags",
+      "default": "medium,balanced,medium-firm,moderate",
+      "info": "English tags for medium firmness products"
+    },
+    {
+      "type": "text",
+      "id": "hard_tags", 
+      "label": "Firm Firmness Tags",
+      "default": "firm,hard,supportive,extra-firm",
+      "info": "English tags for firm/hard products"
+    },
+    {
+      "type": "header",
+      "content": "Tag Mappings - Sleep Positions"
+    },
+    {
+      "type": "text",
+      "id": "side_sleeper_tags",
+      "label": "Side Sleeper Tags", 
+      "default": "side-sleeper,side-sleep,lateral-sleeper",
+      "info": "English tags for products suitable for side sleepers"
+    },
+    {
+      "type": "text",
+      "id": "back_sleeper_tags",
+      "label": "Back Sleeper Tags",
+      "default": "back-sleeper,back-sleep,supine-sleeper", 
+      "info": "English tags for products suitable for back sleepers"
+    },
+    {
+      "type": "text",
+      "id": "stomach_sleeper_tags",
+      "label": "Stomach Sleeper Tags",
+      "default": "stomach-sleeper,stomach-sleep,prone-sleeper",
+      "info": "English tags for products suitable for stomach sleepers"
+    },
+    {
+      "type": "header", 
+      "content": "Tag Mappings - Size & Weight Categories"
+    },
+    {
+      "type": "text",
+      "id": "couples_tags",
+      "label": "Couples/Large Size Tags",
+      "default": "couples,double,king,queen,two-person",
+      "info": "English tags for products suitable for couples or larger sizes"
+    },
+    {
+      "type": "text",
+      "id": "single_tags", 
+      "label": "Single Person Tags",
+      "default": "single,twin,individual,one-person",
+      "info": "English tags for single person products"
+    },
+    {
+      "type": "text",
+      "id": "light_weight_tags", 
+      "label": "Light Weight Support Tags",
+      "default": "light-weight,under-70kg,petite,lightweight-support",
+      "info": "English tags for products suitable for lighter individuals"
+    },
+    {
+      "type": "text",
+      "id": "heavy_weight_tags",
+      "label": "Heavy Weight Support Tags", 
+      "default": "heavy-weight,over-90kg,plus-size,heavy-duty",
+      "info": "English tags for products suitable for heavier individuals"
+    },
+    {
+      "type": "header", 
+      "content": "Tag Mappings - Quality Features"
+    },
+    {
+      "type": "text",
+      "id": "premium_tags",
+      "label": "Premium Quality Tags",
+      "default": "premium,luxury,high-end,deluxe",
+      "info": "English tags for premium quality products"
+    },
+    {
+      "type": "text",
+      "id": "comfort_tags",
+      "label": "Comfort Feature Tags",
+      "default": "comfortable,supportive,ergonomic,pressure-relief",
+      "info": "English tags for comfort-focused products"
+    },
+    {
+      "type": "text",
+      "id": "material_tags",
+      "label": "Material Feature Tags",
+      "default": "organic,natural,eco-friendly,sustainable",
+      "info": "English tags for special material features"
+    },
+    {
+      "type": "header",
+      "content": "Klaviyo Integration"
+    },
+    {  
+      "type": "checkbox",
+      "id": "klaviyo_enabled",
+      "label": "Enable Klaviyo Integration",
+      "default": false,
+      "info": "Check to enable sending quiz completion data to Klaviyo"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_public_key",
+      "label": "Klaviyo Site ID",
+      "info": "Your Klaviyo Site ID (6-7 characters). Find it in Klaviyo Account Settings > Settings > API Keys > Site ID. DO NOT use Private API Key.",
+      "placeholder": "ABC123"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_list_id",
+      "label": "Klaviyo List ID",
+      "info": "The ID of the Klaviyo list where quiz completers should be added. Find this in your Klaviyo dashboard under Lists.",
+      "placeholder": "XyZ123"
+    },
+  ],
+  "blocks": [
+    {
+      "type": "start_step", 
+      "name": "Start Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Find Din Perfekte Futon"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Tag vores personlige test for at opdage den ideelle futon til dine komfortbehov."
+        },
+        {
+          "type": "image_picker",
+          "id": "hero_image",
+          "label": "Hovedbillede"
+        },
+        {
+          "type": "text",
+          "id": "start_button_text",
+          "label": "Start Knap Tekst",
+          "default": "Start Test"
+        },
+        {
+          "type": "header",
+          "content": "Varighed Sektion"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_duration",
+          "label": "Vis varighed",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "duration_text",
+          "label": "Varighed tekst",
+          "default": "Tager kun 2-3 minutter at gennemføre"
+        },
+        {
+          "type": "header",
+          "content": "Fordele Sektion"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_benefits",
+          "label": "Vis fordele",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "benefits_title",
+          "label": "Fordele titel",
+          "default": "Hvad du får:"
+        },
+        {
+          "type": "text",
+          "id": "benefit_1",
+          "label": "Fordel 1",
+          "default": "Personlige anbefalinger"
+        },
+        {
+          "type": "text",
+          "id": "benefit_2",
+          "label": "Fordel 2",
+          "default": "Ekspert vejledning"
+        },
+        {
+          "type": "text",
+          "id": "benefit_3",
+          "label": "Fordel 3",
+          "default": "Perfekt komfort match"
+        }
+      ]
+    },
+    {
+      "type": "people_count_step",
+      "name": "Antal Personer Trin", 
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Hvor mange personer skal bruge denne futon?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Dette hjælper os med at anbefale den rigtige størrelse og fasthed til dine behov."
+        },
+        {
+          "type": "header",
+          "content": "Enkeltperson Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "single_emoji",
+          "label": "Enkeltperson Emoji",
+          "default": "👤"
+        },
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Enkeltperson Titel",
+          "default": "Kun Mig"
+        },
+        {
+          "type": "text",
+          "id": "single_description",
+          "label": "Enkeltperson Beskrivelse",
+          "default": "Enkeltperson brug"
+        },
+        {
+          "type": "header",
+          "content": "Par Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "couple_emoji",
+          "label": "Par Emoji",
+          "default": "👥"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Par Titel",
+          "default": "To Personer"
+        },
+        {
+          "type": "text",
+          "id": "couple_description",
+          "label": "Par Beskrivelse",
+          "default": "Par eller delt brug"
+        },
+        {
+          "type": "header",
+          "content": "Navigation"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "weight_step",
+      "name": "Vægt Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Titel (enkeltperson)",
+          "default": "Hvad er din vægt?"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Titel (par)",
+          "default": "Hvad er jeres vægt?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Vægt hjælper os med at vælge den rigtige fasthed og support til optimal komfort."
+        },
+        {
+          "type": "text",
+          "id": "single_label",
+          "label": "Enkeltperson Label",
+          "default": "Din vægt (kg)"
+        },
+        {
+          "type": "text",
+          "id": "couple_label",
+          "label": "Person 2 Label",
+          "default": "Person 2 vægt (kg)"
+        },
+        {
+          "type": "text",
+          "id": "weight_placeholder",
+          "label": "Vægt Placeholder",
+          "default": "f.eks. 70"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_info",
+          "label": "Vis info boks",
+          "default": true
+        },
+        {
+          "type": "textarea",
+          "id": "info_text",
+          "label": "Info tekst",
+          "default": "💡 Vægtinformation hjælper os med at anbefale den rigtige fasthed og support til optimal komfort og holdbarhed."
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "sleep_position_step",
+      "name": "Sovposition Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Titel (enkeltperson)",
+          "default": "Hvilken sovposition foretrækker du?"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Titel (par)",
+          "default": "Hvilke sovpositioner foretrækker I?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Din sovposition påvirker, hvilken type støtte og fasthed der er bedst for dig."
+        },
+        {
+          "type": "header",
+          "content": "På Ryggen Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "back_emoji",
+          "label": "På ryggen Emoji",
+          "default": "🛌"
+        },
+        {
+          "type": "text",
+          "id": "back_title",
+          "label": "På ryggen Titel",
+          "default": "På Ryggen"
+        },
+        {
+          "type": "text",
+          "id": "back_description",
+          "label": "På ryggen Beskrivelse",
+          "default": "Klassisk rygsover"
+        },
+        {
+          "type": "header",
+          "content": "På Siden Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "side_emoji",
+          "label": "På siden Emoji",
+          "default": "🤱"
+        },
+        {
+          "type": "text",
+          "id": "side_title",
+          "label": "På siden Titel",
+          "default": "På Siden"
+        },
+        {
+          "type": "text",
+          "id": "side_description",
+          "label": "På siden Beskrivelse",
+          "default": "Sidesover position"
+        },
+        {
+          "type": "header",
+          "content": "På Maven Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "stomach_emoji",
+          "label": "På maven Emoji",
+          "default": "😴"
+        },
+        {
+          "type": "text",
+          "id": "stomach_title",
+          "label": "På maven Titel",
+          "default": "På Maven"
+        },
+        {
+          "type": "text",
+          "id": "stomach_description",
+          "label": "På maven Beskrivelse",
+          "default": "Mavesover position"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "preference_step",
+      "name": "Præference Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "single_title",
+          "label": "Titel (enkeltperson)",
+          "default": "Hvilken matras fasthed foretrækker du?"
+        },
+        {
+          "type": "text",
+          "id": "couple_title",
+          "label": "Titel (par)",
+          "default": "Hvilken matras fasthed foretrækker I?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Vælg den fasthed der føles mest komfortabel for dig."
+        },
+        {
+          "type": "header",
+          "content": "Blød Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "soft_emoji",
+          "label": "Blød Emoji",
+          "default": "☁️"
+        },
+        {
+          "type": "text",
+          "id": "soft_title",
+          "label": "Blød Titel",
+          "default": "Blød"
+        },
+        {
+          "type": "text",
+          "id": "soft_description",
+          "label": "Blød Beskrivelse",
+          "default": "Blødt og omfavnende"
+        },
+        {
+          "type": "header",
+          "content": "Medium Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "medium_emoji",
+          "label": "Medium Emoji",
+          "default": "👍"
+        },
+        {
+          "type": "text",
+          "id": "medium_title",
+          "label": "Medium Titel",
+          "default": "Medium"
+        },
+        {
+          "type": "text",
+          "id": "medium_description",
+          "label": "Medium Beskrivelse",
+          "default": "Afbalanceret komfort"
+        },
+        {
+          "type": "header",
+          "content": "Hård Indstillinger"
+        },
+        {
+          "type": "text",
+          "id": "hard_emoji",
+          "label": "Hård Emoji",
+          "default": "💪"
+        },
+        {
+          "type": "text",
+          "id": "hard_title",
+          "label": "Hård Titel",
+          "default": "Hård"
+        },
+        {
+          "type": "text",
+          "id": "hard_description",
+          "label": "Hård Beskrivelse",
+          "default": "Fast og støttende"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "continue_button_text",
+          "label": "Fortsæt Knap",
+          "default": "Fortsæt"
+        }
+      ]
+    },
+    {
+      "type": "contact_info_step",
+      "name": "Kontakt Info Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Næsten færdig! 🎉"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Beskrivelse",
+          "default": "Indtast dine kontaktoplysninger, så vi kan sende dig dine personlige anbefalinger og følge op med ekspertrådgivning."
+        },
+        {
+          "type": "header",
+          "content": "Form Labels"
+        },
+        {
+          "type": "text",
+          "id": "name_label",
+          "label": "Navn Label",
+          "default": "Navn"
+        },
+        {
+          "type": "text",
+          "id": "name_placeholder",
+          "label": "Navn Placeholder",
+          "default": "Dit fulde navn"
+        },
+        {
+          "type": "text",
+          "id": "email_label",
+          "label": "Email Label",
+          "default": "Email"
+        },
+        {
+          "type": "text",
+          "id": "email_placeholder",
+          "label": "Email Placeholder",
+          "default": "din@email.dk"
+        },
+        {
+          "type": "text",
+          "id": "phone_label",
+          "label": "Telefon Label",
+          "default": "Telefon"
+        },
+        {
+          "type": "text",
+          "id": "phone_placeholder",
+          "label": "Telefon Placeholder",
+          "default": "+45 12 34 56 78"
+        },
+        {
+          "type": "text",
+          "id": "comments_label",
+          "label": "Kommentarer Label",
+          "default": "Kommentarer (valgfrit)"
+        },
+        {
+          "type": "text",
+          "id": "comments_placeholder",
+          "label": "Kommentarer Placeholder",
+          "default": "Eventuelle specielle ønsker eller spørgsmål..."
+        },
+        {
+          "type": "textarea",
+          "id": "consent_text",
+          "label": "Samtykke Tekst",
+          "default": "Jeg accepterer at modtage anbefalinger og tilbud om søvnprodukter via email og telefon. Du kan altid framelde dig igen."
+        },
+        {
+          "type": "header",
+          "content": "Næste Trin Info"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_next_steps",
+          "label": "Vis næste trin",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "next_steps_title",
+          "label": "Næste trin titel",
+          "default": "✨ Hvad sker der nu?"
+        },
+        {
+          "type": "text",
+          "id": "next_step_1",
+          "label": "Næste trin 1",
+          "default": "Du modtager dine personlige anbefalinger med det samme"
+        },
+        {
+          "type": "text",
+          "id": "next_step_2",
+          "label": "Næste trin 2",
+          "default": "Vores søvneksperter kontakter dig inden for 24 timer"
+        },
+        {
+          "type": "text",
+          "id": "next_step_3",
+          "label": "Næste trin 3",
+          "default": "Vi planlægger en konsultation for at besvare eventuelle spørgsmål"
+        },
+        {
+          "type": "text",
+          "id": "next_step_4",
+          "label": "Næste trin 4",
+          "default": "Gratis hjemmeprøvning tilgængelig på alle anbefalede produkter"
+        },
+        {
+          "type": "text",
+          "id": "back_button_text",
+          "label": "Tilbage Knap",
+          "default": "Tilbage"
+        },
+        {
+          "type": "text",
+          "id": "submit_button_text",
+          "label": "Submit Knap",
+          "default": "Få Anbefalinger"
+        }
+      ]
+    },
+    {
+      "type": "recommendation_step",
+      "name": "Anbefaling Trin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Loading State"
+        },
+        {
+          "type": "text",
+          "id": "loading_emoji",
+          "label": "Loading Emoji",
+          "default": "⏳"
+        },
+        {
+          "type": "text",
+          "id": "loading_title",
+          "label": "Loading Titel",
+          "default": "Finder Dine Perfekte Matches..."
+        },
+        {
+          "type": "textarea",
+          "id": "loading_description",
+          "label": "Loading Beskrivelse",
+          "default": "Vi analyserer dine præferencer og finder de bedste produkter til dig."
+        },
+        {
+          "type": "header",
+          "content": "Results State"
+        },
+        {
+          "type": "text",
+          "id": "results_title",
+          "label": "Resultater Titel",
+          "default": "🎉 Dine Perfekte Futon Matches!"
+        },
+        {
+          "type": "textarea",
+          "id": "results_description",
+          "label": "Resultater Beskrivelse",
+          "default": "Baseret på dine præferencer, her er vores top anbefalinger:"
+        },
+        {
+          "type": "header",
+          "content": "Next Steps"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_next_steps",
+          "label": "Vis næste trin",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "next_steps_title",
+          "label": "Næste trin titel",
+          "default": "✨ Hvad sker der nu?"
+        },
+        {
+          "type": "text",
+          "id": "next_step_1",
+          "label": "Næste trin 1",
+          "default": "Vores søvneksperter kontakter dig inden for 24 timer"
+        },
+        {
+          "type": "text",
+          "id": "next_step_2",
+          "label": "Næste trin 2",
+          "default": "Du modtager detaljerede produktoplysninger og priser"
+        },
+        {
+          "type": "text",
+          "id": "next_step_3",
+          "label": "Næste trin 3",
+          "default": "Vi planlægger en konsultation for at besvare eventuelle spørgsmål"
+        },
+        {
+          "type": "text",
+          "id": "next_step_4",
+          "label": "Næste trin 4",
+          "default": "Gratis hjemmeprøvning tilgængelig på alle anbefalede futoner"
+        },
+        {
+          "type": "header",
+          "content": "Actions"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_contact_button",
+          "label": "Vis kontakt knap",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "contact_button_text",
+          "label": "Kontakt Knap Tekst",
+          "default": "Kontakt Vores Eksperter"
+        },
+        {
+          "type": "text",
+          "id": "restart_button_text",
+          "label": "Genstart Knap Tekst",
+          "default": "Tag Test Igen"
+        },
+        {
+          "type": "header",
+          "content": "Empty State"
+        },
+        {
+          "type": "text",
+          "id": "empty_emoji",
+          "label": "Tom Emoji",
+          "default": "😅"
+        },
+        {
+          "type": "text",
+          "id": "empty_title",
+          "label": "Tom Titel",
+          "default": "Ingen Perfekte Matches Fundet"
+        },
+        {
+          "type": "textarea",
+          "id": "empty_description",
+          "label": "Tom Beskrivelse",
+          "default": "Dine specifikke krav er ret unikke! Vores søvneksperter vil gennemgå dine præferencer og kontakte dig med tilpassede anbefalinger."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Futon Quiz (Single Collection)",
+      "blocks": [
+        {
+          "type": "start_step"
+        },
+        {
+          "type": "people_count_step"
+        },
+        {
+          "type": "weight_step"
+        },
+        {
+          "type": "sleep_position_step"
+        },
+        {
+          "type": "preference_step"
+        },
+        {
+          "type": "contact_info_step"
+        },
+        {
+          "type": "recommendation_step"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
