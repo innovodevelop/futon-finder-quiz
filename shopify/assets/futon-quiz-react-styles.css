@@ -124,15 +124,22 @@ All colors MUST be HSL.
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   }
 
-  /* Container - UNIFIED width matching React max-w-2xl */
+  /* Container - UNIFIED width matching React max-w-3xl */
   .fq-container,
   .futon-quiz__container {
-    max-width: 32rem !important; /* max-w-2xl = 32rem to match React */
+    max-width: 48rem !important; /* max-w-3xl = 48rem to match React main container */
     margin: 0 auto !important;
     display: flex !important;
     flex-direction: column !important;
     gap: 2rem !important;
     padding: 0 1rem !important;
+  }
+
+  /* Progress and individual steps keep max-w-2xl */
+  .fq-progress,
+  .fq-step {
+    max-width: 32rem !important; /* max-w-2xl = 32rem */
+    margin: 0 auto !important;
   }
 
   /* Card Styling - EXACT match with React */
