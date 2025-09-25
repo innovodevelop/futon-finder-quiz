@@ -3,8 +3,12 @@
   Uses product tags to categorize products instead of multiple collections
 {% endcomment %}
 
+<!-- Google Fonts Preconnect for Performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <section class="futon-quiz py-16">
-  <div class="futon-quiz__container">
+  <div class="fq-container">
     <!-- Progress Indicator -->
     <div id="fq-progress-indicator" class="fq-progress" style="display: none;">
       <div class="fq-progress__header">
@@ -24,13 +28,13 @@
     </div>
 
     <!-- Quiz Container -->
-    <div id="futon-quiz-container">
+    <div id="fq-quiz-container">
       <!-- Step content will be dynamically inserted here -->
     </div>
   </div>
 
   {%- comment -%} Single Collection Product Data with Tag-Based Categorization {%- endcomment -%}
-  <script type="application/json" id="futon-quiz__products-data">
+  <script type="application/json" id="fq-products-data">
     {
       "products": [
         {%- for product in collections[section.settings.product_collection].products limit: 50 -%}
@@ -197,6 +201,53 @@
   {% endif %}
 </script>
 
+
+<!-- Unified Styling System with Theme Override Protection -->
+<style>
+/* High specificity reset to override Shopify theme conflicts */
+.shopify-section .futon-quiz,
+.shopify-section .futon-quiz *,
+.shopify-section .futon-quiz *:before,
+.shopify-section .futon-quiz *:after,
+.futon-quiz,
+.futon-quiz *,
+.futon-quiz *:before,
+.futon-quiz *:after {
+  box-sizing: border-box !important;
+}
+
+/* Ensure quiz styles always take precedence over Shopify themes */
+.shopify-section .futon-quiz .fq-btn--quiz,
+.shopify-section .futon-quiz .fq-btn--option,
+.shopify-section .futon-quiz .fq-input-group__input,
+.shopify-section .futon-quiz .fq-card,
+.shopify-section .futon-quiz .fq-container,
+.futon-quiz .fq-btn--quiz,
+.futon-quiz .fq-btn--option,
+.futon-quiz .fq-input-group__input,
+.futon-quiz .fq-card,
+.futon-quiz .fq-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  line-height: 1.5 !important;
+}
+
+/* Critical container override for theme protection */
+.shopify-section .futon-quiz .fq-container,
+.shopify-section .futon-quiz .futon-quiz__container,
+.futon-quiz .fq-container,
+.futon-quiz .futon-quiz__container {
+  max-width: 48rem !important; /* max-w-3xl = 48rem */
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+/* Main Quiz Container Styling */
+.shopify-section .futon-quiz,
+.futon-quiz {
+  background: linear-gradient(135deg, hsl(247 49% 47% / 0.1), hsl(247 49% 47% / 0.05)) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+</style>
 
 <link rel="stylesheet" href="{{ 'futon-quiz-react-styles.css' | asset_url }}">
 <script src="{{ 'futon-quiz-single-collection-updated.js' | asset_url }}" defer></script>
