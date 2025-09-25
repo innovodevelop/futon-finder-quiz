@@ -132,7 +132,8 @@
     productCollection: "{{ section.settings.product_collection.id | default: '' }}",
     shopUrl: "{{ shop.permanent_domain }}",
     totalSteps: {{ section.blocks.size }},
-    heroImageUrl: "{% if section.settings.hero_image != blank %}{{ section.settings.hero_image | image_url: width: 1200 }}{% else %}{{ 'futon-hero.jpg' | asset_url }}{% endif %}",
+    {% assign start_block = section.blocks | where: 'type', 'start_step' | first %}
+    heroImageUrl: "{% if start_block.settings.hero_image != blank %}{{ start_block.settings.hero_image | image_url: width: 1200 }}{% elsif section.settings.hero_image != blank %}{{ section.settings.hero_image | image_url: width: 1200 }}{% else %}{{ 'futon-hero.jpg' | asset_url }}{% endif %}",
     
     // Tag mapping configuration
     tagMappings: {
