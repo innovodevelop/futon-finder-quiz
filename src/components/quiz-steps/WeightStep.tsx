@@ -46,114 +46,78 @@ export const WeightStep = ({ peopleCount, weights, heights, onChange, onNext, on
 
   return (
     <div id="fq-weight-step" className="fq-step">
-      <div className="fq-step__header">
-        <h2 className="fq-step__title">
-          Hvad er {peopleCount === 1 ? "din vægt og højde" : "jeres vægt og højde"}?
-        </h2>
-        <p className="fq-step__subtitle">
-          Vægt og højde hjælper vores medarbejdere med at give dig personlig rådgivning.
-        </p>
-      </div>
+      <div className="futon-quiz__container" style={{ maxWidth: '32rem', margin: '0 auto' }}>
+        <div className="futon-quiz__text-center futon-quiz__mb-8">
+          <h2 className="futon-quiz__title" style={{ fontSize: '1.875rem', marginBottom: '1rem' }}>
+            {peopleCount === 1 ? "Hvad er din vægt?" : "Hvad er jeres vægt?"}
+          </h2>
+          <p className="futon-quiz__description">
+            Dette hjælper os med at anbefale den rigtige fasthed og støtte til dine behov.
+          </p>
+        </div>
 
-      <div className={`fq-form-section ${peopleCount === 2 ? "fq-form-section--spaced" : ""}`}>
-        {/* Person 1 */}
-        <div id="fq-weight-person1">
-          <h3 className="fq-form-section__title">
-            {peopleCount === 1 ? "Dine oplysninger" : "Person 1 oplysninger"}
-          </h3>
-          <div className="fq-inputs-grid">
-            <div className="fq-input-group">
-              <Label htmlFor="fq-weight1" className="fq-input-group__label">
-                Vægt (kg)
+        <div className={`futon-quiz__mb-6 ${peopleCount === 2 ? 'futon-quiz__grid futon-quiz__grid--cols-1 futon-quiz__grid--md-cols-2 futon-quiz__gap-6' : 'futon-quiz__space-y-4'}`}>
+          <div>
+            <Label className="futon-quiz__option-title futon-quiz__mb-4" style={{ display: 'block' }}>
+              {peopleCount === 1 ? "Din vægt (kg)" : "Person 1 vægt (kg)"}
+            </Label>
+            <Input
+              type="number"
+              className="futon-quiz__input"
+              placeholder="Indtast vægt i kg"
+              value={weights.person1 || ""}
+              onChange={(e) => updateWeight("person1", parseInt(e.target.value) || 0)}
+              min="30"
+              max="200"
+            />
+          </div>
+          
+          {peopleCount === 2 && (
+            <div>
+              <Label className="futon-quiz__option-title futon-quiz__mb-4" style={{ display: 'block' }}>
+                Person 2 vægt (kg)
               </Label>
               <Input
-                id="fq-weight1"
                 type="number"
+                className="futon-quiz__input"
                 placeholder="Indtast vægt i kg"
-                value={weights.person1 || ""}
-                onChange={(e) => updateWeight("person1", parseInt(e.target.value) || 0)}
-                min="35"
-                max="180"
-                className="fq-input-group__input"
+                value={weights.person2 || ""}
+                onChange={(e) => updateWeight("person2", parseInt(e.target.value) || 0)}
+                min="30"
+                max="200"
               />
             </div>
-            <div className="fq-input-group">
-              <Label htmlFor="fq-height1" className="fq-input-group__label">
-                Højde (cm)
-              </Label>
-              <Input
-                id="fq-height1"
-                type="number"
-                placeholder="Indtast højde i cm"
-                value={safeHeights.person1 || ""}
-                onChange={(e) => updateHeight("person1", parseInt(e.target.value) || 0)}
-                min="140"
-                max="220"
-                className="fq-input-group__input"
-              />
-            </div>
+          )}
+        </div>
+
+        <div className="futon-quiz__info-box futon-quiz__mb-6">
+          <div className="futon-quiz__flex futon-quiz__items-center futon-quiz__gap-2">
+            <Lightbulb className="w-4 h-4" />
+            <span className="futon-quiz__option-description">
+              Vægt hjælper os med at anbefale den rigtige fasthed for optimal komfort og støtte.
+            </span>
           </div>
         </div>
 
-        {peopleCount === 2 && (
-          <div id="fq-weight-person2">
-            <h3 className="fq-form-section__title">Person 2 oplysninger</h3>
-            <div className="fq-inputs-grid">
-              <div className="fq-input-group">
-                <Label htmlFor="fq-weight2" className="fq-input-group__label">
-                  Vægt (kg)
-                </Label>
-                <Input
-                  id="fq-weight2"
-                  type="number"
-                  placeholder="Indtast vægt i kg"
-                  value={weights.person2 || ""}
-                  onChange={(e) => updateWeight("person2", parseInt(e.target.value) || 0)}
-                  min="35"
-                  max="180"
-                  className="fq-input-group__input"
-                />
-              </div>
-              <div className="fq-input-group">
-                <Label htmlFor="fq-height2" className="fq-input-group__label">
-                  Højde (cm)
-                </Label>
-                <Input
-                  id="fq-height2"
-                  type="number"
-                  placeholder="Indtast højde i cm"
-                  value={safeHeights.person2 || ""}
-                  onChange={(e) => updateHeight("person2", parseInt(e.target.value) || 0)}
-                  min="140"
-                  max="220"
-                  className="fq-input-group__input"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="fq-info-box">
-        <p className="fq-info-box__content">
-          <Lightbulb className="w-4 h-4" />
-          Vægt og højde bruges kun som reference for vores medarbejdere ved personlig rådgivning.
-        </p>
-      </div>
-
-      <div className="fq-step__navigation">
-        <Button id="fq-weight-back" variant="secondary" onClick={onPrev}>
-          Tilbage
-        </Button>
-        <Button 
-          id="fq-weight-next"
-          variant="quiz" 
-          onClick={onNext}
-          disabled={!isValid}
-          className="fq-btn--quiz"
-        >
-          Fortsæt
-        </Button>
+        <div className="futon-quiz__flex futon-quiz__justify-between">
+          <Button 
+            variant="secondary" 
+            onClick={onPrev}
+            className="futon-quiz__btn futon-quiz__btn--secondary"
+            style={{ height: '2.5rem', padding: '0 1rem' }}
+          >
+            Tilbage
+          </Button>
+          <Button 
+            variant="quiz" 
+            onClick={onNext}
+            disabled={!isValid}
+            className="futon-quiz__btn futon-quiz__btn--primary"
+            style={{ height: '2.5rem', padding: '0 1rem' }}
+          >
+            Fortsæt
+          </Button>
+        </div>
       </div>
     </div>
   );

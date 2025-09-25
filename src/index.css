@@ -100,6 +100,219 @@ All colors MUST be HSL.
   }
 }
 
+/* ===== FUTON QUIZ STYLES (MATCHING JAVASCRIPT VERSION) ===== */
+@layer components {
+  /* Container and Layout */
+  .futon-quiz {
+    @apply w-full max-w-4xl mx-auto p-4;
+  }
+
+  .futon-quiz__container {
+    @apply w-full;
+  }
+
+  .futon-quiz__step {
+    @apply w-full;
+  }
+
+  /* Typography */
+  .futon-quiz__title {
+    @apply text-3xl font-bold text-foreground text-center mb-4;
+  }
+
+  .futon-quiz__subtitle {
+    @apply text-xl font-semibold text-foreground mb-4;
+  }
+
+  .futon-quiz__description {
+    @apply text-base text-muted-foreground text-center;
+  }
+
+  .futon-quiz__option-title {
+    @apply font-semibold text-foreground;
+  }
+
+  .futon-quiz__option-description {
+    @apply text-sm text-muted-foreground;
+  }
+
+  /* Layout Utilities */
+  .futon-quiz__text-center {
+    @apply text-center;
+  }
+
+  .futon-quiz__flex {
+    @apply flex;
+  }
+
+  .futon-quiz__items-center {
+    @apply items-center;
+  }
+
+  .futon-quiz__justify-center {
+    @apply justify-center;
+  }
+
+  .futon-quiz__justify-between {
+    @apply justify-between;
+  }
+
+  .futon-quiz__gap-2 {
+    @apply gap-2;
+  }
+
+  .futon-quiz__gap-4 {
+    @apply gap-4;
+  }
+
+  .futon-quiz__gap-6 {
+    @apply gap-6;
+  }
+
+  .futon-quiz__space-y-2 > * + * {
+    @apply mt-2;
+  }
+
+  .futon-quiz__space-y-4 > * + * {
+    @apply mt-4;
+  }
+
+  .futon-quiz__space-y-6 > * + * {
+    @apply mt-6;
+  }
+
+  /* Margin utilities */
+  .futon-quiz__mb-4 {
+    @apply mb-4;
+  }
+
+  .futon-quiz__mb-6 {
+    @apply mb-6;
+  }
+
+  .futon-quiz__mb-8 {
+    @apply mb-8;
+  }
+
+  /* Grid */
+  .futon-quiz__grid {
+    @apply grid;
+  }
+
+  .futon-quiz__grid--cols-1 {
+    @apply grid-cols-1;
+  }
+
+  .futon-quiz__grid--md-cols-2 {
+    @apply md:grid-cols-2;
+  }
+
+  .futon-quiz__grid--md-cols-3 {
+    @apply md:grid-cols-3;
+  }
+
+  /* Buttons */
+  .futon-quiz__btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .futon-quiz__btn--primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover shadow;
+  }
+
+  .futon-quiz__btn--secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary-hover;
+  }
+
+  .futon-quiz__btn--option {
+    @apply h-auto p-6 border-2 border-border bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .futon-quiz__btn--option-selected {
+    @apply h-auto p-6 border-2 border-primary bg-primary/5 text-foreground;
+  }
+
+  /* Input */
+  .futon-quiz__input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .futon-quiz__textarea {
+    @apply min-h-[80px] resize-none;
+  }
+
+  /* Info Box */
+  .futon-quiz__info-box {
+    @apply rounded-lg border bg-card p-4 text-card-foreground;
+  }
+
+  /* Loading */
+  .futon-quiz__loading {
+    @apply flex flex-col items-center justify-center py-12 text-center;
+  }
+
+  .futon-quiz__loading-spinner {
+    @apply animate-spin rounded-full h-12 w-12 border-4 border-muted border-t-primary mb-4;
+  }
+
+  /* Start Step Specific */
+  .fq-step {
+    @apply w-full;
+  }
+
+  .fq-step--start {
+    @apply text-center max-w-2xl mx-auto space-y-6;
+  }
+
+  .fq-start__content {
+    @apply space-y-4;
+  }
+
+  .fq-start__hero {
+    @apply w-full h-64 object-cover rounded-lg shadow-md mb-6;
+  }
+
+  .fq-start__title {
+    @apply text-4xl font-bold text-foreground mb-4;
+  }
+
+  .fq-start__description {
+    @apply text-lg text-muted-foreground leading-relaxed;
+  }
+
+  .fq-start__features {
+    @apply bg-card border rounded-lg p-6 my-8;
+  }
+
+  .fq-start__features-title {
+    @apply text-lg font-semibold text-foreground mb-4 text-center;
+  }
+
+  .fq-start__features-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-4;
+  }
+
+  .fq-start__feature {
+    @apply flex items-center gap-2 justify-center;
+  }
+
+  .fq-start__feature-dot {
+    @apply w-2 h-2 bg-success rounded-full flex-shrink-0;
+  }
+
+  .fq-start__cta {
+    @apply space-y-4;
+  }
+
+  .fq-start__note {
+    @apply text-xs text-muted-foreground;
+  }
+
+  .fq-btn--quiz {
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover shadow-lg;
+  }
+}
+
 /* Futon Quiz App Styles */
 @layer components {
   /* App Container */

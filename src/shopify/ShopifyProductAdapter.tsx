@@ -130,7 +130,7 @@ export class ShopifyProductAdapter {
   }
 
   /**
-   * Get recommended products based on quiz results
+   * Get recommended products based on quiz results using advanced tag-based scoring
    */
   static getRecommendations(
     products: any[], 
@@ -141,62 +141,168 @@ export class ShopifyProductAdapter {
       weights: { person1: number; person2?: number };
     }
   ) {
-    return products
-      .filter(product => {
-        // Filter by firmness preference
-        const primaryFirmness = quizData.preferences.person1;
-        if (product.firmness && product.firmness !== primaryFirmness) {
-          // For couples, check if either preference matches
-          if (quizData.peopleCount === 2 && quizData.preferences.person2) {
-            return product.firmness === quizData.preferences.person2;
-          }
-          return false;
-        }
-        
-        // Filter by people count suitability
-        if (quizData.peopleCount === 1 && !product.suitability.singlePerson) {
-          return false;
-        }
-        if (quizData.peopleCount === 2 && !product.suitability.couples) {
-          return false;
-        }
-        
-        return true;
-      })
-      .sort((a, b) => {
-        // Prioritize by match score
-        const scoreA = this.calculateMatchScore(a, quizData);
-        const scoreB = this.calculateMatchScore(b, quizData);
-        return scoreB - scoreA;
-      })
-      .slice(0, 3); // Return top 3 matches
+    if (!products.length) {
+      console.warn('No products available for recommendations');
+      return [];
+    }
+
+    const scoredProducts = products.map(product => ({
+      ...product,
+      score: this.calculateAdvancedProductScore(product, quizData)
+    }));
+
+    // Sort by score and return top recommendations
+    return scoredProducts
+      .filter(product => product.score > 0) // Only products with positive scores
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6); // Return top 6 recommendations
   }
 
   /**
-   * Calculate match score for product recommendation
+   * Advanced scoring system using tags and quiz data (from single collection JS)
    */
-  private static calculateMatchScore(product: any, quizData: any): number {
+  private static calculateAdvancedProductScore(product: any, quizData: any): number {
+    let score = 20; // Base score
+    const { peopleCount, preferences, sleepPositions, weights } = quizData;
+    const productTags = product.tags.map((tag: string) => tag.toLowerCase());
+
+    // === FIRMNESS PREFERENCE SCORING ===
+    score += this.calculateFirmnessScore(product, productTags, preferences, peopleCount);
+
+    // === SLEEP POSITION SCORING ===
+    score += this.calculateSleepPositionScore(product, productTags, sleepPositions, peopleCount);
+
+    // === WEIGHT-BASED SCORING ===
+    score += this.calculateWeightScore(product, productTags, weights, peopleCount);
+
+    // === PEOPLE COUNT SCORING ===
+    score += this.calculatePeopleCountScore(product, productTags, peopleCount);
+
+    // === SPECIAL FEATURES SCORING ===
+    score += this.calculateSpecialFeaturesScore(product, productTags);
+
+    return Math.max(0, score); // Ensure non-negative score
+  }
+
+  private static calculateFirmnessScore(product: any, productTags: string[], preferences: any, peopleCount: number): number {
+    let score = 0;
+    const tagMappings = {
+      soft: ['soft', 'blød', 'myk', 'mjuk'],
+      medium: ['medium', 'mellem', 'middel'],
+      hard: ['hard', 'hård', 'firm', 'fast']
+    };
+
+    // Primary person preference
+    const pref1 = preferences.person1;
+    if (pref1 && tagMappings[pref1 as keyof typeof tagMappings]) {
+      const matchingTags = tagMappings[pref1 as keyof typeof tagMappings];
+      if (matchingTags.some(tag => productTags.includes(tag))) {
+        score += 60;
+      }
+    }
+
+    // Secondary person preference (for couples)
+    if (peopleCount === 2 && preferences.person2) {
+      const pref2 = preferences.person2;
+      if (pref2 && tagMappings[pref2 as keyof typeof tagMappings]) {
+        const matchingTags = tagMappings[pref2 as keyof typeof tagMappings];
+        if (matchingTags.some(tag => productTags.includes(tag))) {
+          score += 40;
+        }
+      }
+    }
+
+    return score;
+  }
+
+  private static calculateSleepPositionScore(product: any, productTags: string[], sleepPositions: any, peopleCount: number): number {
+    let score = 0;
+    const positionMappings = {
+      side: ['side', 'sideligger', 'side-sleeper'],
+      back: ['back', 'rygligger', 'back-sleeper', 'ryg'],
+      stomach: ['stomach', 'maveligger', 'stomach-sleeper', 'mave'],
+      'belly-back': ['back', 'rygligger', 'back-sleeper', 'ryg', 'stomach', 'maveligger', 'stomach-sleeper', 'mave']
+    };
+
+    // Primary person sleep position
+    const pos1 = sleepPositions.person1;
+    if (pos1 && positionMappings[pos1 as keyof typeof positionMappings]) {
+      const matchingTags = positionMappings[pos1 as keyof typeof positionMappings];
+      if (matchingTags.some(tag => productTags.includes(tag))) {
+        score += 25;
+      }
+    }
+
+    // Secondary person sleep position (for couples)
+    if (peopleCount === 2 && sleepPositions.person2) {
+      const pos2 = sleepPositions.person2;
+      if (pos2 && positionMappings[pos2 as keyof typeof positionMappings]) {
+        const matchingTags = positionMappings[pos2 as keyof typeof positionMappings];
+        if (matchingTags.some(tag => productTags.includes(tag))) {
+          score += 20;
+        }
+      }
+    }
+
+    return score;
+  }
+
+  private static calculateWeightScore(product: any, productTags: string[], weights: any, peopleCount: number): number {
+    let score = 0;
+    const totalWeight = weights.person1 + (peopleCount === 2 ? (weights.person2 || 0) : 0);
+    
+    // Weight-based recommendations
+    if (totalWeight > 160) { // Heavy weight support
+      if (productTags.some(tag => ['firm', 'hard', 'support', 'heavy-duty'].includes(tag))) {
+        score += 15;
+      }
+    } else if (totalWeight < 120) { // Light weight comfort
+      if (productTags.some(tag => ['soft', 'comfortable', 'light'].includes(tag))) {
+        score += 10;
+      }
+    }
+
+    return score;
+  }
+
+  private static calculatePeopleCountScore(product: any, productTags: string[], peopleCount: number): number {
     let score = 0;
     
-    // Firmness match
-    if (product.firmness === quizData.preferences.person1) score += 50;
-    if (quizData.peopleCount === 2 && product.firmness === quizData.preferences.person2) score += 50;
-    
-    // Sleep position suitability
-    const sleepPos1 = quizData.sleepPositions.person1;
-    if (sleepPos1 === 'side' && product.suitability.sideSleeperFriendly) score += 30;
-    if (sleepPos1 === 'belly-back' && product.suitability.backSleeperFriendly) score += 30;
-    
-    if (quizData.peopleCount === 2 && quizData.sleepPositions.person2) {
-      const sleepPos2 = quizData.sleepPositions.person2;
-      if (sleepPos2 === 'side' && product.suitability.sideSleeperFriendly) score += 30;
-      if (sleepPos2 === 'belly-back' && product.suitability.backSleeperFriendly) score += 30;
+    if (peopleCount === 1) {
+      if (productTags.some(tag => ['single', 'enkelt', 'individual'].includes(tag))) {
+        score += 15;
+      }
+    } else if (peopleCount === 2) {
+      if (productTags.some(tag => ['couple', 'par', 'double', 'dobbelt', 'two-person'].includes(tag))) {
+        score += 15;
+      }
     }
-    
-    // People count match
-    if (quizData.peopleCount === 1 && product.suitability.singlePerson) score += 20;
-    if (quizData.peopleCount === 2 && product.suitability.couples) score += 20;
-    
+
     return score;
+  }
+
+  private static calculateSpecialFeaturesScore(product: any, productTags: string[]): number {
+    let score = 0;
+    
+    // Premium features
+    const premiumFeatures = ['memory-foam', 'hukommelseseskum', 'organic', 'økologisk', 'cooling', 'køling'];
+    if (premiumFeatures.some(feature => productTags.includes(feature))) {
+      score += 10;
+    }
+
+    // Quality indicators
+    const qualityIndicators = ['premium', 'luxury', 'high-quality', 'bestseller'];
+    if (qualityIndicators.some(indicator => productTags.includes(indicator))) {
+      score += 8;
+    }
+
+    return score;
+  }
+
+  /**
+   * Legacy method for backward compatibility
+   */
+  private static calculateMatchScore(product: any, quizData: any): number {
+    return this.calculateAdvancedProductScore(product, quizData);
   }
 }
