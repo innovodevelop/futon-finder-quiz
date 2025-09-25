@@ -1,209 +1,295 @@
 /**
- * Futon Quiz - BEM-style Component System
- * All styles follow BEM naming convention: futon-quiz__element--modifier
+ * Futon Quiz - Unified Design System
+ * Matches React app exactly with Inter font and unified CSS variables
  */
 
-/* Main Quiz Block */
+/* Google Fonts - Inter for consistent typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* Main Quiz Block with Theme Override Protection */
+.shopify-section .futon-quiz,
 .futon-quiz {
-  /* CSS Custom Properties - Scoped to quiz only */
-  --quiz-background: 0 0% 100%;
-  --quiz-foreground: 222.2 84% 4.9%;
-  --quiz-primary: 247 49% 47%;
-  --quiz-primary-foreground: 210 40% 98%;
-  --quiz-primary-hover: 247 49% 37%;
-  --quiz-secondary: 247 12% 95%;
-  --quiz-secondary-foreground: 222.2 84% 4.9%;
-  --quiz-muted: 247 12% 95%;
-  --quiz-muted-foreground: 215.4 16.3% 46.9%;
-  --quiz-success: 142 71% 45%;
-  --quiz-success-foreground: 210 40% 98%;
-  --quiz-border: 247 12% 88%;
-  --quiz-ring: 247 49% 47%;
-  --quiz-progress-bg: 247 12% 95%;
-  --quiz-step-active: 247 49% 47%;
-  --quiz-step-completed: 142 71% 45%;
-  --quiz-step-inactive: 247 12% 88%;
-  --quiz-radius: 1.5rem;
-  --quiz-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --quiz-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --quiz-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  /* CSS Custom Properties - EXACT match with React src/index.css */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --primary: 247 49% 47%;
+  --primary-foreground: 210 40% 98%;
+  --primary-hover: 247 49% 37%;
+  --secondary: 247 12% 95%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --secondary-hover: 247 12% 90%;
+  --muted: 247 12% 95%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 247 12% 95%;
+  --accent-foreground: 222.2 84% 4.9%;
+  --border: 247 12% 88%;
+  --input: 247 12% 88%;
+  --ring: 247 49% 47%;
+  --success: 142 71% 45%;
+  --success-foreground: 210 40% 98%;
+  --progress-bg: 247 12% 95%;
+  --step-active: 247 49% 47%;
+  --step-completed: 142 71% 45%;
+  --step-inactive: 247 12% 88%;
+  --gradient-primary: linear-gradient(135deg, hsl(247 49% 47%), hsl(247 49% 37%));
+  --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(247 12% 98%));
+  --shadow-soft: 0 4px 20px -2px hsl(247 49% 47% / 0.1);
+  --shadow-card: 0 8px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --radius: 1.5rem;
 
-  /* Dark mode support */
+  /* Dark mode support - EXACT match with React */
   &[data-theme="dark"] {
-    --quiz-background: 222.2 84% 4.9%;
-    --quiz-foreground: 210 40% 98%;
-    --quiz-primary: 247 49% 47%;
-    --quiz-primary-foreground: 222.2 84% 4.9%;
-    --quiz-primary-hover: 247 49% 57%;
-    --quiz-secondary: 217.2 32.6% 17.5%;
-    --quiz-secondary-foreground: 210 40% 98%;
-    --quiz-muted: 217.2 32.6% 17.5%;
-    --quiz-muted-foreground: 215 20.2% 65.1%;
-    --quiz-border: 217.2 32.6% 17.5%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --primary: 247 49% 57%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --primary-hover: 247 49% 67%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --secondary-hover: 217.2 32.6% 22.5%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 247 49% 57%;
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+    --progress-bg: 217.2 32.6% 17.5%;
+    --step-active: 247 49% 57%;
+    --step-completed: 142 71% 45%;
+    --step-inactive: 217.2 32.6% 17.5%;
   }
 
-  /* Reset any potential conflicts */
-  * {
-    box-sizing: border-box;
+  /* High-specificity reset to override Shopify theme conflicts */
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box !important;
   }
 
-  /* Base container styles */
-  background-color: hsl(var(--quiz-background));
-  color: hsl(var(--quiz-foreground));
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  line-height: 1.5;
-  min-height: 100vh;
-  padding: 2rem 0;
+  /* Base container styles - EXACT match with React */
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05)) !important;
+  color: hsl(var(--foreground)) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  line-height: 1.5 !important;
+  min-height: 100vh !important;
+  padding: 1.5rem 1rem !important;
 
-  /* Typography Elements */
-  .futon-quiz__title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-    color: hsl(var(--quiz-foreground));
+  /* Typography - Unified FQ classes matching React */
+  .fq-step__title,
+  .fq-start__title {
+    font-size: 1.875rem !important; /* text-3xl */
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1rem !important;
+    color: hsl(var(--foreground)) !important;
   }
 
   @media (min-width: 768px) {
-    .futon-quiz__title {
-      font-size: 2.5rem;
+    .fq-step__title,
+    .fq-start__title {
+      font-size: 2.25rem !important; /* md:text-4xl */
     }
   }
 
-  .futon-quiz__subtitle {
-    font-size: 1.125rem;
-    font-weight: 600;
-    line-height: 1.4;
-    margin-bottom: 0.75rem;
-    color: hsl(var(--quiz-foreground));
+  .fq-step__subtitle {
+    font-size: 1.125rem !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    margin-bottom: 0.75rem !important;
+    color: hsl(var(--foreground)) !important;
   }
 
-  .futon-quiz__description {
-    color: hsl(var(--quiz-muted-foreground));
-    line-height: 1.6;
+  .fq-step__description,
+  .fq-start__description {
+    color: hsl(var(--muted-foreground)) !important;
+    line-height: 1.6 !important;
   }
 
-  /* Option Elements */
-  .futon-quiz__emoji {
-    font-size: 2.5rem;
-    line-height: 1;
-    margin-bottom: 0.5rem;
+  /* Option Elements - FQ classes */
+  .fq-option__emoji {
+    font-size: 2.5rem !important;
+    line-height: 1 !important;
+    margin-bottom: 0.5rem !important;
   }
 
-  .futon-quiz__option-title {
-    font-weight: 600;
-    font-size: 1rem;
-    color: hsl(var(--quiz-foreground));
-    margin-bottom: 0.25rem;
+  .fq-option__title {
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    color: hsl(var(--foreground)) !important;
+    margin-bottom: 0.25rem !important;
   }
 
-  .futon-quiz__option-description {
-    font-size: 0.875rem;
-    color: hsl(var(--quiz-muted-foreground));
-    line-height: 1.4;
+  .fq-option__description {
+    font-size: 0.875rem !important;
+    color: hsl(var(--muted-foreground)) !important;
+    line-height: 1.4 !important;
   }
 
-  /* Button Styles */
-  .futon-quiz__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-    border-radius: calc(var(--quiz-radius) * 0.5);
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    user-select: none;
-    position: relative;
-    overflow: hidden;
+  /* Button System - EXACT match with React fq-btn classes */
+  .fq-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    border-radius: 0.5rem !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    transition: var(--transition-smooth) !important;
+    outline: none !important;
+    border: none !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    user-select: none !important;
+    position: relative !important;
   }
 
-  .futon-quiz__btn:focus-visible {
-    outline: 2px solid hsl(var(--quiz-ring));
-    outline-offset: 2px;
+  .fq-btn:focus-visible {
+    outline: 2px solid hsl(var(--ring)) !important;
+    outline-offset: 2px !important;
   }
 
-  .futon-quiz__btn:disabled {
-    pointer-events: none;
-    opacity: 0.5;
+  .fq-btn:disabled {
+    pointer-events: none !important;
+    opacity: 0.5 !important;
   }
 
-  .futon-quiz__btn--primary {
-    background: linear-gradient(135deg, hsl(var(--quiz-primary)), hsl(var(--quiz-primary-hover)));
-    color: hsl(var(--quiz-primary-foreground));
-    box-shadow: 0 4px 20px -2px hsl(var(--quiz-primary) / 0.1);
-    padding: 0.75rem 2rem;
-    height: 2.75rem;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-weight: 500;
+  /* Primary Button - matches React .fq-btn--quiz */
+  .fq-btn--quiz,
+  .fq-btn--primary {
+    height: 2.75rem !important; /* h-11 */
+    padding: 0 2rem !important; /* px-8 */
+    border-radius: 0.5rem !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: hsl(var(--primary-foreground)) !important;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-hover))) !important;
+    box-shadow: var(--shadow-soft) !important;
   }
 
-  .futon-quiz__btn--primary:hover:not(:disabled) {
-    transform: scale(1.02);
-    box-shadow: 0 8px 30px -4px hsl(var(--quiz-primary) / 0.2);
+  .fq-btn--quiz:hover:not(:disabled),
+  .fq-btn--primary:hover:not(:disabled) {
+    transform: scale(1.02) !important;
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.2) !important;
   }
 
-  .futon-quiz__btn--secondary {
-    background-color: hsl(var(--quiz-secondary));
-    color: hsl(var(--quiz-secondary-foreground));
-    border: 1px solid hsl(var(--quiz-border));
-    padding: 0.75rem 1.5rem;
-    height: 2.75rem;
+  /* Secondary Button */
+  .fq-btn--secondary {
+    background-color: hsl(var(--secondary)) !important;
+    color: hsl(var(--secondary-foreground)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    padding: 0.75rem 1.5rem !important;
+    height: 2.75rem !important;
   }
 
-  .futon-quiz__btn--secondary:hover:not(:disabled) {
-    background-color: hsl(var(--quiz-secondary) / 0.8);
+  .fq-btn--secondary:hover:not(:disabled) {
+    background-color: hsl(var(--secondary-hover)) !important;
   }
 
-  .futon-quiz__btn--option {
-    background-color: hsl(var(--quiz-background));
-    border: 2px solid hsl(var(--quiz-border));
-    color: hsl(var(--quiz-foreground));
-    border-radius: 1rem;
-    padding: 1.5rem;
-    min-height: 5rem;
-    text-align: center;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
+  /* Option Button - matches React .fq-btn--option */
+  .fq-btn--option {
+    background-color: hsl(var(--card)) !important;
+    border: 2px solid hsl(var(--border)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    border-radius: 1rem !important;
+    padding: 1.5rem !important;
+    min-height: 5rem !important; /* 20 */
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
   }
 
-  .futon-quiz__btn--option:hover:not(:disabled) {
-    border-color: hsl(var(--quiz-primary));
-    background-color: hsl(var(--quiz-primary) / 0.05);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px -4px hsl(var(--quiz-primary) / 0.15);
+  .fq-btn--option:hover:not(:disabled) {
+    border-color: hsl(var(--primary)) !important;
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.15) !important;
+    transform: translateY(-2px) !important;
   }
 
-  .futon-quiz__btn--option-selected {
-    border-color: hsl(var(--quiz-primary));
-    background: linear-gradient(135deg, hsl(var(--quiz-primary) / 0.1), hsl(var(--quiz-primary) / 0.05));
-    color: hsl(var(--quiz-primary));
-    box-shadow: 0 8px 30px -4px hsl(var(--quiz-primary) / 0.15);
+  .fq-btn--option-selected {
+    border-color: hsl(var(--primary)) !important;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05)) !important;
+    color: hsl(var(--primary)) !important;
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.15) !important;
   }
 
-  /* Media & Helper Elements */
-  .futon-quiz__hero-image {
-    width: 100%;
-    height: 12rem; /* 48 */
-    object-fit: cover;
-    border-radius: 1rem;
-    box-shadow: 0 8px 30px -4px hsl(var(--quiz-primary) / 0.1);
+  /* Progress Indicators - EXACT match with React */
+  .fq-progress {
+    width: 100% !important;
+    max-width: 32rem !important; /* max-w-2xl */
+    margin: 0 auto 2rem !important;
   }
 
-  .futon-quiz__bullet--success {
-    width: 0.5rem; /* 2 */
-    height: 0.5rem;
-    background-color: hsl(var(--quiz-success));
-    border-radius: 9999px;
+  .fq-progress__header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .fq-progress__text {
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .fq-progress__bar {
+    width: 100% !important;
+    background-color: hsl(var(--progress-bg)) !important;
+    border-radius: 9999px !important;
+    height: 0.5rem !important;
+    overflow: hidden !important;
+  }
+
+  .fq-progress__fill {
+    height: 100% !important;
+    background: var(--gradient-primary) !important;
+    transition: width 0.5s ease-in-out !important;
+  }
+
+  .fq-progress__steps {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 1rem !important;
+  }
+
+  .fq-progress__step {
+    width: 2rem !important;
+    height: 2rem !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .fq-progress__step--completed {
+    background-color: hsl(var(--step-completed)) !important;
+    color: hsl(var(--success-foreground)) !important;
+  }
+
+  .fq-progress__step--current {
+    background-color: hsl(var(--step-active)) !important;
+    color: hsl(var(--primary-foreground)) !important;
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3) !important;
+  }
+
+  .fq-progress__step--inactive {
+    background-color: hsl(var(--step-inactive)) !important;
+    color: hsl(var(--muted-foreground)) !important;
   }
 
   /* Input Elements */
@@ -411,43 +497,331 @@
     100% { transform: rotate(360deg); }
   }
 
-  /* Utility Classes */
-  .futon-quiz__container {
-    max-width: 64rem;
-    margin: 0 auto;
-    padding: 0 1rem;
+  /* Print Styles - matching React */
+  @media print {
+    .futon-quiz {
+      background: white !important;
+      color: black !important;
+    }
+    
+    .fq-btn {
+      border: 1px solid #ccc !important;
+      background: white !important;
+      color: black !important;
+    }
   }
 
-  .futon-quiz__text-center {
-    text-align: center;
+  /* Loading States */
+  .fq-loading {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 3rem !important;
+    text-align: center !important;
   }
 
-  .futon-quiz__mb-4 { margin-bottom: 1rem; }
-  .futon-quiz__mb-6 { margin-bottom: 1.5rem; }
-  .futon-quiz__mb-8 { margin-bottom: 2rem; }
-  .futon-quiz__mt-4 { margin-top: 1rem; }
-  .futon-quiz__mt-6 { margin-top: 1.5rem; }
-  .futon-quiz__mt-8 { margin-top: 2rem; }
-
-  .futon-quiz__space-y-2 > * + * { margin-top: 0.5rem; }
-  .futon-quiz__space-y-4 > * + * { margin-top: 1rem; }
-  .futon-quiz__space-y-6 > * + * { margin-top: 1.5rem; }
-
-  .futon-quiz__flex {
-    display: flex;
+  .fq-loading-spinner {
+    width: 2rem !important;
+    height: 2rem !important;
+    border: 3px solid hsl(var(--border)) !important;
+    border-top: 3px solid hsl(var(--primary)) !important;
+    border-radius: 50% !important;
+    animation: fqSpin 1s linear infinite !important;
+    margin-bottom: 1rem !important;
   }
 
-  .futon-quiz__justify-between {
-    justify-content: space-between;
+  @keyframes fqSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+}
+
+/* High specificity reset to override Shopify theme conflicts */
+.shopify-section .futon-quiz,
+.shopify-section .futon-quiz *,
+.shopify-section .futon-quiz *:before,
+.shopify-section .futon-quiz *:after,
+.futon-quiz,
+.futon-quiz *,
+.futon-quiz *:before,
+.futon-quiz *:after {
+  box-sizing: border-box !important;
+}
+
+/* Ensure quiz styles always take precedence over Shopify themes */
+.shopify-section .futon-quiz .fq-btn,
+.shopify-section .futon-quiz .fq-input-group__input,
+.shopify-section .futon-quiz .fq-card,
+.shopify-section .futon-quiz .fq-container,
+.futon-quiz .fq-btn,
+.futon-quiz .fq-input-group__input,
+.futon-quiz .fq-card,
+.futon-quiz .fq-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  line-height: 1.5 !important;
+}
+
+/* Critical container override for theme protection */
+.shopify-section .futon-quiz .fq-container,
+.futon-quiz .fq-container {
+  max-width: 48rem !important; /* max-w-3xl = 48rem */
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+  /* Layout Classes - EXACT match with React */
+  .fq-step {
+    max-width: 32rem !important; /* max-w-2xl */
+    margin: 0 auto !important;
   }
 
-  .futon-quiz__items-center {
-    align-items: center;
+  .fq-step__header {
+    text-align: center !important;
+    margin-bottom: 2rem !important;
   }
 
-  .futon-quiz__gap-2 { gap: 0.5rem; }
-  .futon-quiz__gap-4 { gap: 1rem; }
-  .futon-quiz__gap-6 { gap: 1.5rem; }
+  .fq-step__content {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  .fq-step__navigation {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 2rem !important;
+  }
+
+  /* Start Step Classes - EXACT match with React */
+  .fq-start {
+    text-align: center !important;
+    max-width: 32rem !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  .fq-start__hero {
+    width: 100% !important;
+    height: 12rem !important;
+    object-fit: cover !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 8px 30px -4px hsl(var(--primary) / 0.1) !important;
+  }
+
+  .fq-start__features {
+    background: linear-gradient(135deg, hsl(var(--muted) / 0.3), hsl(var(--muted) / 0.1)) !important;
+    border-radius: 1rem !important;
+    padding: 1.25rem !important;
+  }
+
+  .fq-start__features-title {
+    font-weight: 600 !important;
+    color: hsl(var(--foreground)) !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .fq-start__features-grid {
+    display: grid !important;
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-start__features-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+  }
+
+  .fq-start__feature {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    justify-content: center !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-start__feature {
+      justify-content: flex-start !important;
+    }
+  }
+
+  .fq-start__feature-dot {
+    width: 0.5rem !important;
+    height: 0.5rem !important;
+    background-color: hsl(var(--success)) !important;
+    border-radius: 9999px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .fq-start__cta {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .fq-start__note {
+    font-size: 0.75rem !important;
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  /* Option Grid Classes - EXACT match with React */
+  .fq-options {
+    display: grid !important;
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-options {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+  }
+
+  .fq-options--single {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+
+  .fq-options--triple {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-options--triple {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+  }
+
+  /* Form Classes - matching React implementation */
+  .fq-input-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  .fq-input-group__label {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+  }
+
+  .fq-input-group__input {
+    height: 3rem !important;
+    text-align: center !important;
+    font-size: 1.125rem !important;
+    border-radius: 0.5rem !important;
+    border: 2px solid hsl(var(--border)) !important;
+    background-color: hsl(var(--background)) !important;
+    padding: 0 0.75rem !important;
+    color: hsl(var(--foreground)) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .fq-input-group__input::placeholder {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .fq-input-group__input:focus {
+    outline: none !important;
+    border-color: hsl(var(--primary)) !important;
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.2) !important;
+  }
+
+  .fq-inputs-grid {
+    display: grid !important;
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-inputs-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+  }
+
+  /* Info Box Classes - matching React */
+  .fq-info-box {
+    background: linear-gradient(135deg, hsl(var(--muted) / 0.3), hsl(var(--muted) / 0.1)) !important;
+    border-radius: 1rem !important;
+    padding: 1rem !important;
+    margin: 1rem 0 !important;
+  }
+
+  .fq-info-box__content {
+    font-size: 0.875rem !important;
+    color: hsl(var(--muted-foreground)) !important;
+    text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Form Section Classes */
+  .fq-form-section {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  .fq-form-section__title {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .fq-form-section--spaced {
+    gap: 2rem !important;
+  }
+
+  /* Card Classes */
+  .fq-card {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    border-radius: 1.5rem !important;
+    padding: 1.5rem !important;
+    box-shadow: var(--shadow-card) !important;
+  }
+
+  @media (min-width: 768px) {
+    .fq-card {
+      padding: 2.5rem !important;
+    }
+  }
+
+  /* Animation Classes */
+  .fq-fade-in {
+    animation: fqFadeIn 0.3s ease-out !important;
+  }
+
+  .fq-scale-in {
+    animation: fqScaleIn 0.2s ease-out !important;
+  }
+
+  @keyframes fqFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fqScaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 
   /* Print Styles */
   @media print {

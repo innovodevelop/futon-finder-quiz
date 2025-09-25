@@ -85,7 +85,7 @@ class FutonQuizSingleCollection {
    */
   loadProductData() {
     try {
-      const productDataElement = document.getElementById('futon-quiz__products-data');
+      const productDataElement = document.getElementById('fq-products-data');
       if (productDataElement) {
         const data = JSON.parse(productDataElement.textContent);
         this.products = data.products || [];
@@ -98,7 +98,7 @@ class FutonQuizSingleCollection {
   }
 
   showStep(stepIndex) {
-    const container = document.getElementById('futon-quiz-container');
+    const container = document.getElementById('fq-quiz-container');
     if (!container) return;
 
     // Update current step
@@ -136,8 +136,8 @@ class FutonQuizSingleCollection {
         stepHTML = this.buildStartStep();
     }
 
-    // Wrap step content in futon-quiz__card to match React component structure
-    container.innerHTML = `<div class="futon-quiz__card">${stepHTML}</div>`;
+    // Wrap step content in fq-card to match React component structure
+    container.innerHTML = `<div class="fq-card">${stepHTML}</div>`;
 
     // Show/hide progress indicator (hidden on start and end)
     const progressIndicator = document.getElementById('fq-progress-indicator');
