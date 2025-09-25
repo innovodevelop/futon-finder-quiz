@@ -124,10 +124,10 @@ All colors MUST be HSL.
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   }
 
-  /* Container - UNIFIED width matching React max-w-3xl */
+  /* Container - UNIFIED width matching React max-w-2xl */
   .fq-container,
   .futon-quiz__container {
-    max-width: 48rem !important; /* max-w-3xl = 48rem */
+    max-width: 32rem !important; /* max-w-2xl = 32rem to match React */
     margin: 0 auto !important;
     display: flex !important;
     flex-direction: column !important;
@@ -295,7 +295,7 @@ All colors MUST be HSL.
 
   .fq-start__description {
     color: hsl(var(--muted-foreground)) !important;
-    font-size: 1.25rem !important; /* Match React text-xl */
+    font-size: 1rem !important; /* Match React text-base */
     line-height: 1.6 !important;
     letter-spacing: normal !important;
   }
@@ -310,7 +310,6 @@ All colors MUST be HSL.
     font-weight: 600 !important;
     color: hsl(var(--foreground)) !important;
     margin-bottom: 0.75rem !important;
-    font-size: 1.25rem !important; /* Match React text-xl */
     letter-spacing: normal !important;
   }
 
@@ -516,12 +515,12 @@ All colors MUST be HSL.
   }
 
   .fq-btn--quiz {
-    height: 3rem !important; /* h-12 = 3rem for better match */
-    padding: 0 3rem !important; /* px-12 for better match */
+    height: 2.75rem !important; /* h-11 = 2.75rem to match React */
+    padding: 0 2rem !important; /* px-8 = 2rem to match React size="lg" */
     color: hsl(var(--primary-foreground)) !important;
     background: var(--gradient-primary) !important;
     box-shadow: var(--shadow-soft) !important;
-    border-radius: 0.75rem !important; /* Match React rounded-lg */
+    border-radius: 0.5rem !important; /* Match React rounded-lg */
     border: none !important;
     cursor: pointer !important;
     font-weight: 500 !important;
@@ -692,7 +691,7 @@ All colors MUST be HSL.
 .shopify-section .futon-quiz .futon-quiz__container,
 .futon-quiz .fq-container,
 .futon-quiz .futon-quiz__container {
-  max-width: 48rem !important; /* max-w-3xl = 48rem */
+  max-width: 32rem !important; /* max-w-2xl = 32rem to match React */
   margin: 0 auto !important;
   padding: 0 1rem !important;
 }
